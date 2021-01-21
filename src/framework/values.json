@@ -1,0 +1,25 @@
+{
+  "sizes": {
+    "main": 16,
+    "ratio": 1.618,
+    "sizes": ["xs", "sm", "md", "lg", "xl", "xxl"]
+  },
+  "colors": {
+    "yellow": "#FFC300",
+    "red": "#C70039",
+    "whitesmoke": "#F5F5F5",
+    "black": "#2B2B2B"
+  },
+  "fonts": {
+    "main": {
+      "name": "Macbeth",
+      "weights": [400],
+      "src": "../Assets/Fonts/Macbeth/Macbeth-Reguler.otf"
+    },
+    "secondary": {
+      "name": "Lato",
+      "weights": [100, 300, 400, 700, 900],
+      "src": "../Assets/Fonts/Lato/Lato-Regular.ttf"
+    }
+  }
+}
