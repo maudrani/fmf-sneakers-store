@@ -1,11 +1,12 @@
 import { createGlobalStyle } from "styled-components";
 import values from "./values.json";
 import { GenerateSizes, GenerateValues } from "./generators";
+import Reis from "../Assets/Fonts/Reis/REIS-Regular.otf";
 
 let { main, ratio } = values.sizes;
 
 const { colors } = values;
-const fonts = { main: "Macbeth Reguler", secondary: "Lato" };
+const fonts = { main: "REIS", secondary: "Lato" };
 const sizes = {
   ...GenerateSizes(main, ratio, values.sizes.sizes),
   default: `${main}px`,
@@ -23,8 +24,14 @@ const weights = {
   black: 900,
 };
 
-let width = GenerateValues("auto", 100, "w", "%");
-let height = GenerateValues("auto", 100, "h", "vh");
+let width = {
+  ...GenerateValues("auto", 100, "w", "%"),
+  ...GenerateValues("auto", 100, "vw", "vw"),
+};
+let height = {
+  ...GenerateValues("auto", 100, "h", "%"),
+  ...GenerateValues("auto", 100, "vh", "vh"),
+};
 
 const flexShortcuts = {
   "flex-direction": {
@@ -58,11 +65,24 @@ const flexShortcuts = {
 /* Global Parameters */
 const GlobalStyle = createGlobalStyle`
 
+@font-face {
+    font-family: 'Reis';
+    src: local('Reis'), local('Reis'),
+        url(${Reis}) format('opentype')
+}
+
+
 /* Box sizing rules */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+* {
+  outline: none;
+  margin: 0;
+  padding: 0;
 }
 
 /* Remove default padding */
@@ -87,6 +107,7 @@ blockquote,
 dl,
 dd {
   margin: 0;
+  padding: 0;
   color: ${colors.black}
 }
 
@@ -95,7 +116,6 @@ body {
   min-height: 100vh;
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
-  line-height: 1.5;
   background-color: ${colors.whitesmoke};
 }
 
@@ -113,6 +133,7 @@ a:not([class]) {
 /* Make images easier to work with */
 img {
   max-width: 100%;
+  max-height: 100%;
   display: block;
 }
 

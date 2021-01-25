@@ -2,13 +2,13 @@
   "sizes": {
     "main": 16,
     "ratio": 1.618,
-    "sizes": ["xs", "sm", "md", "lg", "xl", "xxl"]
+    "sizes": ["xs", "sm", "md", "lg", "xl", "xxl", "xxxl"]
   },
   "colors": {
-    "yellow": "#FFC300",
+    "yellow": "#FFEC00",
     "red": "#C70039",
     "whitesmoke": "#F5F5F5",
-    "black": "#2B2B2B"
+    "black": "#1C1C1C"
   },
   "fonts": {
     "main": {
