@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./components/modules/navbar";
 import Hero from "./components/modules/hero";
 import About from "./components/modules/about";
+import Contact from "./components/modules/contact";
 import Store from "./components/store/store";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Hero />
       <About />
       <Store />
+      <Contact />
     </div>
   );
 }

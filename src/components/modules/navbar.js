@@ -4,19 +4,18 @@ import Logo from "../basics/logo";
 import styled from "styled-components";
 
 const Nav = styled(Container)`
-  position: fixed;
-  transition: all 0.15s;
+  position: absolute;
 `;
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
 
-  /* const navRef = useRef();
+  const navRef = useRef();
   navRef.current = scrolled;
 
   useEffect(() => {
     const handleScroll = () => {
-      const show = window.scrollY > 600;
+      const show = window.scrollY > 660;
       if (navRef.current !== show) {
         setScrolled(show);
       }
@@ -25,14 +24,15 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("scroll", handleScroll);
     };
-  }, []); */
+  }, []);
 
   const linkConfig = {
     whitesmoke: scrolled,
-    "hover-color": "yellow",
     xs: true,
     pw: "xs",
-    weight: "regular",
+    weight: scrolled ? "regular" : "black",
+    "hover-color": scrolled ? "yellow" : "red",
+    "hover-scale": !scrolled && "md",
   };
   const logoConfig = {
     "w-8": true,
@@ -47,7 +47,7 @@ const Navbar = () => {
       justify="sb"
       ph="xs"
       pw="lg"
-      style={{ zIndex: "100" }}
+      style={{ zIndex: "100", position: scrolled && "fixed" }}
     >
       <Container w-50 justify="fs">
         <Logo

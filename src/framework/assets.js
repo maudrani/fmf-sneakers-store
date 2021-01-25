@@ -1,5 +1,6 @@
 import wall2 from "../Assets/IMG/Background/concrete-wall.png";
 import wall3 from "../Assets/IMG/Background/french-stucco.png";
+import wall1 from "../Assets/IMG/Background/white-wall.png";
 import graffiti from "../Assets/IMG/Background/graffiti.svg";
 import styled from "styled-components";
 import styledMap from "styled-map";
@@ -34,6 +35,9 @@ const BackgroundConfig = {
     default: "none",
     graffiti: `url(${graffiti})`,
     wall: `url(${wall2}), url(${wall3})`,
+    wall1: `url(${wall2})`,
+    wall2: `url(${wall3})`,
+    wall3: `url(${wall1})`,
     "wall-graffiti": `url(${wall2}), url(${wall3}) , url(${graffiti})`,
   }),
 };
@@ -151,6 +155,12 @@ const Container = styled.div`
   ${FlexConfigs}
   ${MarginAndPaddingConfig}
   ${Shadows}
+
+  transition: all 0.15s;
+
+  :hover {
+    ${HoverConfigs}
+  }
 `;
 
 const Img = styled.img`
@@ -158,9 +168,30 @@ const Img = styled.img`
   ${WidthHeight}
   ${MarginAndPaddingConfig}
 
+  transition: all 0.15s;
+
   :hover {
     ${HoverConfigs}
   }
 `;
 
-export { Container, Text, Link, Button, Img };
+const Input = styled.input`
+  ${WidthHeight}
+  ${BackgroundConfig}
+  ${MarginAndPaddingConfig}
+  ${FontConfig}
+  ${Shadows}
+  ${BorderConfig}
+
+  border:0;
+  background:transparent;
+  border-bottom:1px solid ${colors.whitesmoke};
+
+  transition: all 0.15s;
+
+  :hover {
+    ${HoverConfigs}
+  }
+`;
+
+export { Container, Text, Link, Button, Img, Input };

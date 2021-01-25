@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Text, Button, Img } from "../../framework/assets";
+import { Container, Button, Img } from "../../framework/assets";
 import city from "../../Assets/IMG/Background/city.svg";
 import logo from "../../Assets/IMG/Brand/logo-original.svg";
 
@@ -32,7 +32,6 @@ const Hero = () => {
           backgroundImage: `url(${city})`,
           position: "absolute",
           bottom: "0",
-          /* top: '94%', */
           zIndex: -5,
         }}
         vh-15

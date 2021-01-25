@@ -4,11 +4,10 @@ import sneakHand from "../../Assets/IMG/sneak2.png";
 
 const About = () => {
   return (
-    <Container black pw="md" style={{ height: "110vh" }}>
+    <Container vh-100 black pw="md">
       <Container
         h-100
         w-50
-        style={{ filter: "grayscale(100%) contrast(130%)" }}
       >
         <img alt="img" src={sneakHand} />
       </Container>
