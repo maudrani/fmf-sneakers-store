@@ -62,6 +62,19 @@ const flexShortcuts = {
   },
 };
 
+const size = {
+  xs: "320px",
+  sm: "768px",
+  md: "990px",
+  lg: "1400px",
+};
+const device = {
+  xs: `(max-width: ${size.xs})`,
+  sm: `(max-width: ${size.sm})`,
+  md: `(max-width: ${size.md})`,
+  lg: `(max-width: ${size.lg})`,
+};
+
 /* Global Parameters */
 const GlobalStyle = createGlobalStyle`
 
@@ -161,4 +174,5 @@ export {
   width,
   height,
   fonts,
+  device,
 };

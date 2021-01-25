@@ -4,20 +4,27 @@ import sneakHand from "../../Assets/IMG/sneak2.png";
 
 const About = () => {
   return (
-    <Container vh-100 black pw="md">
-      <Container
-        h-100
-        w-50
-      >
+    <Container
+      black
+      pw="lg"
+      style={{ minHeight: "115vh" }}
+      justify="sb"
+      sm-direction="cr"
+    >
+      <Container h-100 w-50 sm-w='w-100'>
         <img alt="img" src={sneakHand} />
       </Container>
-      <Container w-50 h-100 direction="c" align="fs">
-        <Text main whitesmoke xl>
+      <Container h-100 w-50 sm-w='w-100' ph='lg' direction="c">
+        <Text main whitesmoke xl style={{ textAlign: "center" }}>
           Quienes somos
         </Text>
-        <Text w-50 whitesmoke xs ph="xs">
-          FMF SNEAKERS ARGENTINA - ¡Zapatillas customizadas diseños únicos y
-          propios! <br /> Envíos a todo el país.
+        <Text yellow xs ph="xs">
+          FMF SNEAKERS ARGENTINA
+        </Text>
+        <Text whitesmoke style={{ textAlign: "center" }}>
+          Somos una tienda dedicada a la personalización de sneakers. Con
+          diseños muy originales y solicitados en todo el país. <br />
+          Elegidos por Duki, Oky, Dng Team y más.
         </Text>
       </Container>
     </Container>

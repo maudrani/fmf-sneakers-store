@@ -6,11 +6,10 @@ const Card = ({ product }) => {
 
   return (
     <Container
-      w-20
       h-100
       b-radius="xs"
       pw="xs"
-      mw="xs"
+      ph="xs"
       whitesmoke
       b-shadow="2"
       direction="c"

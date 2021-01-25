@@ -10,7 +10,7 @@ const sneakers = [
   },
   {
     img: sneaker,
-    name: "Urban Cluster",
+    name: "Urban Graph",
     description: "Custom Sneaker",
     price: "6900",
   },
@@ -22,7 +22,31 @@ const sneakers = [
   },
   {
     img: sneaker,
-    name: "Urban Cluster",
+    name: "Urban Graph",
+    description: "Custom Sneaker",
+    price: "6900",
+  },
+  {
+    img: sneaker2,
+    name: "TILT Lebron",
+    description: "Custom Sneaker",
+    price: "7300",
+  },
+  {
+    img: sneaker,
+    name: "Urban Graph",
+    description: "Custom Sneaker",
+    price: "6900",
+  },
+  {
+    img: sneaker2,
+    name: "TILT Lebron",
+    description: "Custom Sneaker",
+    price: "7300",
+  },
+  {
+    img: sneaker,
+    name: "Urban Graph",
     description: "Custom Sneaker",
     price: "6900",
   },

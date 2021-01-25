@@ -6,7 +6,7 @@ import styled from "styled-components";
 import styledMap from "styled-map";
 import * as values from "./global";
 
-const { colors, sizes, weights, width, height, fonts } = values;
+const { colors, sizes, weights, width, height, fonts, device } = values;
 const flex = values.flexShortcuts;
 
 //Dynamic General Configs to append in components
@@ -111,6 +111,13 @@ const HoverConfigs = {
   "box-shadow": styledMap("hover-shadow", {
     default: "inset",
     1: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+    2: `drop-shadow(0px 26px 11px rgba(28,28,28,0.52))`,
+    3: `drop-shadow(0px 3px 11px rgba(28,28,28,0.52))`,
+    4: `drop-shadow(0px 8px 23px rgba(28,28,28,0.52))`,
+    5: `drop-shadow(0px 26px 23px rgba(28,28,28,0.52))`,
+    6: `drop-shadow(0px 3px 23px rgba(28,28,28,0.52))`,
+    7: `drop-shadow(0px 18px 13px rgba(28,28,28,0.36))`,
+    8: `drop-shadow(0px 8px 11px rgba(28,28,28,0.52))`,
   }),
 };
 
@@ -121,6 +128,31 @@ const Text = styled.span`
   ${MarginAndPaddingConfig}
   ${FontConfig}
   ${Shadows}
+
+  @media ${device.xs} {
+    font-size: ${styledMap("xs-size", {
+      ...sizes,
+      default: "inset",
+    })};
+  }
+  @media ${device.sm} {
+    font-size: ${styledMap("sm-size", {
+      ...sizes,
+      default: "inset",
+    })};
+  }
+  @media ${device.md} {
+    font-size: ${styledMap("md-size", {
+      ...sizes,
+      default: "inset",
+    })};
+  }
+  @media ${device.lg} {
+    font-size: ${styledMap("lg-size", {
+      ...sizes,
+      default: "inset",
+    })};
+  }
 `;
 
 const Link = styled(Text)`
@@ -156,6 +188,39 @@ const Container = styled.div`
   ${MarginAndPaddingConfig}
   ${Shadows}
 
+  @media ${device.xs} {
+    flex-direction: ${styledMap("xs-direction", {
+      ...flex["flex-direction"],
+      default: "inset",
+    })};
+    width: ${styledMap("xs-w", { ...width, default: "inset" })};
+    height: ${styledMap("xs-h", { ...height, default: "inset" })};
+  }
+  @media ${device.sm} {
+    flex-direction: ${styledMap("sm-direction", {
+      ...flex["flex-direction"],
+      default: "inset",
+    })};
+    width: ${styledMap("sm-w", { ...width, default: "inset" })};
+    height: ${styledMap("sm-h", { ...height, default: "inset" })};
+  }
+  @media ${device.md} {
+    flex-direction: ${styledMap("md-direction", {
+      ...flex["flex-direction"],
+      default: "inset",
+    })};
+    width: ${styledMap("md-w", { ...width, default: "inset" })};
+    height: ${styledMap("md-h", { ...height, default: "inset" })};
+  }
+  @media ${device.lg} {
+    flex-direction: ${styledMap("md-direction", {
+      ...flex["flex-direction"],
+      default: "inset",
+    })};
+    width: ${styledMap("lg-w", { ...width, default: "inset" })};
+    height: ${styledMap("lg-h", { ...height, default: "inset" })};
+  }
+
   transition: all 0.15s;
 
   :hover {
@@ -184,8 +249,8 @@ const Input = styled.input`
   ${BorderConfig}
 
   border:0;
-  background:transparent;
-  border-bottom:1px solid ${colors.whitesmoke};
+  background: transparent;
+  border-bottom: 1px solid ${colors.whitesmoke};
 
   transition: all 0.15s;
 

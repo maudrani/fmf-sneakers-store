@@ -3,6 +3,7 @@ import Navbar from "./components/modules/navbar";
 import Hero from "./components/modules/hero";
 import About from "./components/modules/about";
 import Contact from "./components/modules/contact";
+import Footer from "./components/modules/footer";
 import Store from "./components/store/store";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <About />
       <Store />
       <Contact />
+      <Footer />
     </div>
   );
 }
