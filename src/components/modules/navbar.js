@@ -1,25 +1,44 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Link } from "../../framework/assets";
 import Logo from "../basics/logo";
 import styled from "styled-components";
 
 const Nav = styled(Container)`
-  position: absolute;
+  position: fixed;
+  top: 0%;
+
+  @media (max-width: 768px) {
+    padding: 10px 10px;
+    span {
+      padding: 10px 10px;
+      font-size: 10px;
+    }
+
+    img {
+      display: none;
+    }
+  }
+
+  @media (max-width: 468px) {
+    padding: 10px 10px;
+    span {
+      padding: 10px 10px;
+      font-size: 12px;
+    }
+  }
 `;
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-
-  const navRef = useRef();
-  navRef.current = scrolled;
+  const [scrolled, setIsScrolling] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const show = window.scrollY > 660;
-      if (navRef.current !== show) {
-        setScrolled(show);
-      }
+      setIsScrolling(true);
+      setTimeout(() => {
+        setIsScrolling(false);
+      }, 1200);
     };
+
     document.addEventListener("scroll", handleScroll);
     return () => {
       document.removeEventListener("scroll", handleScroll);
@@ -27,12 +46,13 @@ const Navbar = () => {
   }, []);
 
   const linkConfig = {
-    whitesmoke: scrolled,
+    whitesmoke: true,
     xs: true,
     pw: "xs",
-    weight: scrolled ? "regular" : "black",
-    "hover-color": scrolled ? "yellow" : "red",
-    "hover-scale": !scrolled && "md",
+    weight: "regular",
+    "hover-scale": "md",
+    "hover-color": "yellow",
+    "d-shadow": "1",
   };
   const logoConfig = {
     "w-8": true,
@@ -41,26 +61,31 @@ const Navbar = () => {
 
   return (
     <Nav
-      bg={scrolled && "black"}
       w-100
       direction="r"
       justify="sb"
       ph="xs"
       pw="lg"
-      style={{ zIndex: "100", position: scrolled && "fixed" }}
+      style={{
+        transition: scrolled && "0s",
+        zIndex: "100",
+        position: "fixed",
+        backgroundColor: "rgba(28, 28, 28, 0.90)",
+        transform: scrolled && "translateY(-100%)",
+      }}
     >
-      <Container w-50 justify="fs">
+      <Container w-50 justify="fs" sm-w="w-1">
         <Logo
-          color={scrolled ? "whitesmoke" : "black"}
+          color={"whitesmoke"}
           attributes={logoConfig}
           style={{ minWidth: "4rem" }}
         />
       </Container>
-      <Container w-50 justify="fe">
+
+      <Container w-50 justify="fe" sm-w="w-100" sm-justify="c">
         <Link {...linkConfig}>INICIO</Link>
         <Link {...linkConfig}>TIENDA</Link>
         <Link {...linkConfig}>ACERCA</Link>
-        <Link {...linkConfig}>SERVICIOS</Link>
         <Link {...linkConfig}>CONTACTO</Link>
       </Container>
     </Nav>

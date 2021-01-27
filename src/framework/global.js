@@ -80,10 +80,10 @@ const GlobalStyle = createGlobalStyle`
 
 @font-face {
     font-family: 'Reis';
+    font-display: swap;
     src: local('Reis'), local('Reis'),
-        url(${Reis}) format('opentype')
+        url(${Reis}) format('opentype');
 }
-
 
 /* Box sizing rules */
 *,
@@ -96,6 +96,11 @@ const GlobalStyle = createGlobalStyle`
   outline: none;
   margin: 0;
   padding: 0;
+  transition: transform 0.2s;
+}
+
+html {
+  height: 100%;
 }
 
 /* Remove default padding */
@@ -130,6 +135,10 @@ body {
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   background-color: ${colors.whitesmoke};
+}
+
+.page {
+  will-change: transform;
 }
 
 /* Remove list styles on ul, ol elements with a class attribute */

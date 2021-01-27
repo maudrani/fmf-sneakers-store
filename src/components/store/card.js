@@ -1,25 +1,64 @@
 import React from "react";
 import { Container, Button, Img, Text } from "../../framework/assets";
+import styled from "styled-components";
 
-const Card = ({ product }) => {
+const CardContainer = styled(Container)`
+  cursor: pointer;
+
+  @media (max-width: 450px) {
+    cursor: default;
+  }
+`;
+
+const Card = ({ product, inViewport, forwardedRef }) => {
   const { img, price, name, description } = product;
 
+  let isMobile = false;
+  if (window.innerWidth <= 768) {
+    isMobile = "true";
+  }
+
+  let containerOptions = {};
+  let imgOptions = {};
+
+  containerOptions = isMobile &&
+    inViewport && {
+      "transform-scale": "sm",
+      "b-shadow": "8",
+    };
+
+  imgOptions = isMobile &&
+    inViewport && {
+      "transform-scale": "lg",
+      "d-shadow": "7",
+    };
+
   return (
-    <Container
+    <CardContainer
       h-100
       b-radius="xs"
       pw="xs"
       ph="xs"
       whitesmoke
-      b-shadow="2"
+      b-shadow="6"
       direction="c"
-      hover-shadow="1"
+      hover-shadow={!isMobile && "1"}
+      hover-scale={!isMobile && "sm"}
+      ref={forwardedRef}
+      {...containerOptions}
     >
-      <Container h-45 w-100 ph="xs">
-        <Img src={img} hover-scale="lg" d-shadow="7" />
+      <Container h-45 w-100>
+        <Img
+          src={img}
+          hover-scale={!isMobile && "lg"}
+          d-shadow="8"
+          hover-shadow={!isMobile && "7"}
+          {...imgOptions}
+          ref={forwardedRef}
+        />
       </Container>
-      <Container ph="sm" direction="c" h-40>
-        <Text main md red>
+      <Container ph="sm" mh="xs" direction="c" h-40>
+        <Text main lg red>
           '{name}'
         </Text>
         <Text>{description}</Text>
@@ -32,14 +71,15 @@ const Card = ({ product }) => {
           ph="xs"
           pw="md"
           b-radius="semi"
-          hover-scale="sm"
+          hover-scale="md"
           bg="black"
           weight="bold"
+          b-shadow="2"
         >
           Comprar
         </Button>
       </Container>
-    </Container>
+    </CardContainer>
   );
 };
 

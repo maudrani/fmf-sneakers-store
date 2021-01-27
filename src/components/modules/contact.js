@@ -14,7 +14,7 @@ const Contact = () => {
       black
       style={{ minHeight: "100vh" }}
     >
-      <Container mw="md" direction="c" md-w="w-100" ph="md">
+      <Container mw="md" direction="c" md-w="w-100" ph="sm">
         <Text main xl yellow ph="xs" sm-size="lg">
           Contactanos
         </Text>
@@ -23,25 +23,25 @@ const Contact = () => {
             ¿Tenés algún diseño en mente?
           </Text>
           <Text whitesmoke sm weight="thin" style={{ ...TextStyle }}>
-            ¿Alguna consulta para hacernos?
+            ¿Alguna pregunta?
           </Text>
         </Container>
         <Container ph="xs" direction="c">
           <Text yellow sm style={{ ...TextStyle }}>
-            ¡Envíanos una consulta!
+            ¡Escribenos!
           </Text>
           <Text whitesmoke xs weight="light" style={{ ...TextStyle }}>
             Te responderemos cuanto antes.
           </Text>
         </Container>
       </Container>
-      <Container mw="md" direction="c" w-40 md-w="w-100" h-45 justify="sb">
+      <Container mw="md" direction="c" w-40 md-w="w-100" ph='sm' h-45 justify="sb">
         <Container justify="sb" w-100>
           <Input placeholder="Nombre" ph="xs" whitesmoke w-40 />
           <Input placeholder="Mail" ph="xs" whitesmoke w-40 />
         </Container>
         <Input
-          placeholder="Escribenos!"
+          placeholder="Consulta"
           mh="md"
           ph="xs"
           mw="xs"

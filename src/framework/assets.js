@@ -2,6 +2,7 @@ import wall2 from "../Assets/IMG/Background/concrete-wall.png";
 import wall3 from "../Assets/IMG/Background/french-stucco.png";
 import wall1 from "../Assets/IMG/Background/white-wall.png";
 import graffiti from "../Assets/IMG/Background/graffiti.svg";
+import city from "../Assets/IMG/Background/city.svg";
 import styled from "styled-components";
 import styledMap from "styled-map";
 import * as values from "./global";
@@ -23,12 +24,10 @@ const MarginAndPaddingConfig = {
   "padding-bottom": styledMap("ph", { ...sizes, default: "0px" }),
   "margin-bottom": styledMap("mh", { ...sizes, default: "0px" }),
 };
-
 const WidthHeight = {
   width: styledMap(width),
   height: styledMap(height),
 };
-
 const BackgroundConfig = {
   "background-color": styledMap("bg", { ...colors, default: "none" }),
   "background-image": styledMap("bg-image", {
@@ -38,10 +37,10 @@ const BackgroundConfig = {
     wall1: `url(${wall2})`,
     wall2: `url(${wall3})`,
     wall3: `url(${wall1})`,
+    city: `url(${city})`,
     "wall-graffiti": `url(${wall2}), url(${wall3}) , url(${graffiti})`,
   }),
 };
-
 const BorderConfig = {
   "border-radius": styledMap("b-radius", {
     ...sizes,
@@ -50,7 +49,6 @@ const BorderConfig = {
     default: 0,
   }),
 };
-
 const FlexConfigs = {
   display: "flex",
   "flex-direction": styledMap("direction", flex["flex-direction"]),
@@ -64,7 +62,6 @@ const FontConfig = {
   "font-weight": styledMap("weight", weights),
   "font-size": styledMap(sizes),
 };
-
 const Shadows = {
   "box-shadow": styledMap("b-shadow", {
     default: "none",
@@ -84,6 +81,10 @@ const Shadows = {
     0 8px 16px rgba(0,0,0,0.07),
     0 16px 32px rgba(0,0,0,0.07), 
     0 32px 64px rgba(0,0,0,0.07);`,
+    "inset-1": "inset 0px 0px 52px -22px rgba(0,0,0,0.75);",
+    "inset-2": "inset 0px 47px 52px -22px rgba(0,0,0,0.75);",
+    "inset-3": "inset 0px 0px 101px -22px rgba(0,0,0,0.75);",
+    8: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
   }),
 
   filter: styledMap("d-shadow", {
@@ -95,14 +96,14 @@ const Shadows = {
     5: `drop-shadow(0px 26px 23px rgba(28,28,28,0.52))`,
     6: `drop-shadow(0px 3px 23px rgba(28,28,28,0.52))`,
     7: `drop-shadow(0px 18px 13px rgba(28,28,28,0.36))`,
+    8: "drop-shadow(0 10px 10px rgba(0,0,0,0.22))",
   }),
 };
-
 const HoverConfigs = {
-  transition: "0.15s;",
   color: styledMap("hover-color", { ...colors, default: "inset" }),
   "background-color": styledMap("hover-bg", { ...colors, default: "inset" }),
   transform: styledMap("hover-scale", {
+    xs: "scale(1.01)",
     sm: "scale(1.05)",
     md: "scale(1.1)",
     lg: "scale(1.2)",
@@ -111,6 +112,9 @@ const HoverConfigs = {
   "box-shadow": styledMap("hover-shadow", {
     default: "inset",
     1: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+  }),
+  filter: styledMap("hover-shadow", {
+    default: "inset",
     2: `drop-shadow(0px 26px 11px rgba(28,28,28,0.52))`,
     3: `drop-shadow(0px 3px 11px rgba(28,28,28,0.52))`,
     4: `drop-shadow(0px 8px 23px rgba(28,28,28,0.52))`,
@@ -121,9 +125,21 @@ const HoverConfigs = {
   }),
 };
 
+const Scale = {
+  transform: styledMap("transform-scale", {
+    xs: "scale(1.01)",
+    sm: "scale(1.05)",
+    md: "scale(1.1)",
+    lg: "scale(1.2)",
+    default: "",
+  }),
+};
+
 //Components
 const Text = styled.span`
+  will-change: transform;
   ${WidthHeight}
+  ${Scale}
   ${BackgroundConfig}
   ${MarginAndPaddingConfig}
   ${FontConfig}
@@ -157,14 +173,16 @@ const Text = styled.span`
 
 const Link = styled(Text)`
   cursor: pointer;
-  transition: 0.15s;
   :hover {
     ${HoverConfigs}
   }
 `;
 
 const Button = styled.button`
+  will-change: transform;
+
   ${WidthHeight}
+  ${Scale}
   ${BackgroundConfig}
   ${BorderConfig}
   ${MarginAndPaddingConfig}
@@ -173,15 +191,20 @@ const Button = styled.button`
 
   cursor: pointer;
   border: none;
-  transition: 0.15s;
 
   :hover {
     ${HoverConfigs}
   }
+
+  @media ${device.sm} {
+    cursor: default;
+  }
 `;
 
 const Container = styled.div`
+  will-change: transform;
   ${WidthHeight}
+  ${Scale}
   ${BackgroundConfig}
   ${BorderConfig}
   ${FlexConfigs}
@@ -193,6 +216,12 @@ const Container = styled.div`
       ...flex["flex-direction"],
       default: "inset",
     })};
+
+    justify-content: ${styledMap("xs-justify", {
+      ...flex["justify-content"],
+      default: "inset",
+    })};
+
     width: ${styledMap("xs-w", { ...width, default: "inset" })};
     height: ${styledMap("xs-h", { ...height, default: "inset" })};
   }
@@ -201,6 +230,12 @@ const Container = styled.div`
       ...flex["flex-direction"],
       default: "inset",
     })};
+
+    justify-content: ${styledMap("sm-justify", {
+      ...flex["justify-content"],
+      default: "inset",
+    })};
+
     width: ${styledMap("sm-w", { ...width, default: "inset" })};
     height: ${styledMap("sm-h", { ...height, default: "inset" })};
   }
@@ -209,6 +244,12 @@ const Container = styled.div`
       ...flex["flex-direction"],
       default: "inset",
     })};
+
+    justify-content: ${styledMap("md-justify", {
+      ...flex["justify-content"],
+      default: "inset",
+    })};
+
     width: ${styledMap("md-w", { ...width, default: "inset" })};
     height: ${styledMap("md-h", { ...height, default: "inset" })};
   }
@@ -217,11 +258,15 @@ const Container = styled.div`
       ...flex["flex-direction"],
       default: "inset",
     })};
+
+    justify-content: ${styledMap("lg-justify", {
+      ...flex["justify-content"],
+      default: "inset",
+    })};
+
     width: ${styledMap("lg-w", { ...width, default: "inset" })};
     height: ${styledMap("lg-h", { ...height, default: "inset" })};
   }
-
-  transition: all 0.15s;
 
   :hover {
     ${HoverConfigs}
@@ -229,11 +274,12 @@ const Container = styled.div`
 `;
 
 const Img = styled.img`
+  will-change: transform;
   ${Shadows}
   ${WidthHeight}
+  ${Scale}
   ${MarginAndPaddingConfig}
 
-  transition: all 0.15s;
 
   :hover {
     ${HoverConfigs}
@@ -242,6 +288,7 @@ const Img = styled.img`
 
 const Input = styled.input`
   ${WidthHeight}
+  ${Scale}
   ${BackgroundConfig}
   ${MarginAndPaddingConfig}
   ${FontConfig}
@@ -251,8 +298,6 @@ const Input = styled.input`
   border:0;
   background: transparent;
   border-bottom: 1px solid ${colors.whitesmoke};
-
-  transition: all 0.15s;
 
   :hover {
     ${HoverConfigs}

@@ -6,9 +6,8 @@ import styled from "styled-components";
 
 const City = styled(Container)`
   background-image: url(${city});
-  position: absolute;
   bottom: 0;
-  z-index: -5;
+  mix-blend-mode: screen;
 
   @media (max-width: 800px) {
     background-size: cover;
@@ -18,15 +17,14 @@ const City = styled(Container)`
 
 const Hero = () => {
   return (
-    <Container bg-image="wall-graffiti" vh-100 direction="c">
+    <Container bg-image="wall-graffiti" vh-100 direction="c" b-shadow="inset-3">
       <Container h-100 w-100 justify="sb" pw="lg">
         <Container direction="c" h-100 w-100>
-          <Container w-25 md-w="w-50">
+          <Container w-25 align="fe" h-80  md-w="w-50" lg-h="h-60" >
             <Img
               src={logo}
               w-100
-              h-100
-              ph="md"
+              ph="sm"
               d-shadow="7"
               style={{ minWidth: "18rem" }}
             />
@@ -43,13 +41,12 @@ const Hero = () => {
             bg="black"
             weight="bold"
             d-shadow="7"
-            hover-shadow="1"
           >
             TIENDA
           </Button>
         </Container>
       </Container>
-      <City vh-15 vw-98 />
+      <City vh-15 w-100 />
     </Container>
   );
 };
