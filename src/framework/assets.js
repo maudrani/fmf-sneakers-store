@@ -117,12 +117,14 @@ const HoverConfigs = {
     default: "inset",
     2: `drop-shadow(0px 26px 11px rgba(28,28,28,0.52))`,
     3: `drop-shadow(0px 3px 11px rgba(28,28,28,0.52))`,
+    "3-light": `drop-shadow(0px 8px 11px rgba(28,28,28,0.15))`,
     4: `drop-shadow(0px 8px 23px rgba(28,28,28,0.52))`,
     5: `drop-shadow(0px 26px 23px rgba(28,28,28,0.52))`,
     6: `drop-shadow(0px 3px 23px rgba(28,28,28,0.52))`,
     7: `drop-shadow(0px 18px 13px rgba(28,28,28,0.36))`,
     8: `drop-shadow(0px 8px 11px rgba(28,28,28,0.52))`,
   }),
+  opacity: styledMap("hover-opacity", { 0: "0", 50: "0.5", 100: "1" }),
 };
 
 const Scale = {
@@ -144,6 +146,10 @@ const Text = styled.span`
   ${MarginAndPaddingConfig}
   ${FontConfig}
   ${Shadows}
+
+  :hover {
+    ${HoverConfigs}
+  }
 
   @media ${device.xs} {
     font-size: ${styledMap("xs-size", {
@@ -168,13 +174,6 @@ const Text = styled.span`
       ...sizes,
       default: "inset",
     })};
-  }
-`;
-
-const Link = styled(Text)`
-  cursor: pointer;
-  :hover {
-    ${HoverConfigs}
   }
 `;
 
@@ -222,6 +221,11 @@ const Container = styled.div`
       default: "inset",
     })};
 
+    align-items: ${styledMap("xs-align", {
+      ...flex["align-items"],
+      default: "inset",
+    })};
+
     width: ${styledMap("xs-w", { ...width, default: "inset" })};
     height: ${styledMap("xs-h", { ...height, default: "inset" })};
   }
@@ -233,6 +237,11 @@ const Container = styled.div`
 
     justify-content: ${styledMap("sm-justify", {
       ...flex["justify-content"],
+      default: "inset",
+    })};
+
+    align-items: ${styledMap("sm-align", {
+      ...flex["align-items"],
       default: "inset",
     })};
 
@@ -250,17 +259,27 @@ const Container = styled.div`
       default: "inset",
     })};
 
+    align-items: ${styledMap("md-align", {
+      ...flex["align-items"],
+      default: "inset",
+    })};
+
     width: ${styledMap("md-w", { ...width, default: "inset" })};
     height: ${styledMap("md-h", { ...height, default: "inset" })};
   }
   @media ${device.lg} {
-    flex-direction: ${styledMap("md-direction", {
+    flex-direction: ${styledMap("lg-direction", {
       ...flex["flex-direction"],
       default: "inset",
     })};
 
     justify-content: ${styledMap("lg-justify", {
       ...flex["justify-content"],
+      default: "inset",
+    })};
+
+    align-items: ${styledMap("lg-align", {
+      ...flex["align-items"],
       default: "inset",
     })};
 
@@ -304,4 +323,8 @@ const Input = styled.input`
   }
 `;
 
-export { Container, Text, Link, Button, Img, Input };
+const Configs = {
+  HoverConfigs: HoverConfigs,
+};
+
+export { Container, Text, Button, Img, Input, Configs };

@@ -1,8 +1,10 @@
 import React from "react";
 import { Container, Button, Img } from "../../framework/assets";
 import city from "../../Assets/IMG/Background/city.svg";
-import logo from "../../Assets/IMG/Brand/logo-original.svg";
+import logo from "../../Assets/IMG/Brand/logo-new-full.svg";
 import styled from "styled-components";
+
+import { Link as RouteLink } from "react-router-dom";
 
 const City = styled(Container)`
   background-image: url(${city});
@@ -17,10 +19,16 @@ const City = styled(Container)`
 
 const Hero = () => {
   return (
-    <Container bg-image="wall-graffiti" vh-100 direction="c" b-shadow="inset-3">
+    <Container
+      bg-image="wall-graffiti"
+      vh-100
+      direction="c"
+      b-shadow="inset-3"
+      id="home"
+    >
       <Container h-100 w-100 justify="sb" pw="lg">
         <Container direction="c" h-100 w-100>
-          <Container w-25 align="fe" h-80  md-w="w-50" lg-h="h-60" >
+          <Container w-25 align="fe" h-80 md-w="w-50" lg-h="h-60">
             <Img
               src={logo}
               w-100
@@ -29,21 +37,22 @@ const Hero = () => {
               style={{ minWidth: "18rem" }}
             />
           </Container>
-
-          <Button
-            xs
-            whitesmoke
-            ph="xs"
-            pw="md"
-            b-radius="semi"
-            hover-scale="sm"
-            hover-color="yellow"
-            bg="black"
-            weight="bold"
-            d-shadow="7"
-          >
-            TIENDA
-          </Button>
+          <RouteLink to="/store">
+            <Button
+              xs
+              whitesmoke
+              ph="xs"
+              pw="md"
+              b-radius="semi"
+              hover-scale="sm"
+              hover-color="yellow"
+              bg="black"
+              weight="bold"
+              d-shadow="7"
+            >
+              Ir Tienda
+            </Button>
+          </RouteLink>
         </Container>
       </Container>
       <City vh-15 w-100 />

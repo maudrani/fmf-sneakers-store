@@ -7,14 +7,15 @@ const About = () => {
     <Container
       black
       pw="lg"
-      style={{ minHeight: "115vh" }}
+      style={{ minHeight: "100vh" }}
       justify="sb"
       sm-direction="cr"
+      id='about'
     >
-      <Container h-100 w-50 sm-w='w-100'>
+      <Container h-100 w-50 sm-w="w-100">
         <img alt="img" src={sneakHand} />
       </Container>
-      <Container h-100 w-50 sm-w='w-100' ph='lg' direction="c">
+      <Container h-100 w-50 sm-w="w-100" ph="lg" direction="c">
         <Text main whitesmoke xl style={{ textAlign: "center" }}>
           Quienes somos
         </Text>
@@ -32,12 +33,6 @@ const About = () => {
 };
 
 export default About;
-
-
-
-
-
-
 
 /* 
 

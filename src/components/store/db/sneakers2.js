@@ -1,5 +1,5 @@
-import sneaker from "../../../Assets/IMG/Products/bekimony.jpg";
-import sneaker2 from "../../../Assets/IMG/Products/goteo.jpg";
+import sneaker from "../../../Assets/IMG/Products/sneaker.webp";
+import sneaker2 from "../../../Assets/IMG/Products/sneaker2.webp";
 
 const sneakers = [
   {

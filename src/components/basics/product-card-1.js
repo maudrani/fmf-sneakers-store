@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Button, Img, Text } from "../../framework/assets";
+import { Container, Button, Img, Text, Configs } from "../../framework/assets";
 import styled from "styled-components";
 
 const CardContainer = styled(Container)`
@@ -10,51 +10,70 @@ const CardContainer = styled(Container)`
   }
 `;
 
-const Card = ({ product, inViewport, forwardedRef }) => {
+const CardImg = styled(Img)`
+  ${CardContainer}:hover & {
+    ${Configs.HoverConfigs}
+  }
+`;
+
+const Card = ({ product, inViewport, forwardedRef, animated }) => {
   const { img, price, name, description } = product;
 
   let isMobile = false;
-  if (window.innerWidth <= 768) {
+  if (window.innerWidth <= 734) {
     isMobile = "true";
   }
 
-  let containerOptions = {};
-  let imgOptions = {};
+  const containerAnims = animated
+    ? {
+        "hover-shadow": !isMobile && "1",
+        "hover-scale": !isMobile && "sm",
+      }
+    : {};
 
-  containerOptions = isMobile &&
-    inViewport && {
-      "transform-scale": "sm",
-      "b-shadow": "8",
-    };
+  const containerMobileConfig =
+    isMobile && inViewport
+      ? {
+          "transform-scale": "sm",
+          "b-shadow": "8",
+        }
+      : {};
 
-  imgOptions = isMobile &&
-    inViewport && {
-      "transform-scale": "lg",
-      "d-shadow": "7",
-    };
+  const imgAnims = animated
+    ? {
+        "hover-shadow": !isMobile && "7",
+        "hover-scale": !isMobile && "lg",
+      }
+    : {};
+
+  const imgMobileConfigs =
+    isMobile && inViewport
+      ? {
+          "transform-scale": "lg",
+          "d-shadow": "7",
+        }
+      : {};
 
   return (
     <CardContainer
+      whitesmoke
       h-100
       b-radius="xs"
       pw="xs"
       ph="xs"
-      whitesmoke
       b-shadow="6"
       direction="c"
-      hover-shadow={!isMobile && "1"}
-      hover-scale={!isMobile && "sm"}
       ref={forwardedRef}
-      {...containerOptions}
+      {...containerAnims}
+      {...containerMobileConfig}
     >
       <Container h-45 w-100>
-        <Img
+        <CardImg
           src={img}
-          hover-scale={!isMobile && "lg"}
           d-shadow="8"
-          hover-shadow={!isMobile && "7"}
-          {...imgOptions}
           ref={forwardedRef}
+          {...imgMobileConfigs}
+          {...imgAnims}
         />
       </Container>
       <Container ph="sm" mh="xs" direction="c" h-40>

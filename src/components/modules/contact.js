@@ -11,10 +11,12 @@ const Contact = () => {
       md-direction="c"
       w-100
       pw="lg"
+      ph="lg"
       black
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: "90vh" }}
+      id='contact'
     >
-      <Container mw="md" direction="c" md-w="w-100" ph="sm">
+      <Container mw="md" direction="c" md-w="w-100">
         <Text main xl yellow ph="xs" sm-size="lg">
           Contactanos
         </Text>
@@ -35,7 +37,15 @@ const Contact = () => {
           </Text>
         </Container>
       </Container>
-      <Container mw="md" direction="c" w-40 md-w="w-100" ph='sm' h-45 justify="sb">
+      <Container
+        mw="md"
+        direction="c"
+        w-50
+        md-w="w-100"
+        ph="sm"
+        h-50
+        justify="sb"
+      >
         <Container justify="sb" w-100>
           <Input placeholder="Nombre" ph="xs" whitesmoke w-40 />
           <Input placeholder="Mail" ph="xs" whitesmoke w-40 />

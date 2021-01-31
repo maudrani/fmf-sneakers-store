@@ -96,7 +96,8 @@ const GlobalStyle = createGlobalStyle`
   outline: none;
   margin: 0;
   padding: 0;
-  transition: transform 0.2s;
+  /* transition: transform 0.2s; */
+  transition: all 0.2s;
 }
 
 html {
@@ -135,6 +136,7 @@ body {
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   background-color: ${colors.whitesmoke};
+  
 }
 
 .page {

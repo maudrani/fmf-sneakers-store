@@ -5,11 +5,35 @@ import instagram from "../../Assets/IMG/Social/instagram-white.svg";
 
 const Footer = () => {
   return (
-    <Container black ph="sm" pw="lg" justify="sb" w-100 sm-direction="c" sm-h='vh-40'>
-      <Container justify="sb" sm-justify='sa' h-100 sm-direction="c">
+    <Container
+      black
+      ph="xs"
+      pw="lg"
+      justify="sb"
+      w-100
+      sm-direction="c"
+      sm-h="vh-40"
+    >
+      <Container justify="sb" sm-justify="sa" h-100 sm-direction="c">
         <Container w-20 md-w="w-40">
-          <Img src={facebook} w-50 hover-scale="md" />
-          <Img src={instagram} w-50 hover-scale="md" />
+          <Container  w-50>
+            <a
+              href="https://www.facebook.com/FMF-Sneakers-Argentina-2-102814918391934/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <Img src={facebook} w-100 hover-scale="md" />
+            </a>
+          </Container>
+          <Container  w-50>
+            <a
+              href="https://www.instagram.com/fmfsneakers_arg2/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <Img src={instagram} w-100 hover-scale="md" />
+            </a>
+          </Container>
         </Container>
         <Text whitesmoke style={{ textAlign: "center" }}>
           Tucumán, Argentina
