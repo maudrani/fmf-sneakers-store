@@ -96,7 +96,7 @@ const GlobalStyle = createGlobalStyle`
   outline: none;
   margin: 0;
   padding: 0;
-  /* transition: transform 0.2s; */
+  transition: transform 0.23s;
   transition: all 0.2s;
 }
 
@@ -172,6 +172,7 @@ button,
 textarea,
 select {
   font: inherit;
+  font-family: Lato;
 }
 
 `;

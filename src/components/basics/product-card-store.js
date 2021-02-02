@@ -16,28 +16,13 @@ const CardImg = styled(Img)`
   }
 `;
 
-const Card = ({ product, inViewport, forwardedRef, animated }) => {
+const Card = ({ product, inViewport, forwardedRef, animated, launchModal }) => {
   const { img, price, name, description } = product;
 
   let isMobile = false;
   if (window.innerWidth <= 768) {
     isMobile = "true";
   }
-
-  const containerAnims = animated
-    ? {
-        "hover-shadow": !isMobile && "1",
-        "hover-scale": !isMobile && "sm",
-      }
-    : {};
-
-  const containerMobileConfig =
-    isMobile && inViewport && animated
-      ? {
-          "transform-scale": "sm",
-          "b-shadow": "8",
-        }
-      : {};
 
   const imgAnims = animated
     ? {
@@ -58,9 +43,13 @@ const Card = ({ product, inViewport, forwardedRef, animated }) => {
     <CardContainer
       direction="c"
       ref={forwardedRef}
-      {...containerAnims}
-      {...containerMobileConfig}
-      mh='xs'
+      mh="xs"
+      onClick={() =>
+        launchModal({
+          launched: true,
+          product: { ...product },
+        })
+      }
     >
       <Container style={{ overflow: "hidden", maxHeight: "20rem" }}>
         <CardImg
@@ -70,12 +59,12 @@ const Card = ({ product, inViewport, forwardedRef, animated }) => {
           {...imgAnims}
         />
       </Container>
-      <Container  w-100 direction="c" align="fs" sm-align='c'>
+      <Container w-100 direction="c" align="fs" sm-align="c">
         <Text main md red>
           {name}
         </Text>
         <Text weight="light">{description}</Text>
-        <Text sm ph="xs" weight="regular" style={{borderBottom: '1px solid'}}>
+        <Text sm ph="xs" weight="regular" style={{ borderBottom: "1px solid" }}>
           ${price}
         </Text>
       </Container>

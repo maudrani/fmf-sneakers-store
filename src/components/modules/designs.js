@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Img, Text } from "../../framework/assets";
-import sneaker from "../../Assets/IMG/Products/sneaker2.webp";
+import sneaker from "../../Assets/IMG/Products/demo/sneaker2.webp";
 import sneakers from "../store/db/sneakers2";
 import ProductsBoard from "./products-board";
 

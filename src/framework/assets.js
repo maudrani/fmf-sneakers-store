@@ -179,6 +179,7 @@ const Text = styled.span`
 
 const Button = styled.button`
   will-change: transform;
+  background-color: transparent;
 
   ${WidthHeight}
   ${Scale}
@@ -190,6 +191,8 @@ const Button = styled.button`
 
   cursor: pointer;
   border: none;
+
+  
 
   :hover {
     ${HoverConfigs}

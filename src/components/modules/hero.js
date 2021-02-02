@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Button, Img } from "../../framework/assets";
 import city from "../../Assets/IMG/Background/city.svg";
-import logo from "../../Assets/IMG/Brand/logo-new-full.svg";
+import logo from "../../Assets/IMG/Brand/logo-full.svg";
 import styled from "styled-components";
 
 import { Link as RouteLink } from "react-router-dom";

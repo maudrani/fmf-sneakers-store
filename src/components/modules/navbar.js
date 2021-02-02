@@ -89,7 +89,7 @@ const Navbar = () => {
       <Container w-50 justify="fs" sm-w="w-1">
         <Logo
           className="navLogo"
-          color="black-white"
+          color="whitesmoke"
           attributes={logoConfig}
           style={{ minWidth: "1rem", maxWidth: "2.5rem" }}
         />

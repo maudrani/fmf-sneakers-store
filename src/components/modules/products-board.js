@@ -3,9 +3,9 @@ import { Container } from "../../framework/assets";
 import styled from "styled-components";
 import handleViewport from "react-in-viewport";
 import StyledCard from "../basics/product-card-1";
-import SimpleCard from "../basics/product-card-2";
+import SimpleCard from "../basics/product-card-store";
 
-const Board = styled(Container)`
+const GridBoard = styled(Container)`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   grid-gap: 2rem;
@@ -16,7 +16,7 @@ const Board = styled(Container)`
   }
 `;
 
-const ProductsBoard = ({
+const Board = ({
   background,
   shadowed,
   products = [],
@@ -26,6 +26,8 @@ const ProductsBoard = ({
   styled,
   animCards = false,
   style,
+  children,
+  launchModal
 }) => {
   const DetectCardStyle = () => {
     if (styled) {
@@ -37,29 +39,36 @@ const ProductsBoard = ({
   };
 
   return (
-    <Board
-      bg={color}
-      id="products"
-      pw="lg"
-      ph="lg"
-      w-100
-      bg-image={background}
-      b-shadow={shadowed && "inset-1"}
-      style={{ ...style }}
-    >
-      {products.slice(0, limit).map((card, idx) => {
-        const viewOptions = {
-          rootMargin: "0px",
-          threshold: 0.8,
-        };
+      <GridBoard
+        bg={color}
+        id="products"
+        pw="lg"
+        ph="lg"
+        w-100
+        bg-image={background}
+        b-shadow={shadowed && "inset-1"}
+        style={{ ...style }}
+      >
+        {children}
+        {products.slice(0, limit).map((card, idx) => {
+          const viewOptions = {
+            rootMargin: "0px",
+            threshold: 0.8,
+          };
 
-        const ViewCard = handleViewport(DetectCardStyle(), viewOptions);
-        return (
-          <ViewCard product={card} key={idx} inViewport animated={animCards} />
-        );
-      })}
-    </Board>
+          const ViewCard = handleViewport(DetectCardStyle(), viewOptions);
+          return (
+            <ViewCard
+              product={card}
+              key={idx}
+              inViewport
+              animated={animCards}
+              launchModal={launchModal}
+            />
+          );
+        })}
+      </GridBoard>
   );
 };
 
-export default ProductsBoard;
+export default Board;

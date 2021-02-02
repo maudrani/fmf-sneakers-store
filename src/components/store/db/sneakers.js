@@ -1,77 +1,19 @@
-import sneaker from "../../../Assets/IMG/Products/bekimony.jpg";
-import sneaker2 from "../../../Assets/IMG/Products/goteo.jpg";
+import sneaker from "../../../Assets/IMG/Products/store/bekimony.jpg";
+import sneaker2 from "../../../Assets/IMG/Products/store/goteo.jpg";
 
 const sneakers = [
   {
     img: sneaker2,
-    name: "TILT Lebron",
+    name: "Goteo",
     description: "Custom Sneaker",
+    tags: ['black', 'negro', 'nike', 'gotas', 'gota'],
     price: "7300",
   },
   {
     img: sneaker,
-    name: "Urban Graph",
+    name: "Bekimony",
     description: "Custom Sneaker",
-    price: "6900",
-  },
-  {
-    img: sneaker2,
-    name: "TILT Lebron",
-    description: "Custom Sneaker",
-    price: "7300",
-  },
-  {
-    img: sneaker,
-    name: "Urban Graph",
-    description: "Custom Sneaker",
-    price: "6900",
-  },
-  {
-    img: sneaker2,
-    name: "TILT Lebron",
-    description: "Custom Sneaker",
-    price: "7300",
-  },
-  {
-    img: sneaker,
-    name: "Urban Graph",
-    description: "Custom Sneaker",
-    price: "6900",
-  },
-  {
-    img: sneaker2,
-    name: "TILT Lebron",
-    description: "Custom Sneaker",
-    price: "7300",
-  },
-  {
-    img: sneaker,
-    name: "Urban Graph",
-    description: "Custom Sneaker",
-    price: "6900",
-  },
-  {
-    img: sneaker2,
-    name: "TILT Lebron",
-    description: "Custom Sneaker",
-    price: "7300",
-  },
-  {
-    img: sneaker,
-    name: "Urban Graph",
-    description: "Custom Sneaker",
-    price: "6900",
-  },
-  {
-    img: sneaker2,
-    name: "TILT Lebron",
-    description: "Custom Sneaker",
-    price: "7300",
-  },
-  {
-    img: sneaker,
-    name: "Urban Graph",
-    description: "Custom Sneaker",
+    tags: ['violet', 'purple', '3d', 'urban' ],
     price: "6900",
   },
 ];
