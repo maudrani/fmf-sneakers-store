@@ -17,7 +17,7 @@ const CardImg = styled(Img)`
 `;
 
 const Card = ({ product, inViewport, forwardedRef, animated, launchModal }) => {
-  const { img, price, name, description } = product;
+  const { img, price, name, category } = product;
 
   let isMobile = false;
   if (window.innerWidth <= 768) {
@@ -42,8 +42,10 @@ const Card = ({ product, inViewport, forwardedRef, animated, launchModal }) => {
   return (
     <CardContainer
       direction="c"
+      align="fs"
       ref={forwardedRef}
       mh="xs"
+      style={{maxWidth: '25rem'}}
       onClick={() =>
         launchModal({
           launched: true,
@@ -51,20 +53,23 @@ const Card = ({ product, inViewport, forwardedRef, animated, launchModal }) => {
         })
       }
     >
-      <Container style={{ overflow: "hidden", maxHeight: "20rem" }}>
+      <Container
+        style={{ overflow: "hidden", maxHeight: "30rem"}}
+      >
         <CardImg
           src={img}
           ref={forwardedRef}
           {...imgMobileConfigs}
           {...imgAnims}
+          hover-scale="lg"
         />
       </Container>
       <Container w-100 direction="c" align="fs" sm-align="c">
         <Text main md red>
           {name}
         </Text>
-        <Text weight="light">{description}</Text>
-        <Text sm ph="xs" weight="regular" style={{ borderBottom: "1px solid" }}>
+        <Text weight="light">{category}</Text>
+        <Text sm ph="xs" weight="light" style={{ borderBottom: "1px solid" }}>
           ${price}
         </Text>
       </Container>

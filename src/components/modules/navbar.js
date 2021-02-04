@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Container, Text } from "../../framework/assets";
 import Logo from "../basics/logo";
 import styled from "styled-components";
+import BascketIcon from "../store/components/e-icon";
+import CartSummary from "../store/components/cart-summary";
+import Modal from "../../components/basics/modal";
 
 import { Link } from "react-scroll";
 
@@ -12,19 +15,20 @@ const Nav = styled(Container)`
   background-color: rgba(28, 28, 28, 0.9);
 
   @media (max-width: 768px) {
-    span {
-      padding: 8px 10px;
+    padding: 1rem 1px;
+    .navLink {
+      padding: 0 10px;
       font-size: 15px;
     }
 
-    img {
+    .navLogo {
       display: none;
     }
   }
 
   @media (max-width: 460px) {
-    span {
-      padding: inherit 7px;
+    .navLink {
+      padding: 0 7px;
       font-size: 12px;
     }
 
@@ -34,24 +38,34 @@ const Nav = styled(Container)`
   }
 `;
 
+const CartModal = styled(Container)`
+  @media (max-width: 768px) {
+    padding: 10px 10px;
+  }
+`;
+
 const Navbar = () => {
   const [scrolled, setIsScrolling] = useState(false);
+  const [modalLaunched, setModalLaunched] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolling(true);
-      setTimeout(() => {
-        setIsScrolling(false);
-      }, 1200);
+      if (!modalLaunched) {
+        setIsScrolling(true);
+        setTimeout(() => {
+          setIsScrolling(false);
+        }, 1200);
+      }
     };
 
     document.addEventListener("scroll", handleScroll);
     return () => {
       document.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [modalLaunched]);
 
   const navLinkConfig = {
+    className: "navLink",
     whitesmoke: true,
     xs: true,
     pw: "xs",
@@ -80,7 +94,9 @@ const Navbar = () => {
       w-100
       direction="r"
       justify="sb"
+      sm-justify="c"
       pw="lg"
+      ph="xs"
       style={{
         transition: scrolled && "0s",
         transform: scrolled && "translateY(-100%)",
@@ -95,7 +111,7 @@ const Navbar = () => {
         />
       </Container>
 
-      <Container ph="xs" w-50 justify="fe" sm-w="w-100" sm-justify="c">
+      <Container w-50 justify="fe" sm-w="w-80" sm-justify="c">
         <Link to="home" {...scrollLinkConfig} offset={0}>
           <Text {...navLinkConfig}>INICIO</Text>
         </Link>
@@ -109,6 +125,30 @@ const Navbar = () => {
           <Text {...navLinkConfig}>CONTACTO</Text>
         </Link>
       </Container>
+
+      <Container
+        sm-w="w-1"
+        pw="xs"
+        hover-scale="md"
+        onClick={() => setModalLaunched(!modalLaunched)}
+      >
+        <BascketIcon size={1} />
+      </Container>
+
+      <Modal launched={modalLaunched} setLaunched={setModalLaunched}>
+        <CartModal
+          whitesmoke
+          vw-80
+          sm-w="vw-100"
+          ph="md"
+          pw="lg"
+          b-radius="xs"
+          b-shadow="2"
+          style={{ maxHeight: "80vh", overflowY: "auto", display: "block" }}
+        >
+          <CartSummary />
+        </CartModal>
+      </Modal>
     </Nav>
   );
 };

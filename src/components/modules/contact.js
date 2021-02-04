@@ -14,7 +14,7 @@ const Contact = () => {
       ph="lg"
       black
       style={{ minHeight: "90vh" }}
-      id='contact'
+      id="contact"
     >
       <Container mw="md" direction="c" md-w="w-100">
         <Text main xl yellow ph="xs" sm-size="lg">
@@ -47,8 +47,22 @@ const Contact = () => {
         justify="sb"
       >
         <Container justify="sb" w-100>
-          <Input placeholder="Nombre" ph="xs" whitesmoke w-40 />
-          <Input placeholder="Mail" ph="xs" whitesmoke w-40 />
+          <Input
+            placeholder="Nombre"
+            ph="xs"
+            whitesmoke
+            w-40
+            border-color="whitesmoke"
+            spellCheck="false"
+          />
+          <Input
+            placeholder="Mail"
+            ph="xs"
+            whitesmoke
+            w-40
+            border-color="whitesmoke"
+            spellCheck="false"
+          />
         </Container>
         <Input
           placeholder="Consulta"
@@ -57,6 +71,7 @@ const Contact = () => {
           mw="xs"
           w-100
           whitesmoke
+          border-color="whitesmoke"
         />
         <Button
           xs

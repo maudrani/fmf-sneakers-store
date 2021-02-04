@@ -192,8 +192,6 @@ const Button = styled.button`
   cursor: pointer;
   border: none;
 
-  
-
   :hover {
     ${HoverConfigs}
   }
@@ -204,7 +202,10 @@ const Button = styled.button`
 `;
 
 const Container = styled.div`
-  will-change: transform;
+  will-change: ${styledMap("optimize-scroll", {
+    none: "none",
+    default: "transform",
+  })};
   ${WidthHeight}
   ${Scale}
   ${BackgroundConfig}
@@ -317,9 +318,39 @@ const Input = styled.input`
   ${Shadows}
   ${BorderConfig}
 
-  border:0;
+  ::placeholder {
+    ${FontConfig}
+  }
+
+  border: 0;
   background: transparent;
-  border-bottom: 1px solid ${colors.whitesmoke};
+  border-bottom: 1px solid
+    ${styledMap("border-color", {
+      ...colors,
+    })};
+
+  :hover {
+    ${HoverConfigs}
+  }
+`;
+
+const Select = styled.select`
+  ${WidthHeight}
+  ${Scale}
+  ${BackgroundConfig}
+  ${MarginAndPaddingConfig}
+  ${FontConfig}
+  ${Shadows}
+  ${BorderConfig}
+
+  background: transparent;
+
+  border: 1px solid
+    ${styledMap("border-color", {
+      ...colors,
+    })};
+
+  cursor: pointer;
 
   :hover {
     ${HoverConfigs}
@@ -330,4 +361,4 @@ const Configs = {
   HoverConfigs: HoverConfigs,
 };
 
-export { Container, Text, Button, Img, Input, Configs };
+export { Container, Text, Button, Img, Input, Select, Configs };
