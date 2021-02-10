@@ -1,25 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Container, Input } from "../../framework/assets";
 import Navbar from "../modules/navbar";
-import Contact from "../modules/contact";
-import Footer from "../modules/footer";
 import ProductsBoard from "../modules/products-board";
-import ProductModal from "../basics/product-modal";
-import sneakers from "../store/db/sneakers";
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
+import sneakers from "../store/db/products";
 
 const Store = () => {
   const [searchResult, setSearchResult] = useState(sneakers);
-  const [modalData, setModalData] = useState({ launched: false, product: {} });
-
   const StoreRef = useRef();
-
-  useEffect(() => {
-    modalData.launched
-      ? disableBodyScroll(StoreRef)
-      : enableBodyScroll(StoreRef);
-  }, [modalData.launched]);
-
   const HandleChange = (e) => {
     if (!e.target.value) {
       return setSearchResult(sneakers);
@@ -35,22 +22,16 @@ const Store = () => {
     );
   };
 
+  const navbarLinks = [
+    { name: "inicio", route: "/" },
+    { name: "contacto", scroll: "contacto" },
+  ];
+
   return (
     <div ref={StoreRef}>
-      <Navbar />
-      <Container
-        optimize-scroll={modalData.launched && "none"}
-        className={!modalData.launched && "page"}
-        h-100
-        direction="c"
-        bg-image="wall2"
-      >
-        <ProductModal
-          launched={modalData.launched}
-          setLaunched={setModalData}
-          data={modalData.product}
-        />
-        <Container whitesmoke vh-30 w-100>
+      <Navbar bgColor="black" links={navbarLinks} />
+      <Container h-100 direction="c" style={{ minHeight: "100vh" }}>
+        <Container white vh-30 w-100>
           <Input
             black
             sm
@@ -62,15 +43,21 @@ const Store = () => {
             style={{ padding: ".5rem 0" }}
           />
         </Container>
-        <ProductsBoard
-          products={searchResult}
-          simple
-          style={{ padding: "2rem 10rem", minHeight: "60vh" }}
-          launchModal={setModalData}
-        />
+        <Container
+          w-100
+          whitesmoke
+          bg-image={"wall2"}
+          style={{ minHeight: "100vh" }}
+        >
+          <ProductsBoard
+            products={searchResult}
+            simple
+            style={{ padding: "2rem 10rem", minHeight: "60vh" }}
+            minSize="16rem"
+            maxSize="1fr"
+          />
+        </Container>
       </Container>
-      <Contact />
-      <Footer />
     </div>
   );
 };

@@ -1,14 +1,22 @@
 {
   "sizes": {
-    "main": 16,
+    "main": 15,
     "ratio": 1.618,
     "sizes": ["xs", "sm", "md", "lg", "xl", "xxl", "xxxl"]
   },
   "colors": {
-    "yellow": "#FFEC00",
-    "red": "#C70039",
+    "yellow": "#FDE601",
+    "dark-yellow": "#FFC107",
+    "darkest-yellow": "#FDA50F",
+    "red": "#FA3127",
+    "dark-red": "#C70039",
+    "white": "#FFFFFF",
+    "black": "#1D1D1D",
+    "dark-gray": "#818080",
+    "light-gray": "#C4C4C4",
+    "lightest-gray": "#EAEAEA",
     "whitesmoke": "#F5F5F5",
-    "black": "#1C1C1C"
+    "default": "#1D1D1D"
   },
   "fonts": {
     "main": {
@@ -20,6 +28,12 @@
       "name": "Lato",
       "weights": [100, 300, 400, 700, 900],
       "src": "../Assets/Fonts/Lato/Lato-Regular.ttf"
-    }
+    },
+    "terciary": {
+      "name": "Playfair Display",
+      "weights": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      "src": "../Assets/Fonts/Playfair Display/PlayfairDisplay-Regular.ttf"
+    },
+    "default": "secondary"
   }
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Img, Text, Configs } from "../../framework/assets";
 import styled from "styled-components";
+import {IsMobile} from '../../helpers/functions'
 
 const CardContainer = styled(Container)`
   cursor: pointer;
@@ -16,23 +17,20 @@ const CardImg = styled(Img)`
   }
 `;
 
-const Card = ({ product, inViewport, forwardedRef, animated, launchModal }) => {
-  const { img, price, name, category } = product;
+const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
+  const { price, name, category } = product;
 
-  let isMobile = false;
-  if (window.innerWidth <= 768) {
-    isMobile = "true";
-  }
+  const img = product.images["x15"][0];
 
   const imgAnims = animated
     ? {
-        "hover-shadow": !isMobile && "7",
-        "hover-scale": !isMobile && "lg",
+        "hover-shadow": !IsMobile() && "7",
+        "hover-scale": !IsMobile() && "lg",
       }
     : {};
 
   const imgMobileConfigs =
-    isMobile && inViewport && animated
+    IsMobile() && inViewport && animated
       ? {
           "transform-scale": "lg",
           "d-shadow": "7",
@@ -45,16 +43,11 @@ const Card = ({ product, inViewport, forwardedRef, animated, launchModal }) => {
       align="fs"
       ref={forwardedRef}
       mh="xs"
-      style={{maxWidth: '25rem'}}
-      onClick={() =>
-        launchModal({
-          launched: true,
-          product: { ...product },
-        })
-      }
+      style={{ maxWidth: "25rem" }}
+      onClick={onClick}
     >
       <Container
-        style={{ overflow: "hidden", maxHeight: "30rem"}}
+        style={{ overflow: "hidden", maxHeight: "30rem" }}
       >
         <CardImg
           src={img}
@@ -62,6 +55,7 @@ const Card = ({ product, inViewport, forwardedRef, animated, launchModal }) => {
           {...imgMobileConfigs}
           {...imgAnims}
           hover-scale="lg"
+          style={{ transition: "0.5s" }}
         />
       </Container>
       <Container w-100 direction="c" align="fs" sm-align="c">

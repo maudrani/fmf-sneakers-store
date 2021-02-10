@@ -1,0 +1,413 @@
+{
+  "camo v1": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "caricature v1": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "caricature v2": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "caricature v3": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "city lean": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom 3d": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom dollar": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom duki": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom glitch": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom graphics": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom lakers": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom peep": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom snake": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom vaca": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom vhs": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom water": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom wave v2": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom weed": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "fire v1": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "fire v2": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "golden glasp": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "japan design": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "off white": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "seaways": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "shark ocean": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "the king": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "water fire": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "water gun": {
+    "category": "Caricaturescas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+
+  "baby witch": { "category": "Goteo", "price": 7000, "rating": 5, "tags": [] },
+  "goteo 2d black": {
+    "category": "Goteo",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "goteo 2d brown": {
+    "category": "Goteo",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "goteo 2d red": {
+    "category": "Goteo",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "goteo 3d black": {
+    "category": "Goteo",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "goteo lean": { "category": "Goteo", "price": 7000, "rating": 5, "tags": [] },
+  "goteo terror": {
+    "category": "Goteo",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "small drop": { "category": "Goteo", "price": 7000, "rating": 5, "tags": [] },
+  "small drop violet": {
+    "category": "Goteo",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+
+  "custom 21": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom 999": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom billie": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom cs": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom fcksleep": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom gg": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom homero": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom lv0": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom snoopy": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom wrld": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "money brand": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "orange ball": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "orange net": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "travis astro": {
+    "category": "Custom Brand",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+
+  "black points": {
+    "category": "BLACK OFF",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "black rose": {
+    "category": "BLACK OFF",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "black sad": {
+    "category": "BLACK OFF",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "black splash": {
+    "category": "BLACK OFF",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "black splash violet": {
+    "category": "BLACK OFF",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "black street": {
+    "category": "BLACK OFF",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "splash drip": {
+    "category": "BLACK OFF",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+
+  "bekimony": {
+    "category": "Personalizadas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "custom six": {
+    "category": "Personalizadas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "dengue dng": {
+    "category": "Personalizadas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "facu asmus": {
+    "category": "Personalizadas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "frijo": {
+    "category": "Personalizadas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "lean unusual sol": {
+    "category": "Personalizadas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "red point": {
+    "category": "Personalizadas",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+
+  "splash black": {
+    "category": "Splash",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "splash blue": {
+    "category": "Splash",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "splash gold red": {
+    "category": "Splash",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "splash multicolor": {
+    "category": "Splash",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "splash pink blue": {
+    "category": "Splash",
+    "price": 7000,
+    "rating": 5,
+    "tags": []
+  },
+  "splash red": { "category": "Splash", "price": 7000, "rating": 5, "tags": [] }
+}

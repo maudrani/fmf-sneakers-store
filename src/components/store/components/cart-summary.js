@@ -1,28 +1,49 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Container, Text } from "../../../framework/assets";
-import { CartContext } from "../../context/cart-context";
-import Card from "../../basics/product-card-small";
-import styled from "styled-components";
+import Card from "../../basics/product-card-editable";
+import { colors } from "../../../framework/global";
+import { useHistory } from "react-router-dom";
 
-const CardContainer = styled(Container)`
-  @media (max-width: 768px) {
-    * {
-      /* font-size: 14px; */
-    }
-  }
-`;
-
-const CartSummary = () => {
-  const [cart] = useContext(CartContext);
+const CartSummary = ({ cart }) => {
+  const history = useHistory();
 
   return (
-    <CardContainer direction="c" w-100>
-      {cart.length === 0 ? (
-        <Text mh="xl">No hay productos en su carrito.</Text>
-      ) : (
-        cart.map((product, idx) => <Card key={idx} product={product} />)
-      )}
-    </CardContainer>
+    <Container
+      direction="c"
+      w-100
+      style={{
+        borderTop: `2px solid ${colors["light-gray"]}`,
+        borderBottom: `2px solid ${colors["light-gray"]}`,
+      }}
+    >
+      <Container direction="c" w-100>
+        {cart.length === 0 ? (
+          <Container direction="c" mh="xl">
+            <Text sm-size="xs" sm ph="sm">
+              No hay productos en su carrito.
+            </Text>
+            <Container
+              dark-yellow
+              hover-bg="yellow"
+              d-shadow="8"
+              style={{ cursor: "pointer", padding: "10px 1rem" }}
+              onClick={() => history.push("/store")}
+            >
+              <Text>Ir al Store</Text>
+            </Container>
+          </Container>
+        ) : (
+          cart.map((product, idx) => (
+            <Container
+              key={idx}
+              style={{ borderTop: `2px solid ${colors["lightest-gray"]}` }}
+            >
+              <Card product={product}/>
+            </Container>
+          ))
+        )}
+      </Container>
+    </Container>
   );
 };
 

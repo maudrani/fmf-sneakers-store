@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@loadable/component": "^5.14.1",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.0",
@@ -13,15 +14,20 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-in-viewport": "^1.0.0-alpha.16",
-    "react-modal": "^3.12.1",
-    "react-parallax": "^3.1.2",
+    "react-multi-carousel": "^2.6.1",
     "react-rating-stars-component": "^2.2.0",
+    "react-responsive-carousel": "^3.2.11",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "react-scroll": "^1.8.1",
+    "react-slick": "^0.28.0",
+    "slick-carousel": "^1.8.1",
     "smoothscroll-polyfill": "^0.4.4",
     "styled-components": "^5.2.1",
-    "styled-map": "^3.3.0"
+    "styled-map": "^3.3.0",
+    "sweetalert2": "^10.14.0",
+    "sweetalert2-react-content": "^3.2.2",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,5 +49,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {}
 }

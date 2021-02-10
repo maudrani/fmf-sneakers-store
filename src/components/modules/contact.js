@@ -14,17 +14,17 @@ const Contact = () => {
       ph="lg"
       black
       style={{ minHeight: "90vh" }}
-      id="contact"
+      id="contacto"
     >
       <Container mw="md" direction="c" md-w="w-100">
         <Text main xl yellow ph="xs" sm-size="lg">
           Contactanos
         </Text>
         <Container ph="xs" direction="c">
-          <Text whitesmoke sm weight="thin" style={{ ...TextStyle }}>
+          <Text white sm weight="thin" style={{ ...TextStyle }}>
             ¿Tenés algún diseño en mente?
           </Text>
-          <Text whitesmoke sm weight="thin" style={{ ...TextStyle }}>
+          <Text white sm weight="thin" style={{ ...TextStyle }}>
             ¿Alguna pregunta?
           </Text>
         </Container>
@@ -32,7 +32,7 @@ const Contact = () => {
           <Text yellow sm style={{ ...TextStyle }}>
             ¡Escribenos!
           </Text>
-          <Text whitesmoke xs weight="light" style={{ ...TextStyle }}>
+          <Text white xs weight="light" style={{ ...TextStyle }}>
             Te responderemos cuanto antes.
           </Text>
         </Container>
@@ -50,17 +50,17 @@ const Contact = () => {
           <Input
             placeholder="Nombre"
             ph="xs"
-            whitesmoke
+            white
             w-40
-            border-color="whitesmoke"
+            border-color="white"
             spellCheck="false"
           />
           <Input
             placeholder="Mail"
             ph="xs"
-            whitesmoke
+            white
             w-40
-            border-color="whitesmoke"
+            border-color="white"
             spellCheck="false"
           />
         </Container>
@@ -70,15 +70,15 @@ const Contact = () => {
           ph="xs"
           mw="xs"
           w-100
-          whitesmoke
-          border-color="whitesmoke"
+          white
+          border-color="white"
         />
         <Button
           xs
           black
           ph="xs"
+          mh='sm'
           pw="md"
-          b-radius="semi"
           hover-scale="sm"
           bg="yellow"
           weight="bold"

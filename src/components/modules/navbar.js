@@ -3,13 +3,12 @@ import { Container, Text } from "../../framework/assets";
 import Logo from "../basics/logo";
 import styled from "styled-components";
 import BascketIcon from "../store/components/e-icon";
-import CartSummary from "../store/components/cart-summary";
-import Modal from "../../components/basics/modal";
-
+import { colors } from "../../framework/global";
 import { Link } from "react-scroll";
+import { Link as RouteLink } from "react-router-dom";
+import { scrollTop, IsMobile } from "../../helpers/functions";
 
 const Nav = styled(Container)`
-  position: fixed;
   top: 0%;
   z-index: 100;
   background-color: rgba(28, 28, 28, 0.9);
@@ -18,17 +17,6 @@ const Nav = styled(Container)`
     padding: 1rem 1px;
     .navLink {
       padding: 0 10px;
-      font-size: 15px;
-    }
-
-    .navLogo {
-      display: none;
-    }
-  }
-
-  @media (max-width: 460px) {
-    .navLink {
-      padding: 0 7px;
       font-size: 12px;
     }
 
@@ -36,21 +24,29 @@ const Nav = styled(Container)`
       display: none;
     }
   }
-`;
 
-const CartModal = styled(Container)`
-  @media (max-width: 768px) {
-    padding: 10px 10px;
+  @media (max-width: 405px) {
+    .navLink {
+      font-size: 9px;
+    }
   }
 `;
 
-const Navbar = () => {
+const Navbar = ({
+  fixed = true,
+  bgColor,
+  textColor,
+  textHoverColor,
+  style,
+  options,
+  logoColor,
+  links = [],
+}) => {
   const [scrolled, setIsScrolling] = useState(false);
-  const [modalLaunched, setModalLaunched] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!modalLaunched) {
+      if (fixed) {
         setIsScrolling(true);
         setTimeout(() => {
           setIsScrolling(false);
@@ -62,31 +58,23 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("scroll", handleScroll);
     };
-  }, [modalLaunched]);
+  }, [fixed]);
 
   const navLinkConfig = {
     className: "navLink",
-    whitesmoke: true,
     xs: true,
     pw: "xs",
     weight: "regular",
     "hover-scale": "md",
-    "hover-color": "yellow",
-    "d-shadow": "1",
+    "hover-color": textHoverColor || "yellow",
     style: { ...{ cursor: "pointer" } },
   };
 
-  const isMobile = window.innerWidth <= 768 ? true : false;
+  navLinkConfig[textColor || "white"] = true;
 
   const scrollLinkConfig = {
     smooth: true,
-    duration: isMobile ? 1000 : 700,
-    offset: 5,
-  };
-
-  const logoConfig = {
-    "w-8": true,
-    "hover-scale": "md",
+    duration: IsMobile() ? 1000 : 700,
   };
 
   return (
@@ -98,57 +86,56 @@ const Navbar = () => {
       pw="lg"
       ph="xs"
       style={{
+        position: fixed && "fixed",
+        backgroundColor: colors[bgColor],
         transition: scrolled && "0s",
         transform: scrolled && "translateY(-100%)",
+        ...style,
       }}
+      {...options}
     >
       <Container w-50 justify="fs" sm-w="w-1">
-        <Logo
-          className="navLogo"
-          color="whitesmoke"
-          attributes={logoConfig}
-          style={{ minWidth: "1rem", maxWidth: "2.5rem" }}
-        />
+        <Container w-8 style={{ minWidth: "3rem" }} className="navLogo">
+          <Logo color={logoColor || textColor || "white"} />
+        </Container>
       </Container>
 
       <Container w-50 justify="fe" sm-w="w-80" sm-justify="c">
-        <Link to="home" {...scrollLinkConfig} offset={0}>
-          <Text {...navLinkConfig}>INICIO</Text>
-        </Link>
-        <Link to="about" {...scrollLinkConfig}>
-          <Text {...navLinkConfig}>ACERCA</Text>
-        </Link>
-        <Link to="designs" {...scrollLinkConfig}>
-          <Text {...navLinkConfig}>DISEÑOS</Text>
-        </Link>
-        <Link to="contact" {...scrollLinkConfig}>
-          <Text {...navLinkConfig}>CONTACTO</Text>
-        </Link>
+        {links.map((link, idx) =>
+          link.route ? (
+            <RouteLink
+              key={idx}
+              to={`${link.route}`}
+              style={{ textDecoration: "none" }}
+              onClick={scrollTop}
+            >
+              <Text {...navLinkConfig}>{link.name.toUpperCase()}</Text>
+            </RouteLink>
+          ) : (
+            <Link
+              key={idx}
+              to={link.scroll.toLowerCase()}
+              {...scrollLinkConfig}
+              offset={link.offset}
+            >
+              <Text {...navLinkConfig}>{link.name.toUpperCase()}</Text>
+            </Link>
+          )
+        )}
       </Container>
 
-      <Container
-        sm-w="w-1"
-        pw="xs"
-        hover-scale="md"
-        onClick={() => setModalLaunched(!modalLaunched)}
-      >
-        <BascketIcon size={1} />
+      <Container sm-w="w-1" pw="xs" hover-scale="md">
+        <RouteLink to={"/cart"}>
+          <Container onClick={scrollTop}>
+            <BascketIcon
+              size={1}
+              color={textColor}
+              hoverColor={textHoverColor || "yellow"}
+              redirect
+            />
+          </Container>
+        </RouteLink>
       </Container>
-
-      <Modal launched={modalLaunched} setLaunched={setModalLaunched}>
-        <CartModal
-          whitesmoke
-          vw-80
-          sm-w="vw-100"
-          ph="md"
-          pw="lg"
-          b-radius="xs"
-          b-shadow="2"
-          style={{ maxHeight: "80vh", overflowY: "auto", display: "block" }}
-        >
-          <CartSummary />
-        </CartModal>
-      </Modal>
     </Nav>
   );
 };

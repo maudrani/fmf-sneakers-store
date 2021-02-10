@@ -1,0 +1,22 @@
+1- Set the names of the images with this schema: 
+
+    "name-of-the-product" + "-" + image number of the product ".webp".
+
+    convertion: "custom-sneaker-1.webp"  will result on "custom sneaker" "image1".
+
+2- Add each .webp resized image of the product to its folder (full-size, x70, x50, x25, x15)
+3- The program will automatically detect the name of the images and create a single object with the name of the product 
+and the array of images.
+
+    example:
+
+	input: "custom-sneaker-1.webp", "custom-sneaker-2.webp", "custom-sneaker-3.webp" in the folders.
+	output: 
+		{
+		   name: custom sneaker,
+		   images: {
+			      full-size: ["./full-size/custom-sneaker-1.webp", "./full-size/custom-sneaker-2.webp" ...],
+			      x70: ["./X70/custom-sneaker-1.webp", "./full-size/custom-sneaker-2.webp" ...],
+ 			      x50: ...
+			   }
+		}

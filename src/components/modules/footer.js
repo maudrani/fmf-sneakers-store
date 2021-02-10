@@ -15,31 +15,31 @@ const Footer = () => {
       sm-h="vh-40"
     >
       <Container justify="sb" sm-justify="sa" h-100 sm-direction="c">
-        <Container w-20 md-w="w-40">
-          <Container  w-50>
+        <Container w-20 sm-w="w-70" justify='sa'>
+          <Container  w-50 md-w='w-30'>
             <a
               href="https://www.facebook.com/FMF-Sneakers-Argentina-2-102814918391934/"
               rel="noreferrer"
               target="_blank"
             >
-              <Img src={facebook} w-100 hover-scale="md" />
+              <Img alt='socialmedia icon' src={facebook} w-100 hover-scale="md" style={{minWidth:'3rem'}}/>
             </a>
           </Container>
-          <Container  w-50>
+          <Container  w-50 md-w='w-30'>
             <a
               href="https://www.instagram.com/fmfsneakers_arg2/"
               rel="noreferrer"
               target="_blank"
             >
-              <Img src={instagram} w-100 hover-scale="md" />
+              <Img alt='socialmedia icon' src={instagram} w-100 hover-scale="md" style={{minWidth:'3rem'}}/>
             </a>
           </Container>
         </Container>
-        <Text whitesmoke style={{ textAlign: "center" }}>
+        <Text white style={{ textAlign: "center" }}>
           Tucumán, Argentina
         </Text>
       </Container>
-      <Text whitesmoke weight="thin" style={{ textAlign: "center" }}>
+      <Text white weight="thin" style={{ textAlign: "center" }}>
         <Text weight="thin" yellow>
           FMF Custom Sneakers 2021
         </Text>{" "}

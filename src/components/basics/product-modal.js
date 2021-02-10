@@ -9,7 +9,7 @@ const Background = styled(Container)`
   z-index: 110;
   position: fixed;
   background-color: rgba(190, 190, 190, 0.9);
-  min-height: 100vh;
+  /* min-height: 100vh; */
   overflow-y: auto;
 
   @media (max-width: 410px) {
@@ -82,8 +82,7 @@ const ProductModal = ({ launched, setLaunched, data }) => {
 
   const addItemToBascket = () => {
     const cartItem = {
-      name: data.name,
-      img: data.img,
+      ...data,
       description: data.category,
       size: size,
       quantity: quantity,
@@ -92,33 +91,9 @@ const ProductModal = ({ launched, setLaunched, data }) => {
       total: quantity * unitPrice,
     };
 
-    let existe = false;
-
     setCart([...cart, { ...cartItem }]);
 
-    if (cart.length !== 0) {
-      manageQuantities(cartItem);
-    }
-
     restoreValuesAndClose();
-  };
-
-  const manageQuantities = (item) => {
-    let newItem = {};
-
-    cart.forEach((product) => {
-      if (
-        product.name === item.name &&
-        product.size === item.size &&
-        product.quality === item.quality &&
-        product.unitPrice === item.unitPrice
-      ) {
-        newItem = { ...item, quantity: parseInt(product.quantity) + parseInt(item.quantity) };
-        setCart([...cart.filter((item) => item.name !== product.name), newItem]);
-      }
-    });
-
-    console.log();
   };
 
   const restoreValuesAndClose = () => {
@@ -141,7 +116,7 @@ const ProductModal = ({ launched, setLaunched, data }) => {
       }}
     >
       <ModalContainer
-        whitesmoke
+        white
         w-75
         md-w="w-90"
         sm-direction="c"
@@ -152,7 +127,7 @@ const ProductModal = ({ launched, setLaunched, data }) => {
       >
         <Container
           hover-scale="md"
-          whitesmoke
+          white
           style={{
             position: "fixed",
             top: "20px",
@@ -178,11 +153,11 @@ const ProductModal = ({ launched, setLaunched, data }) => {
           sm-w="w-100"
           style={{ maxHeight: "40rem", overflow: "hidden" }}
         >
-          <Img src={data.img} />
+          <Img alt='sneaker image' src={data.images.x50[0]} />
         </ImageContainer>
 
         <ModalInfo
-          whitesmoke
+          white
           w-45
           /* ph="xs" */
           pw="md"
@@ -288,7 +263,7 @@ const ProductModal = ({ launched, setLaunched, data }) => {
                 ph="xs"
                 pw="xs"
                 bg="black"
-                whitesmoke
+                white
                 hover-scale="xs"
                 hover-color="yellow"
                 onClick={addItemToBascket}

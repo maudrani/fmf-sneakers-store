@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useRef } from "react";
+import useOutsideClick from "../../helpers/outsideClick";
 import { Container } from "../../framework/assets";
 import styled from "styled-components";
 
@@ -17,6 +17,14 @@ const Background = styled(Container)`
 `;
 
 const ProductModal = ({ launched, setLaunched, children }) => {
+  const modal = useRef();
+
+  useOutsideClick(modal, () => {
+    if (launched) {
+      setLaunched(false);
+    }
+  });
+
   return (
     <Background
       w-100
@@ -28,9 +36,8 @@ const ProductModal = ({ launched, setLaunched, children }) => {
         opacity: launched ? "1" : "0",
         top: "0",
       }}
-      onClick={() => setLaunched(false)}
     >
-      {children}
+      <div ref={modal}>{children}</div>
     </Background>
   );
 };

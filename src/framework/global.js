@@ -6,7 +6,13 @@ import Reis from "../Assets/Fonts/Reis/REIS-Regular.otf";
 let { main, ratio } = values.sizes;
 
 const { colors } = values;
-const fonts = { main: "REIS", secondary: "Lato" };
+
+const fonts = {
+  main: "REIS",
+  secondary: "Lato",
+  terciary: "Playfair Display",
+  default: "Lato",
+};
 const sizes = {
   ...GenerateSizes(main, ratio, values.sizes.sizes),
   default: `${main}px`,
@@ -63,7 +69,7 @@ const flexShortcuts = {
 };
 
 const size = {
-  xs: "320px",
+  xs: "480px",
   sm: "768px",
   md: "990px",
   lg: "1400px",
@@ -101,6 +107,7 @@ const GlobalStyle = createGlobalStyle`
 
 html {
   height: 100%;
+  overflow-y: scroll;
 }
 
 /* Remove default padding */
@@ -126,7 +133,7 @@ dl,
 dd {
   margin: 0;
   padding: 0;
-  color: ${colors.black}
+  font-family: Lato;
 }
 
 /* Set core body defaults */
@@ -134,8 +141,8 @@ body {
   min-height: 100vh;
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
-  background-color: ${colors.whitesmoke};
-  
+  background-color: ${colors.white};
+  height:100%;
 }
 
 .page {

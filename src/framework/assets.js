@@ -57,7 +57,7 @@ const FlexConfigs = {
   "align-items": styledMap("align", flex["align-items"]),
 };
 const FontConfig = {
-  color: styledMap(colors),
+  color: styledMap({ ...colors, default: colors.black }),
   "font-family": styledMap(fonts),
   "font-weight": styledMap("weight", weights),
   "font-size": styledMap(sizes),
@@ -84,6 +84,7 @@ const Shadows = {
     "inset-1": "inset 0px 0px 52px -22px rgba(0,0,0,0.75);",
     "inset-2": "inset 0px 47px 52px -22px rgba(0,0,0,0.75);",
     "inset-3": "inset 0px 0px 101px -22px rgba(0,0,0,0.75);",
+    "inset-4": "inset 0px 0px 131px -22px rgba(0,0,0,0.85);",
     8: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
   }),
 
@@ -180,6 +181,8 @@ const Text = styled.span`
 const Button = styled.button`
   will-change: transform;
   background-color: transparent;
+  min-height: 2.5rem;
+  min-width: 5.6rem;
 
   ${WidthHeight}
   ${Scale}
@@ -202,6 +205,19 @@ const Button = styled.button`
 `;
 
 const Container = styled.div`
+  -webkit-transform: translateZ(0.1px);
+  -moz-transform: translateZ(0.1px);
+  -o-transform: translateZ(0.1px);
+  -ms-transform: translateZ(0.1px);
+  transform: translateZ(0.1px);
+  * {
+    -webkit-transform: translateZ(0.1px);
+    -moz-transform: translateZ(0.1px);
+    -o-transform: translateZ(0.1px);
+    -ms-transform: translateZ(0.1px);
+    transform: translateZ(0.1px);
+  }
+
   will-change: ${styledMap("optimize-scroll", {
     none: "none",
     default: "transform",
@@ -335,6 +351,11 @@ const Input = styled.input`
 `;
 
 const Select = styled.select`
+  text-align-last: center;
+  text-align: center;
+  -ms-text-align-last: center;
+  -moz-text-align-last: center;
+
   ${WidthHeight}
   ${Scale}
   ${BackgroundConfig}
@@ -345,7 +366,9 @@ const Select = styled.select`
 
   background: transparent;
 
-  border: 1px solid
+  border: 0px;
+
+  border-bottom: 1px solid
     ${styledMap("border-color", {
       ...colors,
     })};

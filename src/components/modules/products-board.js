@@ -2,12 +2,14 @@ import React from "react";
 import { Container } from "../../framework/assets";
 import styled from "styled-components";
 import handleViewport from "react-in-viewport";
-import StyledCard from "../basics/product-card-1";
+import StyledCard from "../basics/product-card-styled";
 import SimpleCard from "../basics/product-card-store";
+import {scrollTop} from '../../helpers/functions';
+
+import { Link as RouteLink } from "react-router-dom";
 
 const GridBoard = styled(Container)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   grid-gap: 2rem;
 
   @media (max-width: 420px) {
@@ -27,7 +29,8 @@ const Board = ({
   animCards = false,
   style,
   children,
-  launchModal
+  minSize,
+  maxSize,
 }) => {
   const DetectCardStyle = () => {
     if (styled) {
@@ -38,36 +41,44 @@ const Board = ({
     }
   };
 
-  return (
-      <GridBoard
-        bg={color}
-        id="products"
-        pw="lg"
-        ph="lg"
-        w-100
-        bg-image={background}
-        b-shadow={shadowed && "inset-1"}
-        style={{ ...style }}
-      >
-        {children}
-        {products.slice(0, limit).map((card, idx) => {
-          const viewOptions = {
-            rootMargin: "0px",
-            threshold: 0.8,
-          };
+  const viewPortOptions = {
+    rootMargin: "0px",
+    threshold: 0.8,
+  };
 
-          const ViewCard = handleViewport(DetectCardStyle(), viewOptions);
-          return (
-            <ViewCard
-              product={card}
-              key={idx}
-              inViewport
-              animated={animCards}
-              launchModal={launchModal}
-            />
-          );
-        })}
-      </GridBoard>
+  const ViewCard = handleViewport(DetectCardStyle(), viewPortOptions);
+
+  return (
+    <GridBoard
+      bg={color}
+      id="products"
+      w-100
+      bg-image={background}
+      b-shadow={shadowed && "inset-1"}
+      style={{
+        ...style,
+        gridTemplateColumns: `repeat(auto-fit, minmax(${minSize || "18rem"}, ${
+          maxSize || "1fr"
+        }))`,
+      }}
+    >
+      {children}
+      {products.slice(0, limit).map((product, idx) => {
+        let route = `${product.category}/${product.name}`
+          .toLowerCase()
+          .replace(" ", "-");
+
+        return (
+          <RouteLink
+            key={idx}
+            to={`/${route}`}
+            style={{ textDecoration: "none" }}
+          >
+            <ViewCard product={product} inViewport animated={animCards} onClick={scrollTop} />
+          </RouteLink>
+        );
+      })}
+    </GridBoard>
   );
 };
 
