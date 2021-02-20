@@ -146,7 +146,8 @@ body {
 }
 
 .page {
-  will-change: transform;
+  min-width: ${document.body.clientWidth - 1}px !important;
+  /* min-width: 98.9vw; */
 }
 
 /* Remove list styles on ul, ol elements with a class attribute */

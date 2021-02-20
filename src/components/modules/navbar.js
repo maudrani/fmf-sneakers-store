@@ -41,6 +41,7 @@ const Navbar = ({
   options,
   logoColor,
   links = [],
+  showCart = true,
 }) => {
   const [scrolled, setIsScrolling] = useState(false);
 
@@ -124,18 +125,20 @@ const Navbar = ({
         )}
       </Container>
 
-      <Container sm-w="w-1" pw="xs" hover-scale="md">
-        <RouteLink to={"/cart"}>
-          <Container onClick={scrollTop}>
-            <BascketIcon
-              size={1}
-              color={textColor}
-              hoverColor={textHoverColor || "yellow"}
-              redirect
-            />
-          </Container>
-        </RouteLink>
-      </Container>
+      {showCart && (
+        <Container sm-w="w-1" pw="xs" hover-scale="md">
+          <RouteLink to={"/cart"}>
+            <Container onClick={scrollTop}>
+              <BascketIcon
+                size={1}
+                color={textColor}
+                hoverColor={textHoverColor || "yellow"}
+                redirect
+              />
+            </Container>
+          </RouteLink>
+        </Container>
+      )}
     </Nav>
   );
 };

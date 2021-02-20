@@ -27,13 +27,12 @@ const ProductContainer = styled(Container)`
     width: 100%;
     height: 100%;
 
-  filter: ${!IsMobile() && "drop-shadow(0 10px 10px rgba(0, 0, 0, 0.42))"};
+    filter: ${!IsMobile() && "drop-shadow(0 10px 10px rgba(0, 0, 0, 0.42))"};
   }
 `;
 
 const ProductInfo = styled(Container)`
   min-height: 100vh;
-
   @media (max-width: 768px) {
     padding-left: 0;
   }
@@ -62,12 +61,6 @@ const ProductModal = ({ data }) => {
 
   const IncreaseQuantity = () => {
     setQuantity(quantity + 1);
-
-    /* const newCart = cart.map(
-      (item) => item.id === product.id && (item.quantity = quantity)
-    ); */
-
-    /* setCart(newCart); */
   };
 
   const DecreaseQuantity = () => {
@@ -82,12 +75,18 @@ const ProductModal = ({ data }) => {
   const addItemToBascket = () => {
     const cartItem = {
       ...data,
-      description: data.category,
       size: size,
-      quantity: quantity,
       quality: quality,
-      unitPrice: unitPrice,
+      price: unitPrice,
       total: quantity * unitPrice,
+      //For Mercado Pago
+      title: data.name.charAt(0).toUpperCase() + data.name.slice(1),
+      currency_id: "ARS",
+      picture_url: data.images.x25[0],
+      category_id: "fashion",
+      unit_price: unitPrice,
+      quantity: quantity,
+      description: `Custom sneaker - ${quality}`,
       id: uuidv4(),
     };
 
@@ -141,7 +140,10 @@ const ProductModal = ({ data }) => {
         b-shadow="inset-4"
       >
         <Container w-60 sm-w="vw-100">
-          <Carousel className="slider" renderThumbs={() => !IsMobile() && thumbNails()}>
+          <Carousel
+            className="slider"
+            renderThumbs={() => !IsMobile() && thumbNails()}
+          >
             {data.images[!IsMobile() ? "x50" : "x25"].map((el, idx) => {
               return (
                 <Img

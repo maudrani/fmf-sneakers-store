@@ -85,7 +85,10 @@ const Shadows = {
     "inset-2": "inset 0px 47px 52px -22px rgba(0,0,0,0.75);",
     "inset-3": "inset 0px 0px 101px -22px rgba(0,0,0,0.75);",
     "inset-4": "inset 0px 0px 131px -22px rgba(0,0,0,0.85);",
-    8: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+    "inset-5": "inset 0px 0px 36px -21px rgba(29,29,29,1);",
+    "inset-6": "inset 0px 0px 7px 0px rgba(0,0,0,0.22);",
+    8: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);",
+    9: "0px 0px 7px 0px rgba(0,0,0,0.22);",
   }),
 
   filter: styledMap("d-shadow", {
@@ -343,7 +346,85 @@ const Input = styled.input`
   border-bottom: 1px solid
     ${styledMap("border-color", {
       ...colors,
+      default: colors.black,
     })};
+
+  @media ${device.xs} {
+    flex-direction: ${styledMap("xs-direction", {
+      ...flex["flex-direction"],
+      default: "inset",
+    })};
+
+    justify-content: ${styledMap("xs-justify", {
+      ...flex["justify-content"],
+      default: "inset",
+    })};
+
+    align-items: ${styledMap("xs-align", {
+      ...flex["align-items"],
+      default: "inset",
+    })};
+
+    width: ${styledMap("xs-w", { ...width, default: "inset" })};
+    height: ${styledMap("xs-h", { ...height, default: "inset" })};
+  }
+  @media ${device.sm} {
+    flex-direction: ${styledMap("sm-direction", {
+      ...flex["flex-direction"],
+      default: "inset",
+    })};
+
+    justify-content: ${styledMap("sm-justify", {
+      ...flex["justify-content"],
+      default: "inset",
+    })};
+
+    align-items: ${styledMap("sm-align", {
+      ...flex["align-items"],
+      default: "inset",
+    })};
+
+    width: ${styledMap("sm-w", { ...width, default: "inset" })};
+    height: ${styledMap("sm-h", { ...height, default: "inset" })};
+  }
+  @media ${device.md} {
+    flex-direction: ${styledMap("md-direction", {
+      ...flex["flex-direction"],
+      default: "inset",
+    })};
+
+    justify-content: ${styledMap("md-justify", {
+      ...flex["justify-content"],
+      default: "inset",
+    })};
+
+    align-items: ${styledMap("md-align", {
+      ...flex["align-items"],
+      default: "inset",
+    })};
+
+    width: ${styledMap("md-w", { ...width, default: "inset" })};
+    height: ${styledMap("md-h", { ...height, default: "inset" })};
+  }
+  @media ${device.lg} {
+    flex-direction: ${styledMap("lg-direction", {
+      ...flex["flex-direction"],
+      default: "inset",
+    })};
+
+    justify-content: ${styledMap("lg-justify", {
+      ...flex["justify-content"],
+      default: "inset",
+    })};
+
+    align-items: ${styledMap("lg-align", {
+      ...flex["align-items"],
+      default: "inset",
+    })};
+
+    width: ${styledMap("lg-w", { ...width, default: "inset" })};
+    height: ${styledMap("lg-h", { ...height, default: "inset" })};
+  }
 
   :hover {
     ${HoverConfigs}

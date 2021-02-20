@@ -6,7 +6,7 @@ const scrollTop = () => {
   window.scrollTo(0, 0);
 };
 
-const getRandom = (arr, n) => {
+const randomizeArray = (arr, n) => {
   var result = new Array(n),
     len = arr.length,
     taken = new Array(len);
@@ -21,17 +21,17 @@ const getRandom = (arr, n) => {
 };
 
 const ProductRoute = (product) => {
-  let route = `${product.category}/${product.name}`
+  let route = `sneaker:${product.category}/${product.name}`
     .toLowerCase()
-    .replace(" ", "-");
+    .replace(/ /g, "-");
 
   return route;
 };
 
 const CartProductRoute = (product) => {
-  let route = `${ProductRoute(product)}/${product.id}`
+  let route = `${ProductRoute(product)}` /* optional:  /${product._id} */
     .toLowerCase()
-    .replace(" ", "-");
+    .replace(/ /g, "-");
   return route;
 };
 
@@ -41,13 +41,53 @@ const IsMobile = () => {
     isMobile = "true";
   }
   return isMobile;
-}
+};
+
+const MaxWidth = (width) => {
+  let Result = false;
+  if (window.innerWidth <= width) {
+    Result = true;
+  }
+  return Result;
+};
+
+const Capitalize = (value) => {
+  let capitalized = value;
+  capitalized = capitalized.charAt(0).toUpperCase() + capitalized.slice(1);
+  return capitalized;
+};
+
+const ObtainDate = () => {
+  const today = new Date();
+  const date =
+    today.getDate() +
+    "-" +
+    (today.getMonth() + 1 < 10 ? "0" : "") +
+    (today.getMonth() + 1) +
+    "-" +
+    today.getFullYear();
+
+  return date;
+};
+const ObtainTime = () => {
+  const today = new Date();
+  const time =
+    (today.getHours() < 10 ? "0" : "") +
+    today.getHours() +
+    ":" +
+    ((today.getMinutes() < 10 ? "0" : "") + today.getMinutes());
+  return time;
+};
 
 export {
   scrollTop,
   scrollTopSmooth,
-  getRandom,
+  randomizeArray,
   ProductRoute,
   CartProductRoute,
-  IsMobile
+  IsMobile,
+  Capitalize,
+  MaxWidth,
+  ObtainDate,
+  ObtainTime,
 };

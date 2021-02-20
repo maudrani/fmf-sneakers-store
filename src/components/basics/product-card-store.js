@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Img, Text, Configs } from "../../framework/assets";
 import styled from "styled-components";
-import {IsMobile} from '../../helpers/functions'
+import { IsMobile } from "../../helpers/functions";
 
 const CardContainer = styled(Container)`
   cursor: pointer;
@@ -37,6 +37,10 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
         }
       : {};
 
+  const titleConfig = {
+    md: name.length > 14 ? false : true,
+  };
+
   return (
     <CardContainer
       direction="c"
@@ -46,9 +50,7 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
       style={{ maxWidth: "25rem" }}
       onClick={onClick}
     >
-      <Container
-        style={{ overflow: "hidden", maxHeight: "30rem" }}
-      >
+      <Container style={{ overflow: "hidden", maxHeight: "30rem" }}>
         <CardImg
           src={img}
           ref={forwardedRef}
@@ -59,9 +61,22 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
         />
       </Container>
       <Container w-100 direction="c" align="fs" sm-align="c">
-        <Text main md red>
-          {name}
-        </Text>
+        <Container
+          w-100
+          justify="fs"
+          sm-justify="c"
+          style={{ minHeight: "4rem" }}
+        >
+          <Text
+            main
+            {...titleConfig}
+            sm-size="sm"
+            red
+            style={{ fontSize: name.length > 14 && `28px`, textAlign: 'center' }}
+          >
+            {name}
+          </Text>
+        </Container>
         <Text weight="light">{category}</Text>
         <Text sm ph="xs" weight="light" style={{ borderBottom: "1px solid" }}>
           ${price}

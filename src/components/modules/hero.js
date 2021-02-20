@@ -28,7 +28,7 @@ const Hero = () => {
               src={logo}
               w-100
               ph="sm"
-              d-shadow="7"
+              d-shadow="5"
               style={{ minWidth: "18rem" }}
             />
           </Container>

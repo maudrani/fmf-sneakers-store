@@ -4,13 +4,15 @@ import styled from "styled-components";
 import handleViewport from "react-in-viewport";
 import StyledCard from "../basics/product-card-styled";
 import SimpleCard from "../basics/product-card-store";
-import {scrollTop} from '../../helpers/functions';
+import { scrollTop, CartProductRoute } from "../../helpers/functions";
 
 import { Link as RouteLink } from "react-router-dom";
 
 const GridBoard = styled(Container)`
   display: grid;
-  grid-gap: 2rem;
+
+  @media (max-width: 768px) {
+  }
 
   @media (max-width: 420px) {
     padding-left: 2rem !important;
@@ -31,6 +33,7 @@ const Board = ({
   children,
   minSize,
   maxSize,
+  gap,
 }) => {
   const DetectCardStyle = () => {
     if (styled) {
@@ -60,13 +63,12 @@ const Board = ({
         gridTemplateColumns: `repeat(auto-fit, minmax(${minSize || "18rem"}, ${
           maxSize || "1fr"
         }))`,
+        gridGap: gap || "2rem",
       }}
     >
       {children}
       {products.slice(0, limit).map((product, idx) => {
-        let route = `${product.category}/${product.name}`
-          .toLowerCase()
-          .replace(" ", "-");
+        let route = CartProductRoute(product);
 
         return (
           <RouteLink
@@ -74,7 +76,12 @@ const Board = ({
             to={`/${route}`}
             style={{ textDecoration: "none" }}
           >
-            <ViewCard product={product} inViewport animated={animCards} onClick={scrollTop} />
+            <ViewCard
+              product={product}
+              inViewport
+              animated={animCards}
+              onClick={scrollTop}
+            />
           </RouteLink>
         );
       })}

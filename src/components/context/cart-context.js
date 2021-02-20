@@ -1,7 +1,8 @@
-import React, { useState, createContext } from "react";
+import React, { createContext } from "react";
+import {UseLocalStorage} from '../../helpers/customHooks'
 
 const CartProvider = (props) => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = UseLocalStorage('cart', '');
 
   return <CartContext.Provider value={[cart, setCart]}>{props.children}</CartContext.Provider>;
 };

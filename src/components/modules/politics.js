@@ -16,8 +16,8 @@ const PoliticsContainer = styled(Container)`
   }
 `;
 
-const Politics = () => {
-  const [textToShow, setTextToShow] = useState("description");
+const Politics = ({option}) => {
+  const [textToShow, setTextToShow] = useState(option || "description");
 
   const placeText = () => {
     switch (textToShow) {

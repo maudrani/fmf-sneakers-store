@@ -8,14 +8,7 @@ const CartSummary = ({ cart }) => {
   const history = useHistory();
 
   return (
-    <Container
-      direction="c"
-      w-100
-      style={{
-        borderTop: `2px solid ${colors["light-gray"]}`,
-        borderBottom: `2px solid ${colors["light-gray"]}`,
-      }}
-    >
+    <Container direction="c" w-100>
       <Container direction="c" w-100>
         {cart.length === 0 ? (
           <Container direction="c" mh="xl">
@@ -36,9 +29,14 @@ const CartSummary = ({ cart }) => {
           cart.map((product, idx) => (
             <Container
               key={idx}
-              style={{ borderTop: `2px solid ${colors["lightest-gray"]}` }}
+              white
+              mh="xs"
+              style={{
+                borderTop: `2px solid ${colors["lightest-gray"]}`,
+                minWidth: "98%",
+              }}
             >
-              <Card product={product}/>
+              <Card product={product} />
             </Container>
           ))
         )}

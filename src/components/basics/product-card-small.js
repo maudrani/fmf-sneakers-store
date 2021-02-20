@@ -6,7 +6,7 @@ import { Link as RouteLink } from "react-router-dom";
 
 const Tag = styled(Text)`
   margin-bottom: 0.5rem;
-  font-size: 14px;
+  font-size: 12px;
   color: rgb(160, 160, 160);
 `;
 
@@ -26,20 +26,20 @@ const ProductCardSmall = ({ product, onClick }) => {
     <Container direction="c" w-100 onClick={onClick}>
       <Container w-100 align="fs" direction="c">
         <RouteLink to={`/${route}`} style={{ textDecoration: "none" }}>
-          <Text main md red sm-size="sm">
-            {product.name} - 
+          <Text main sm red>
+            {product.name} 
           </Text>
         </RouteLink>
       </Container>
 
       <Container w-100>
-        <ImgContainer w-25 sm-w="w-30">
+        <ImgContainer w-10>
           <RouteLink to={`/${route}`} style={{ textDecoration: "none" }}>
-            <Img alt='sneaker image' src={product.images.x15[0]} style={{ minWidth: "9rem" }} />
+            <Img alt='sneaker image' w-25 src={product.images.x15[0]} style={{ minWidth: "6rem" }} />
           </RouteLink>
         </ImgContainer>
 
-        <Container direction="c" justify="sb" w-75>
+        <Container direction="c" justify="sb" w-100>
           <Container
             w-100
             justify="sb"
@@ -51,14 +51,14 @@ const ProductCardSmall = ({ product, onClick }) => {
           >
             <Container direction="c" w-25 sm-w="w-30">
               <Tag>Talle</Tag>
-              <Text weight="light" sm sm-size="xs">
+              <Text weight="light"  sm-size="xs">
                 {product.size}
               </Text>
             </Container>
 
             <Container direction="c" w-25 sm-w="w-30">
               <Tag>Cant</Tag>
-              <Text weight="light" sm sm-size="xs">
+              <Text weight="light"  sm-size="xs">
                 {product.quantity}
               </Text>
             </Container>
@@ -68,7 +68,7 @@ const ProductCardSmall = ({ product, onClick }) => {
               <Text
                 w-100
                 weight="light"
-                sm
+                
                 sm-size="xs"
                 style={{
                   textOverflow: "ellipsis",
@@ -89,7 +89,7 @@ const ProductCardSmall = ({ product, onClick }) => {
             style={{ borderBottom: "1px solid rgba(0,0,0, 0.1)" }}
           >
             <Container w-50 sm-w="w-60">
-              <Text weight="light" sm sm-size="xs">
+              <Text weight="light"  sm-size="xs">
                 Total:
               </Text>
             </Container>
@@ -99,7 +99,7 @@ const ProductCardSmall = ({ product, onClick }) => {
               ph="xs"
               lightest-gray
             >
-              <Text weight="light" sm sm-size="xs">
+              <Text weight="light"  sm-size="xs">
                 ${product.total}
               </Text>
             </Container>

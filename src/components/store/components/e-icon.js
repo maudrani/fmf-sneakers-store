@@ -49,6 +49,7 @@ const BascketIcon = ({
               width: "1rem",
               height: "1rem",
               backgroundColor: colors[hoverColor],
+              zIndex: '10',
             }}
           >
             <Text weight="black" style={{ fontSize: "0.6rem" }}>

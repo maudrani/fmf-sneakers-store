@@ -1,13 +1,12 @@
 import React, { useContext } from "react";
 import { Container, Text, Img } from "../../framework/assets";
 import { CartContext } from "../context/cart-context";
-import { ProductRoute } from "../../helpers/functions";
+import { ProductRoute, scrollTop } from "../../helpers/functions";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { colors } from "../../framework/global";
-
 
 const CardContainer = styled(Container)`
   .deleteIcon {
@@ -42,9 +41,6 @@ const CartCard = ({ product, onClick }) => {
   const history = useHistory();
   const MySwal = withReactContent(Swal);
 
-
-
-
   const DeleteItem = () => {
     MySwal.fire({
       title: (
@@ -75,12 +71,14 @@ const CartCard = ({ product, onClick }) => {
     });
   };
 
-
-
-  
-
   return (
-    <CardContainer w-100 justify="sb" sm-direction="c" ph="sm" onClick={onClick}>
+    <CardContainer
+      w-100
+      justify="sb"
+      sm-direction="c"
+      ph="sm"
+      onClick={onClick}
+    >
       <Container w-40 sm-w="w-100" justify="fs" sm-direction="c">
         <Container
           w-50
@@ -93,7 +91,11 @@ const CartCard = ({ product, onClick }) => {
           }}
           onClick={() => history.push(ProductRoute(product))}
         >
-          <Img alt='sneaker image' src={product.images.x15[0]} style={{ minWidth: "10rem" }} />
+          <Img
+            alt="sneaker image"
+            src={product.images.x15[0]}
+            style={{ minWidth: "10rem" }}
+          />
         </Container>
 
         <Container direction="c" pw="xs" align="fs" sm-align="c" sm-w="w-100">
@@ -103,7 +105,7 @@ const CartCard = ({ product, onClick }) => {
             dark-red
             hover-color="red"
             style={{ marginBottom: "1rem", cursor: "pointer" }}
-            onClick={() => history.push(ProductRoute(product))}
+            onClick={() => history.push(ProductRoute(product)) || scrollTop()}
           >
             {product.name}
           </Text>
@@ -154,22 +156,7 @@ const CartCard = ({ product, onClick }) => {
         </Text>
       </Container>
 
-      <Container
-        className="editContainer"
-        w-60
-        xs-w="w-80"
-        justify="sa"
-        /* xs-justify="sb" */
-      >
-        {/* <Container
-          black
-          d-shadow="8"
-          hover-bg="dark-gray"
-          style={{padding: "5px 0", minWidth: "5rem", cursor: "pointer" }}
-          onClick={EditItem}
-        >
-          <Text whitesmoke>Editar</Text>
-        </Container> */}
+      <Container className="editContainer" w-60 xs-w="w-80" justify="sa">
         <Container
           black
           d-shadow="8"
@@ -180,22 +167,6 @@ const CartCard = ({ product, onClick }) => {
           <Text whitesmoke>Eliminar</Text>
         </Container>
       </Container>
-
-      {/* <Container
-        className="editBtn"
-        black
-        hover-bg="dark-gray"
-        style={{
-          padding: "8px 20px",
-          cursor: "pointer",
-          position: "absolute",
-          right: "0",
-          bottom: "0",
-        }}
-        onClick={EditItem}
-      >
-        <Text whitesmoke>Editar</Text>
-      </Container> */}
     </CardContainer>
   );
 };

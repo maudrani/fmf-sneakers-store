@@ -27,7 +27,7 @@ const CardText = styled(Text)`
 const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
   const { category, name, description } = product;
 
-  const img = IsMobile() ? product.images.x15[0] : product.images.x25[0];
+  const img = IsMobile() ? product.images.x15[0] : product.images.x15[0];
 
   const containerAnims = animated
     ? {

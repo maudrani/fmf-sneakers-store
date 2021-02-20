@@ -4,6 +4,7 @@ import { Container } from "../../framework/assets";
 import { colors } from "../../framework/global";
 
 const Loading1 = styled(Container)`
+  z-index: 1000;
   .spinner {
     margin: 100px auto;
     width: 50px;
@@ -13,7 +14,7 @@ const Loading1 = styled(Container)`
   }
 
   .spinner > div {
-    background-color: ${colors["yellow"]};
+    background-color: ${colors["darkest-yellow"]};
     height: 100%;
     width: 6px;
     display: inline-block;
@@ -69,13 +70,25 @@ const Loading1 = styled(Container)`
 
 const Loader = () => {
   return (
-    <Loading1 vh-100 black>
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
+    <Loading1
+      w-100
+      /* black */
+      style={{
+        minHeight: "100vh",
+        minWidth: "98.9vw",
+        position: "fixed",
+        top: "0",
+        bottom: "0",
+        margin: "0",
+        padding: "0",
+      }}
+    >
+      <div className="spinner">
+        <div className="rect1"></div>
+        <div className="rect2"></div>
+        <div className="rect3"></div>
+        <div className="rect4"></div>
+        <div className="rect5"></div>
       </div>
     </Loading1>
   );

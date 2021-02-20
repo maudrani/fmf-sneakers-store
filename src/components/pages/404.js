@@ -15,6 +15,7 @@ const PageNotFound = () => {
 
   return (
     <Container
+      className='page'
       vh-100
       black
       bg-image="graffiti"
