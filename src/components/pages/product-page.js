@@ -5,23 +5,26 @@ import Navbar from "../modules/navbar";
 import ProductInfo from "../store/components/product-info-editable";
 import ProductsBoard from "../modules/products-board";
 import { BringProducts } from "../store/db/products";
-import { CartProductRoute } from "../../helpers/functions";
+import {
+  CartProductRoute,
+  scrollTop,
+  randomizeArray,
+} from "../../helpers/functions";
 import categories from "../store/db/categories";
 import Politics from "../modules/politics";
 import Loader from "../basics/loader";
 
 import Gallery from "../modules/photoGallery";
 
-import { randomizeArray } from "../../helpers/functions";
-
 const ProductPage = () => {
-  const [products, setDbProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [galleryPhotos, setGalleryPhotos] = useState([]);
   const { pathname } = useLocation();
   const [product, setProduct] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
-      setDbProducts(await BringProducts());
+      setProducts(await BringProducts());
     };
     fetchData();
   }, []);
@@ -32,6 +35,14 @@ const ProductPage = () => {
         products.find((prod) => "/" + CartProductRoute(prod) === pathname)
       );
   }, [products, product, pathname]);
+
+  useEffect(() => {
+    product &&
+      setGalleryPhotos(
+        products.filter((el) => el.category === product.category)
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product]);
 
   const category =
     product &&
@@ -47,6 +58,8 @@ const ProductPage = () => {
     { name: "galería", scroll: "categoria" },
     { name: "contacto", scroll: "contacto" },
   ];
+
+  scrollTop();
 
   return (
     <div className="page">
@@ -100,9 +113,7 @@ const ProductPage = () => {
 
               <Container w-100 ph="md">
                 <Gallery
-                  photos={products.filter(
-                    (el) => el.category === product.category
-                  )}
+                  photos={randomizeArray(galleryPhotos, galleryPhotos.length)}
                   limit={10}
                 />
               </Container>

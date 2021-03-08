@@ -4,7 +4,7 @@ import sneaker from "../../Assets/IMG/Products/demo/sneaker2.webp";
 import { BringProducts } from "../store/db/products";
 import ProductsBoard from "./products-board";
 
-const Promo = () => {
+const Promo = ({ showMain = true}) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -18,30 +18,33 @@ const Promo = () => {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Container direction="c" id="diseños">
-      <Container md-direction="c" w-100 style={{ minHeight: "105vh" }}>
-        <Container
-          w-50
-          md-w="w-100"
-          pw="lg"
-          ph="md"
-          style={{ textAlign: "center" }}
-        >
-          <Text lg main>
-            <Text red lg main>
-              Descubrí
-            </Text>{" "}
-            nuestros diseños
-          </Text>
-        </Container>
+      {showMain && (
+        <Container md-direction="c" w-100 style={{ minHeight: "105vh" }}>
+          <Container
+            w-50
+            md-w="w-100"
+            pw="lg"
+            ph="md"
+            style={{ textAlign: "center" }}
+          >
+            <Text lg main>
+              <Text red lg main>
+                Descubrí
+              </Text>{" "}
+              nuestros diseños
+            </Text>
+          </Container>
 
-        <Container w-50 md-w="w-100" pw="lg" ph="sm">
-          <Img alt="sneaker promo image" src={sneaker} d-shadow="7" />
+          <Container w-50 md-w="w-100" pw="lg" ph="sm">
+            <Img alt="sneaker promo image" src={sneaker} d-shadow="7" />
+          </Container>
         </Container>
-      </Container>
+      )}
       <Container
         lightest-gray
         w-100
@@ -51,11 +54,7 @@ const Promo = () => {
         b-shadow="inset-1"
         style={{ minHeight: "100vh" }}
       >
-        <ProductsBoard
-          products={products}
-          styled
-          animCards
-        />
+        <ProductsBoard products={products} styled animCards />
       </Container>
     </Container>
   );

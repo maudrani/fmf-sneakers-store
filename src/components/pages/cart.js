@@ -36,7 +36,12 @@ const Cart = () => {
       phone: {
         number: "",
       },
-      address: { street_name: "", street_number: "", zip_code: "" },
+      address: {
+        street_name: "",
+        street_number: "",
+        zip_code: "",
+        province: "",
+      },
     },
     payment_method: "",
     order_id: uuidv4(),
@@ -60,6 +65,7 @@ const Cart = () => {
       order.payer.address.street_name === "" ||
       order.payer.address.street_number === "" ||
       order.payer.address.zip_code === "" ||
+      order.payer.address.province === "" ||
       order.payment_method === ""
     ) {
       setFormIsValid(false);
@@ -81,6 +87,7 @@ const Cart = () => {
     address.street_name = data.street_name;
     address.street_number = parseInt(data.street_number);
     address.zip_code = data.zip_code;
+    address.province = data.province;
 
     payment_method = window.localStorage.getItem("payment-form");
     payment_method = JSON.parse(payment_method).payment_method;
@@ -131,6 +138,7 @@ const Cart = () => {
       items: order.items.map((prod) => {
         return { ...prod, unit_price: prod.unit_price * 1.1 };
       }),
+      notification_url: `https://fmfsneakers.com/api/mercadopago/notificationurl/${order.order_id}`,
     };
 
     MySwal.queue([
@@ -146,10 +154,12 @@ const Cart = () => {
             black
             ph="xs"
             weight="light"
-            style={{ fontSize: "22px", lineHeight: "30x" }}
+            style={{ fontSize: "20px", lineHeight: "30px" }}
           >
             Te redireccionaremos a Mercado Pago para que puedas finalizar con el
-            proceso de compra.
+            proceso de compra. <br /> En caso de que quieras pagar en otro
+            momento, recibiras el link de pago junto con el detalle de tu pedido
+            al correo que nos detallaste.
           </Text>
         ),
         footer: (
@@ -182,7 +192,7 @@ const Cart = () => {
         preConfirm: async () => {
           try {
             const respuesta = await clienteAxios.post(
-              "/api/mercadopago",
+              "/api/mercadopago/createpreference",
               parsedOrder
             );
             const { sandbox_init_point } = respuesta.data;
@@ -191,122 +201,372 @@ const Cart = () => {
 
             const selfNotification = {
               to: "fmfsneakersargentina@gmail.com",
-              subject: `Pedido de ${order.payer.name} ${order.payer.surname}.`,
+              subject: `🔵 Pedido de ${order.payer.name} ${order.payer.surname}.`,
               html: `<div style="max-width: 768px;">
-                  <div style="padding: 1rem 0;">
-                    <p style="font-size: 25px">
+              <div style="padding: 1rem 0;">
+                  <p style="font-size: 25px; color: rgba(0, 0, 0, 0.7);">
                       <strong>Nuevo Pedido!</strong>
-                    </p>
-                    <span style="font-size: 11px; color: #606060;">
-                      <strong style="color: #A80000;">Importante:</strong> Si la forma
-                      de pago es MercadoPago, recuerda buscar el estado de la venta en
-                      la página de MercadoPago, utilizando el ID de la compra.
-                    </span>
-                  </div>
-                  <div style="margin-top: 40px;">
-                    <h3>Contacto:</h3>
-                    <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+                      
+                  </p>
+                  <p><p style="color: rgb(184, 0, 0)">Recuerda</p>Toda la información de éste pedido está disponible en tu panel de Administrador, seccion Ordenes.</p>
+              </div>
+              <div style="margin-top: 40px;">
+                  <h3>Contacto:</h3>
+                  <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
                       <p>
-                        <strong>Nombre:</strong> ${order.payer.name} ${
+                          <strong>Nombre:</strong> ${order.payer.name} ${
                 order.payer.surname
               }
                       </p>
                       <p>
-                        <strong>Mail:</strong> ${order.payer.email}
+                          <strong>Mail:</strong> ${order.payer.email}
                       </p>
                       <p>
-                        <strong>Teléfono:</strong> ${order.payer.phone.number}
+                          <strong>Teléfono:</strong> ${order.payer.phone.number}
                       </p>
                       <p>
-                        <strong>Dirección:</strong> ${
-                          order.payer.address.street_name
-                        } ${order.payer.address.street_number}
+                          <strong>Dirección:</strong> ${
+                            order.payer.address.street_name
+                          } ${order.payer.address.street_number}
                       </p>
                       <p>
-                        <strong>Código Postal:</strong> ${
-                          order.payer.address.zip_code
-                        }
+                          <strong>Código Postal:</strong> ${
+                            order.payer.address.zip_code
+                          }
                       </p>
-                    </div>
+                      <p>
+                          <strong>Provincia:</strong> ${
+                            order.payer.address.province
+                          }
+                      </p>
                   </div>
-                  <div style="margin-top: 40px;">
-                    <h3>Resumen:</h3>
-                    <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
-                    <p>
-                        <strong>ID:</strong> ${order.order_id}
-                      </p>  
+              </div>
+              <div style="margin-top: 40px;">
+                  <h3>Resumen:</h3>
+                  <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
                       <p>
-                        <strong>Fecha:</strong> ${ObtainDate()}
+                          <strong>ID:</strong> ${order.order_id}
                       </p>
                       <p>
-                        <strong>Hora:</strong> ${ObtainTime()}
+                          <strong>Fecha:</strong> ${ObtainDate()}
                       </p>
                       <p>
-                        <strong>Forma de pago:</strong> ${
-                          order.payment_method === "mercadopago"
-                            ? "Mercado Pago"
-                            : "Transferencia Bancaria"
-                        }
+                          <strong>Hora:</strong> ${ObtainTime()}
                       </p>
                       <p>
-                        <strong>Subtotal (${
-                          order.items.length
-                        } items):</strong> $${order.totals.subtotal_products}
+                          <strong>Forma de pago:</strong> ${
+                            order.payment_method === "mercadopago"
+                              ? "Mercado Pago"
+                              : "Transferencia Bancaria"
+                          }
+                      </p>
+                      <p>
+                          <strong>Subtotal (${
+                            order.items.length
+                          } items):</strong> $${order.totals.subtotal_products}
                       </p>
                       ${
                         order.totals.other_charge !== 0
                           ? `<p>
-                        <strong>MercadoPago - recargo:</strong> $${order.totals.other_charge}
+                          <strong>MercadoPago - recargo:</strong> $${order.totals.other_charge}
                       </p>`
                           : ""
                       }
                       <p>
-                        <strong>Total:</strong> $${
-                          order.totals.subtotal_products +
-                          order.totals.other_charge
-                        }
+                          <strong>Total:</strong> $${
+                            order.totals.subtotal_products +
+                            order.totals.other_charge
+                          }
                       </p>
-                    </div>
                   </div>
-                  <div style="margin: 40px 0px;">
-                    <h3>Detalle:</h3>
-                    <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+              </div>
+              <div style="margin: 40px 0px;">
+                  <h3>Detalle:</h3>
+                  <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
                       ${order.items.map((product) => {
                         return `<div style="padding: 1rem 0; border-bottom: 1px solid lightgray;">
-                            <p>
+                          <p>
                               <strong>Nombre:</strong> ${product.name.toUpperCase()}
-                            </p>
-                            <p>
+                          </p>
+                          <p>
                               <strong>Cantidad:</strong> ${product.quantity}
-                            </p>
-                            <p>
+                          </p>
+                          <p>
                               <strong>Calidad:</strong> ${product.quality.name}
-                            </p>
-                            <p>
+                          </p>
+                          <p>
                               <strong>Talle:</strong> ${product.size}
-                            </p>
-                            <p>
+                          </p>
+                          <p>
                               <strong>Precio unitario:</strong> $${
                                 product.price
                               }
-                            </p>
-                            <p>
+                          </p>
+                          <p>
                               <strong>Total:</strong> $${product.total}
-                            </p>
-                          </div>`;
+                          </p>
+                      </div>`;
                       })}
-                    </div>
                   </div>
-                </div>`,
+              </div>
+          </div>`,
             };
 
-            console.log(respuesta.data);
+            const mailToCustomer = {
+              to: order.payer.email,
+              subject: `👟 Pasos para concretar tu pedido. 🛹`,
+              html: `<div style="display: flex; width: 100%; flex-direction: column; justify-content:center;">
+              <div style="display: block; max-width: 755px;">
+                  <div style="padding: 1rem 0;">
+                      <p style="font-size: 25px; background-color: rgba(0,0,0,0.7); padding: .5rem; text-align: center;">
+                          <strong style="color: rgba(255,255,255,1);"><span style="color: #fff1d9;">¡</span>Gracias por tu
+                              compra<span style="color: #fff1d9;">!</span></strong>
+                      </p>
+      
+                      
+      
+                      <p style="font-size: 18.5px; width: 100%; text-align: center;">
+                          <strong style="font-size: 18.5px; color: rgba(0,0,0,0.7);">👟 Solo estás a un paso de tener tus
+                              <span style="color: #FDA50F;">FMF Custom 👟</span></strong>
+                      </p>
+                      <p style="font-size: 15.5px; margin-top: 3rem; color: rgba(0,0,0,0.7);">
+                          - Si aún no pagaste tu pedido, hazlo en el siguiente link: <a href="${link}" target="_blank"
+                              onclick="window.open(link);">MercadoPago</a>
+                      </p>
+      
+                      <p style="font-size: 15.5px; margin-top: 3rem; color: rgba(0,0,0,0.7);">
+                          - Nos comunicaremos contigo luego de que tu pago haya sido aprobado.
+                      </p>
+                      <p style="font-size: 15.5px; margin-top: 3rem; color: rgba(0,0,0,0.7);">
+                          - No dudes en consultarnos
+                          por nuestras redes o nuestro mail fmfsneakersargentina@gmail.com en caso de que tengas alguna duda.
+                      </p>
+                      <p style="font-size: 15.5px; text-align: center;  margin-top: 4rem;">
+                          <strong
+                              style="font-size: 17px; background-color: rgba(0,0,0,0.7); padding: .5rem;color: rgba(255,255,255,1);">¡Listo!</strong>
+                          <strong>
+                              <p style="margin-top: -15px; text-align: center; font-size: 15.5px; white-space: pre-line;">
+                                  👟 Crearemos tus FMF Custom para que las disfrutes cuanto antes 👟</p>
+                          </strong>
+                      </p>
+                      <p style="font-size: 13px; color: #606060; margin-top: 3.2rem;">
+                          Cualquier pregunta que tengas sobre tu compra, envíala a
+                          fmfsneakersargentina@gmail.com, con el titulo 'Compra FMF' junto
+                          con el ID de tu pedido ${"(el cual lo encontrarás en el apartado 'Resumen' dentro de éste mail)"}.
+                      </p>
+                      <p style="font-size: 11px; color: #606060;">
+                          <strong style="color: #A80000;">Importante:</strong> Recuerda
+                          que el plazo de fabricación y envío es de 14 días hábiles, una vez
+                          efectuado el pago.
+                      </p>
+                  </div>
+      
+                  <div style="margin-top: 40px;">
+                      <h3 style="color: rgba(0,0,0,0.7);">Resumen del pedido:</h3>
+                      <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+                          <p>
+                              <strong>ID del pedido:</strong> ${order.order_id}
+                          </p>
+                          <p>
+                              <strong>Fecha:</strong> ${ObtainDate()}
+                          </p>
+                          <p>
+                              <strong>Hora:</strong> ${ObtainTime()}
+                          </p>
+                          <p>
+                              <strong>Forma de pago:</strong> ${
+                                order.payment_method === "mercadopago"
+                                  ? "Mercado Pago"
+                                  : "Transferencia Bancaria"
+                              }
+                          </p>
+                          <p>
+                              <strong>Subtotal (${
+                                order.items.length
+                              } items):</strong> $${
+                order.totals.subtotal_products
+              }
+                          </p>
+                          ${
+                            order.totals.other_charge !== 0
+                              ? `<p>
+                              <strong>MercadoPago - recargo:</strong> $${order.totals.other_charge}
+                          </p>`
+                              : ""
+                          }
+                          <p>
+                              <strong>Total:</strong> $${
+                                order.totals.subtotal_products +
+                                order.totals.other_charge
+                              }
+                          </p>
+                      </div>
+                  </div>
+                  <div style="margin-top: 40px;">
+                      <h3 style="color: rgba(0,0,0,0.7);">Contacto:</h3>
+                      <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+                          <p>
+                              <strong>Nombre:</strong> ${order.payer.name} ${
+                order.payer.surname
+              }
+                          </p>
+                          <p>
+                              <strong>Mail:</strong> ${order.payer.email}
+                          </p>
+                          <p>
+                              <strong>Teléfono:</strong> ${
+                                order.payer.phone.number
+                              }
+                          </p>
+                          <p>
+                              <strong>Dirección:</strong> ${
+                                order.payer.address.street_name
+                              }
+                              ${order.payer.address.street_number}
+                          </p>
+                          <p>
+                              <strong>Código Postal:</strong> ${
+                                order.payer.address.zip_code
+                              }
+                          </p>
+                          <p>
+                              <strong>Código Postal:</strong> ${
+                                order.payer.address.province
+                              }
+                          </p>
+                      </div>
+                  </div>
+                  <div style="margin: 40px 0px;">
+                      <h3 style="color: rgba(0,0,0,0.7);">Detalle:</h3>
+                      <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+                          ${order.items.map((product) => {
+                            return `<div style="padding: 1rem 0; border-bottom: 1px solid lightgray;">
+                             
+                              <p>
+                                  <strong>Nombre:</strong> ${product.name.toUpperCase()}
+                              </p>
+                              <p>
+                                  <strong>Cantidad:</strong> ${product.quantity}
+                              </p>
+                              <p>
+                                  <strong>Calidad:</strong> ${
+                                    product.quality.name
+                                  }
+                              </p>
+                              <p>
+                                  <strong>Talle:</strong> ${product.size}
+                              </p>
+                              <p>
+                                  <strong>Precio unitario:</strong> $${
+                                    product.price
+                                  }
+                              </p>
+                              <p>
+                                  <strong>Total:</strong> $${product.total}
+                              </p>
+                          </div>`;
+                          })}
+                      </div>
+                  </div>
+              </div>
+          </div>`,
+            };
+
+            console.log(respuesta);
 
             if (link) {
-              window.open(sandbox_init_point, "resizable,scrollbars,status");
+              window.open(link, "resizable,scrollbars,status");
               const orderForDb = OrderForDB();
-              setCart([]);
-              setOrder({});
+
+              try {
+                const notiRes = await clienteAxios.post(
+                  "/api/sendmail",
+                  selfNotification
+                );
+                const customerRes = await clienteAxios.post(
+                  "/api/sendmail",
+                  mailToCustomer
+                );
+
+                const orderRes = await clienteAxios.post(
+                  "/api/orders",
+                  orderForDb
+                );
+
+                if (notiRes.status !== 200 && customerRes.status !== 200) {
+                  MySwal.fire({
+                    icon: "error",
+                    title: "Ups!",
+                    text:
+                      "No pudimos enviarte los datos de tu compra. Revisa que la dirección de correo que ingresaste sea una dirección válida. En caso de serlo, por favor comunicate con fmfsneakersargentina@gmail.com para poder efectuar tu pedido.",
+                    confirmButtonText: (
+                      <Text white pw="md">
+                        Cerrar
+                      </Text>
+                    ),
+                    confirmButtonColor: colors.black,
+                  });
+                } else if (respuesta.status !== 200) {
+                  MySwal.fire({
+                    icon: "error",
+                    title: "Ups!",
+                    text:
+                      "Hubo un error al redireccionarte, por favor comunicate con fmfsneakersargentina@gmail.com para efectuar tu pedido.",
+                    confirmButtonText: (
+                      <Text white pw="md">
+                        Cerrar
+                      </Text>
+                    ),
+                    confirmButtonColor: colors.black,
+                  });
+                } else if (orderRes.status !== 200) {
+                  MySwal.fire({
+                    icon: "error",
+                    title: "Ups!",
+                    text:
+                      "Hubo un error con tu compra, por favor comunicate con fmfsneakersargentina@gmail.com para efectuar tu pedido.",
+                    confirmButtonText: (
+                      <Text white pw="md">
+                        Cerrar
+                      </Text>
+                    ),
+                    confirmButtonColor: colors.black,
+                  });
+                } else {
+                  MySwal.fire({
+                    icon: "success",
+                    title: "Listo!",
+                    text:
+                      "Te enviamos por mail las instrucciones para finalizar la compra!",
+                    confirmButtonText: "Volver al Store",
+                  }).then((result) => {
+                    result.isConfirmed && setCart([]);
+                    result.isConfirmed && setOrder({});
+                    result.isConfirmed && history.push("/store");
+                  });
+                }
+              } catch (err) {
+                MySwal.fire({
+                  icon: "error",
+                  title: "Ups!",
+                  text:
+                    "Al parecer hubo un error en tu compra, por favor comunicate con fmfsneakersargentina@gmail.com para poder efectuar tu pedido.",
+                  confirmButtonText: (
+                    <Text white pw="md">
+                      Cerrar
+                    </Text>
+                  ),
+                  confirmButtonColor: colors.black,
+                });
+
+                clienteAxios.post("/api/sendmail", {
+                  to: "fmfsneakersargentina@gmail.com",
+                  subject: "Hay un error en el funcionamiento del Carrito",
+                  html: `<div><h3>Detalle: </h3> ${JSON.stringify(
+                    err
+                  )} <p></p></div>`,
+                });
+              }
             } else {
               MySwal.insertQueueStep({
                 title: (
@@ -322,7 +582,7 @@ const Cart = () => {
                 icon: "error",
                 confirmButtonText: (
                   <Text white pw="md">
-                    Ok
+                    Cerrar
                   </Text>
                 ),
                 confirmButtonColor: colors.black,
@@ -332,7 +592,7 @@ const Cart = () => {
             MySwal.insertQueueStep({
               title: (
                 <Text sm black>
-                  Hubo un error al redireccionart. Si el problema persiste,
+                  Hubo un error al redireccionarte. Si el problema persiste,
                   ponte en contacto con{" "}
                   <Text sm dark-red>
                     fmfsneakersargentina@gmail.com{" "}
@@ -343,7 +603,7 @@ const Cart = () => {
               icon: "error",
               confirmButtonText: (
                 <Text white pw="md">
-                  Ok
+                  Cerrar
                 </Text>
               ),
               confirmButtonColor: colors.black,
@@ -372,250 +632,278 @@ const Cart = () => {
 
     result.state = "pending";
 
-    return result
-  }
+    return result;
+  };
 
   const HandleTransferPayment = async () => {
     const selfNotification = {
       to: "fmfsneakersargentina@gmail.com",
-      subject: `Pedido de ${order.payer.name} ${order.payer.surname}.`,
+      subject: `⚫ Pedido de ${order.payer.name} ${order.payer.surname}.`,
       html: `<div style="max-width: 768px;">
-          <div style="padding: 1rem 0;">
-            <p style="font-size: 25px">
+      <div style="padding: 1rem 0;">
+          <p style="font-size: 25px; color: rgba(0, 0, 0, 0.7);">
               <strong>Nuevo Pedido!</strong>
-            </p>
-            <span style="font-size: 11px; color: #606060;">
-              <strong style="color: #A80000;">Importante:</strong> Si la forma
-              de pago es MercadoPago, recuerda buscar el estado de la venta en
-              la página de MercadoPago, utilizando el ID de la compra.
-            </span>
-          </div>
-          <div style="margin-top: 40px;">
-            <h3>Contacto:</h3>
-            <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+              
+          </p>
+          <p><p style="color: rgb(184, 0, 0)">Recuerda</p>Toda la información de éste pedido está disponible en tu panel de Administrador, seccion Ordenes.</p>
+      </div>
+      <div style="margin-top: 40px;">
+          <h3>Contacto:</h3>
+          <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
               <p>
-                <strong>Nombre:</strong> ${order.payer.name} ${
+                  <strong>Nombre:</strong> ${order.payer.name} ${
         order.payer.surname
       }
               </p>
               <p>
-                <strong>Mail:</strong> ${order.payer.email}
+                  <strong>Mail:</strong> ${order.payer.email}
               </p>
               <p>
-                <strong>Teléfono:</strong> ${order.payer.phone.number}
+                  <strong>Teléfono:</strong> ${order.payer.phone.number}
               </p>
               <p>
-                <strong>Dirección:</strong> ${
-                  order.payer.address.street_name
-                } ${order.payer.address.street_number}
+                  <strong>Dirección:</strong> ${
+                    order.payer.address.street_name
+                  } ${order.payer.address.street_number}
               </p>
               <p>
-                <strong>Código Postal:</strong> ${order.payer.address.zip_code}
+                  <strong>Código Postal:</strong> ${
+                    order.payer.address.zip_code
+                  }
               </p>
-            </div>
+              <p>
+                  <strong>Código Postal:</strong> ${
+                    order.payer.address.province
+                  }
+              </p>
           </div>
-          <div style="margin-top: 40px;">
-            <h3>Resumen:</h3>
-            <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
-            <p>
-                <strong>ID:</strong> ${order.order_id}
-              </p>  
+      </div>
+      <div style="margin-top: 40px;">
+          <h3>Resumen:</h3>
+          <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
               <p>
-                <strong>Fecha:</strong> ${ObtainDate()}
+                  <strong>ID:</strong> ${order.order_id}
               </p>
               <p>
-                <strong>Hora:</strong> ${ObtainTime()}
+                  <strong>Fecha:</strong> ${ObtainDate()}
               </p>
               <p>
-                <strong>Forma de pago:</strong> ${
-                  order.payment_method === "mercadopago"
-                    ? "Mercado Pago"
-                    : "Transferencia Bancaria"
-                }
+                  <strong>Hora:</strong> ${ObtainTime()}
               </p>
               <p>
-                <strong>Subtotal (${order.items.length} items):</strong> $${
+                  <strong>Forma de pago:</strong> ${
+                    order.payment_method === "mercadopago"
+                      ? "Mercado Pago"
+                      : "Transferencia Bancaria"
+                  }
+              </p>
+              <p>
+                  <strong>Subtotal (${order.items.length} items):</strong> $${
         order.totals.subtotal_products
       }
               </p>
               ${
                 order.totals.other_charge !== 0
                   ? `<p>
-                <strong>MercadoPago - recargo:</strong> $${order.totals.other_charge}
+                  <strong>MercadoPago - recargo:</strong> $${order.totals.other_charge}
               </p>`
                   : ""
               }
               <p>
-                <strong>Total:</strong> $${
-                  order.totals.subtotal_products + order.totals.other_charge
-                }
+                  <strong>Total:</strong> $${
+                    order.totals.subtotal_products + order.totals.other_charge
+                  }
               </p>
-            </div>
           </div>
-          <div style="margin: 40px 0px;">
-            <h3>Detalle:</h3>
-            <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+      </div>
+      <div style="margin: 40px 0px;">
+          <h3>Detalle:</h3>
+          <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
               ${order.items.map((product) => {
                 return `<div style="padding: 1rem 0; border-bottom: 1px solid lightgray;">
-                    <p>
+                  <p>
                       <strong>Nombre:</strong> ${product.name.toUpperCase()}
-                    </p>
-                    <p>
+                  </p>
+                  <p>
                       <strong>Cantidad:</strong> ${product.quantity}
-                    </p>
-                    <p>
+                  </p>
+                  <p>
                       <strong>Calidad:</strong> ${product.quality.name}
-                    </p>
-                    <p>
+                  </p>
+                  <p>
                       <strong>Talle:</strong> ${product.size}
-                    </p>
-                    <p>
+                  </p>
+                  <p>
                       <strong>Precio unitario:</strong> $${product.price}
-                    </p>
-                    <p>
+                  </p>
+                  <p>
                       <strong>Total:</strong> $${product.total}
-                    </p>
-                  </div>`;
+                  </p>
+              </div>`;
               })}
-            </div>
           </div>
-        </div>`,
+      </div>
+  </div>`,
     };
 
     const mailToCustomer = {
       to: order.payer.email,
-      subject: `Pasos para concretar tu pedido.`,
-      html: `<div style="max-width: 768px;">
+      subject: `👟 Pasos para concretar tu pedido. 🛹`,
+      html: `<div style="display: flex; width: 100%; flex-direction: column; justify-content:center;">
+      <div style="display: block; max-width: 755px;">
           <div style="padding: 1rem 0;">
-            <p style="font-size: 25px">
-              <strong><span style="color: #FA3127;">¡</span>Gracias por tu compra<span style="color: #FA3127;">!</span></strong>
-            </p>
-            <p style="font-size: 18.5px; color: #181818;">
-              <strong>Solo estás a un paso de tener tus <span style="color: #FDA50F;">FMF Custom</span>:</strong>
-            </p>
-            <p style="font-size: 15.5px; margin-top: 3rem;">
-              - Realiza la transferencia por el valor de tu compra $${
-                "(" + order.totals.subtotal_products + ")"
-              } a la siguiente cuenta:
-            </p>
-            <div style="margin: 5px 0px; padding: 12px ;border: 1.5px solid lightgray; border-radius: 5px">
-              <p>
-                <strong>Titular:</strong> #TitularCuenta
-             </p>
-             <p>
-                <strong>CBU:</strong> #CBU
-             </p>
-             <p>
-                <strong>Cuenta:</strong> #Cuenta
-             </p>
-            </div>
-            <p style="font-size: 15.5px; margin: 4.5rem 0">
-             - Una vez que lo hagas, responde a éste mail con una <strong>foto</strong> del
-              comprobante de transferencia.
-            </p>
-            <p style="font-size: 15.5px; text-align: center;">
-              <strong style="font-size: 17px;">¡Listo!</strong> <strong><p style="margin-top: -15px; text-align: center; font-size: 15.5px; white-space: pre-line;">Crearemos tus FMF Custom para que las disfrutes cuanto antes.</p></strong>
-            </p>
-            <p style="font-size: 13px; color: #606060; margin-top: 3.2rem;">
-              Cualquier pregunta que tengas sobre tu compra, envíala a
-              fmfsneakersargentina@gmail.com, con el titulo 'Compra FMF' junto
-              con el ID de tu pedido ${"(el cual lo encontrarás en el apartado 'Resumen' dentro de éste mail)"}.
-            </p>
-            <p style="font-size: 11px; color: #606060;">
-              <strong style="color: #A80000;">Importante:</strong> Recuerda
-              que el plazo de fabricación y envío es de 14 días hábiles, una vez
-              efectuado el pago.
-            </p>
+              <p style="font-size: 25px; background-color: rgba(0,0,0,0.7); padding: .5rem; text-align: center;">
+                  <strong style="color: rgba(255,255,255,1);"><span style="color: #fff1d9;">¡</span>Gracias por tu
+                      compra<span style="color: #fff1d9;">!</span></strong>
+              </p>
+              <p style="font-size: 18.5px; width: 100%; text-align: center;">
+                  <strong style="font-size: 18.5px; color: rgba(0,0,0,0.7);">👟 Solo estás a un paso de tener tus
+                      <span style="color: #FDA50F;">FMF Custom 👟</span></strong>
+              </p>
+              <p style="font-size: 15.5px; margin-top: 3rem; color: rgba(0,0,0,0.7);">
+                  - Realiza la transferencia por el valor de tu compra $${
+                    "(" + order.totals.subtotal_products + ")"
+                  } a la siguiente cuenta:
+              </p>
+              <div
+                  style="margin: 5px 0px; padding: 12px ;border: 1.5px solid lightgray; border-radius: 5px; width: 100%;">
+                  <p>
+                      <strong style="color: rgba(0,0,0,0.7);">Banco:</strong> Banco Galicia
+                  </p>
+                  <p>
+                      <strong style="color: rgba(0,0,0,0.7);">CUIL:</strong> 27-25922836-6
+                  </p>
+                  <p>
+                      <strong style="color: rgba(0,0,0,0.7);">CBU:</strong> 0070089430004118574849
+                  </p>
+                  <p>
+                      <strong style="color: rgba(0,0,0,0.7);">Cuenta:</strong> 4118574-8 089-4
+                  </p>
+              </div>
+              <p style="font-size: 15.5px; margin: 4.5rem 0; color: rgba(0,0,0,0.7);">
+                  - Una vez que lo hagas, responde a éste mail o a fmfsneakersargentina@gmail.com con una <strong>foto</strong> del
+                  comprobante de transferencia y el id de tu pédido. Para que podamos verificar que realizaste el pago.
+              </p>
+              <p style="font-size: 15.5px; text-align: center;">
+                  <strong
+                      style="font-size: 17px; background-color: rgba(0,0,0,0.7); padding: .5rem;color: rgba(255,255,255,1);">¡Listo!</strong>
+                  <strong>
+                      <p style="margin-top: -15px; text-align: center; font-size: 15.5px; white-space: pre-line;">
+                          👟 Crearemos tus FMF Custom para que las disfrutes cuanto antes 👟</p>
+                  </strong>
+              </p>
+              <p style="font-size: 13px; color: #606060; margin-top: 3.2rem;">
+                  Cualquier pregunta que tengas sobre tu compra, envíala a
+                  fmfsneakersargentina@gmail.com, con el titulo 'Compra FMF' junto
+                  con el ID de tu pedido ${"(el cual lo encontrarás en el apartado 'Resumen' dentro de éste mail)"}.
+              </p>
+              <p style="font-size: 11px; color: #606060;">
+                  <strong style="color: #A80000;">Importante:</strong> Recuerda
+                  que el plazo de fabricación y envío es de 14 días hábiles, una vez
+                  efectuado el pago.
+              </p>
+          </div>
+
+          <div style="margin-top: 40px;">
+              <h3 style="color: rgba(0,0,0,0.7);">Resumen del pedido:</h3>
+              <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+                  <p>
+                      <strong>ID del pedido:</strong> ${order.order_id}
+                  </p>
+                  <p>
+                      <strong>Fecha:</strong> ${ObtainDate()}
+                  </p>
+                  <p>
+                      <strong>Hora:</strong> ${ObtainTime()}
+                  </p>
+                  <p>
+                      <strong>Forma de pago:</strong> ${
+                        order.payment_method === "mercadopago"
+                          ? "Mercado Pago"
+                          : "Transferencia Bancaria"
+                      }
+                  </p>
+                  <p>
+                      <strong>Subtotal (${
+                        order.items.length
+                      } items):</strong> $${order.totals.subtotal_products}
+                  </p>
+                  ${
+                    order.totals.other_charge !== 0
+                      ? `<p>
+                      <strong>MercadoPago - recargo:</strong> $${order.totals.other_charge}
+                  </p>`
+                      : ""
+                  }
+                  <p>
+                      <strong>Total:</strong> $${
+                        order.totals.subtotal_products +
+                        order.totals.other_charge
+                      }
+                  </p>
+              </div>
           </div>
           <div style="margin-top: 40px;">
-            <h3>Resumen del pedido:</h3>
-            <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
-              <p>
-                <strong>ID del pedido:</strong> ${order.order_id}
-              </p>
-              <p>
-                <strong>Fecha:</strong> ${ObtainDate()}
-              </p>
-              <p>
-                <strong>Hora:</strong> ${ObtainTime()}
-              </p>
-              <p>
-                <strong>Forma de pago:</strong> ${
-                  order.payment_method === "mercadopago"
-                    ? "Mercado Pago"
-                    : "Transferencia Bancaria"
-                }
-              </p>
-              <p>
-                <strong>Subtotal (${order.items.length} items):</strong> $${
-        order.totals.subtotal_products
-      }
-              </p>
-              ${
-                order.totals.other_charge !== 0
-                  ? `<p>
-                <strong>MercadoPago - recargo:</strong> $${order.totals.other_charge}
-              </p>`
-                  : ""
-              }
-              <p>
-                <strong>Total:</strong> $${
-                  order.totals.subtotal_products + order.totals.other_charge
-                }
-              </p>
-            </div>
-          </div>
-          <div style="margin-top: 40px;">
-            <h3>Contacto:</h3>
-            <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
-              <p>
-                <strong>Nombre:</strong> ${order.payer.name} ${
+              <h3 style="color: rgba(0,0,0,0.7);">Contacto:</h3>
+              <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+                  <p>
+                      <strong>Nombre:</strong> ${order.payer.name} ${
         order.payer.surname
       }
-              </p>
-              <p>
-                <strong>Mail:</strong> ${order.payer.email}
-              </p>
-              <p>
-                <strong>Teléfono:</strong> ${order.payer.phone.number}
-              </p>
-              <p>
-                <strong>Dirección:</strong> ${order.payer.address.street_name} 
-                ${order.payer.address.street_number}
-              </p>
-              <p>
-                <strong>Código Postal:</strong> ${order.payer.address.zip_code}
-              </p>
-            </div>
+                  </p>
+                  <p>
+                      <strong>Mail:</strong> ${order.payer.email}
+                  </p>
+                  <p>
+                      <strong>Teléfono:</strong> ${order.payer.phone.number}
+                  </p>
+                  <p>
+                      <strong>Dirección:</strong> ${
+                        order.payer.address.street_name
+                      }
+                      ${order.payer.address.street_number}
+                  </p>
+                  <p>
+                      <strong>Código Postal:</strong> ${
+                        order.payer.address.zip_code
+                      }
+                  </p>
+                  <p>
+                      <strong>Código Postal:</strong> ${
+                        order.payer.address.province
+                      }
+                  </p>
+              </div>
           </div>
           <div style="margin: 40px 0px;">
-            <h3>Detalle:</h3>
-            <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
-              ${order.items.map((product) => {
-                return `<div style="padding: 1rem 0; border-bottom: 1px solid lightgray;">
-                    <p>
-                      <strong>Nombre:</strong> ${product.name.toUpperCase()}
-                    </p>
-                    <p>
-                      <strong>Cantidad:</strong> ${product.quantity}
-                    </p>
-                    <p>
-                      <strong>Calidad:</strong> ${product.quality.name}
-                    </p>
-                    <p>
-                      <strong>Talle:</strong> ${product.size}
-                    </p>
-                    <p>
-                      <strong>Precio unitario:</strong> $${product.price}
-                    </p>
-                    <p>
-                      <strong>Total:</strong> $${product.total}
-                    </p>
+              <h3 style="color: rgba(0,0,0,0.7);">Detalle:</h3>
+              <div style="margin: 10px 0px; padding: 20px ;border: 1.5px solid lightgray; border-radius: 5px">
+                  ${order.items.map((product) => {
+                    return `<div style="padding: 1rem 0; border-bottom: 1px solid lightgray;">
+                      <p>
+                          <strong>Nombre:</strong> ${product.name.toUpperCase()}
+                      </p>
+                      <p>
+                          <strong>Cantidad:</strong> ${product.quantity}
+                      </p>
+                      <p>
+                          <strong>Calidad:</strong> ${product.quality.name}
+                      </p>
+                      <p>
+                          <strong>Talle:</strong> ${product.size}
+                      </p>
+                      <p>
+                          <strong>Precio unitario:</strong> $${product.price}
+                      </p>
+                      <p>
+                          <strong>Total:</strong> $${product.total}
+                      </p>
                   </div>`;
-              })}
-            </div>
+                  })}
+              </div>
           </div>
-        </div>`,
+      </div>
+  </div>`,
     };
 
     const orderForDb = OrderForDB();
@@ -625,31 +913,75 @@ const Cart = () => {
         "/api/sendmail",
         selfNotification
       );
-      const resCustomer = await clienteAxios.post(
+      const customerRes = await clienteAxios.post(
         "/api/sendmail",
         mailToCustomer
       );
 
       const orderRes = await clienteAxios.post("/api/orders", orderForDb);
 
-      setCart([]);
-      setOrder({});
-
+      if (
+        notiRes.status === 200 &&
+        customerRes.status === 200 &&
+        orderRes.status === 200
+      ) {
+        MySwal.fire({
+          icon: "success",
+          title: "Listo!",
+          text:
+            "Te enviamos por mail las instrucciones para finalizar la compra!",
+          confirmButtonText: "Volver al Store",
+        }).then((result) => {
+          result.isConfirmed && setCart([]);
+          result.isConfirmed && setOrder({});
+          result.isConfirmed && history.push("/store");
+        });
+      } else if (customerRes.status !== 200) {
+        MySwal.fire({
+          icon: "error",
+          title: "Ups!",
+          text:
+            "No pudimos enviarte los datos de tu compra. Revisa que la dirección de correo que ingresaste sea una dirección válida, en caso de serlo, por favor comunicate con fmfsneakersargentina@gmail.com para poder efectuar tu pedido.",
+          confirmButtonText: (
+            <Text white pw="md">
+              Cerrar
+            </Text>
+          ),
+          confirmButtonColor: colors.black,
+        });
+      } else {
+        MySwal.fire({
+          icon: "error",
+          title: "Ups!",
+          text:
+            "Al parecer hubo un error en tu compra, por favor comunicate con fmfsneakersargentina@gmail.com para poder efectuar tu pedido.",
+          confirmButtonText: (
+            <Text white pw="md">
+              Cerrar
+            </Text>
+          ),
+          confirmButtonColor: colors.black,
+        });
+      }
+    } catch (err) {
       MySwal.fire({
-        icon: "success",
-        title: "Listo!",
+        icon: "error",
+        title: "Ups!",
         text:
-          "Te enviamos por mail las instrucciones para finalizar la compra!",
-        confirmButtonText: "Volver al Store",
-      }).then((result) => {
-        result && history.push("/store");
+          "Al parecer hubo un error en tu compra, por favor comunicate con fmfsneakersargentina@gmail.com para poder efectuar tu pedido.",
+        confirmButtonText: (
+          <Text white pw="md">
+            Cerrar
+          </Text>
+        ),
+        confirmButtonColor: colors.black,
       });
 
-      console.log(notiRes.data);
-      console.log(resCustomer.data);
-      console.log(orderRes.data);
-    } catch (err) {
-      console.log(err);
+      clienteAxios.post("/api/sendmail", {
+        to: "fmfsneakersargentina@gmail.com",
+        subject: "Hay un error en el funcionamiento del Carrito",
+        html: `<div><h3>Detalle: </h3> ${JSON.stringify(err)} <p></p></div>`,
+      });
     }
   };
 
@@ -692,6 +1024,7 @@ const Cart = () => {
   let navbarLinks = [
     { name: "inicio", route: "/" },
     { name: "store", route: "/store" },
+    { name: "categorías", route: "/categories" },
     { name: "contacto", scroll: "contacto" },
   ];
 

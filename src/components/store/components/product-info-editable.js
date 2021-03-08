@@ -109,7 +109,7 @@ const ProductModal = ({ data }) => {
       confirmButtonColor: colors.black,
       cancelButtonColor: colors["dark-gray"],
     }).then((result) => {
-      result.value && history.push("/cart");
+      result.isConfirmed && history.push("/cart");
       scrollTop();
     });
   };

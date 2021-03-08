@@ -18,7 +18,7 @@ const Footer = () => {
         <Container w-20 sm-w="w-70" justify='sa'>
           <Container  w-50 md-w='w-30'>
             <a
-              href="https://www.facebook.com/FMF-Sneakers-Argentina-2-102814918391934/"
+              href="https://www.facebook.com/FMF-Sneakers-106709671411797"
               rel="noreferrer"
               target="_blank"
             >
@@ -27,7 +27,7 @@ const Footer = () => {
           </Container>
           <Container  w-50 md-w='w-30'>
             <a
-              href="https://www.instagram.com/fmfsneakers_arg2/"
+              href="https://www.instagram.com/fmfsneakers/"
               rel="noreferrer"
               target="_blank"
             >

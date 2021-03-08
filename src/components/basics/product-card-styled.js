@@ -3,6 +3,7 @@ import { Container, Img, Text, Configs } from "../../framework/assets";
 import styled from "styled-components";
 import categories from "../store/db/categories";
 import { IsMobile } from "../../helpers/functions";
+import Loader from "./loader";
 
 const CardContainer = styled(Container)`
   cursor: pointer;
@@ -43,13 +44,10 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
         }
       : {};
 
-  const imgAnims = animated
-    ? {
-        "hover-shadow": !IsMobile() && "7",
-        "hover-scale": !IsMobile() && "lg",
-      }
-    : {};
-
+  const imgAnims = {
+    "hover-shadow": !IsMobile() && "7",
+    "hover-scale": !IsMobile() && "lg",
+  };
   const imgMobileConfigs =
     IsMobile() && inViewport && animated
       ? {
@@ -72,7 +70,7 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
       h-100
       pw="xs"
       ph="xs"
-      b-shadow="6"
+      b-shadow="5"
       direction="c"
       ref={forwardedRef}
       {...containerAnims}
@@ -81,20 +79,25 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
       onClick={onClick}
     >
       <Container
-        h-45
         w-100
         b-shadow="6"
-        style={{ maxHeight: "30rem", overflow: "hidden" }}
+        style={{ maxHeight: "100%", overflow: "hidden" }}
       >
-        <CardImg
-          src={img}
-          ref={forwardedRef}
-          {...imgMobileConfigs}
-          {...imgAnims}
-          style={{ transition: "0.5s" }}
-        />
+        {img ? (
+          <CardImg
+            src={img}
+            ref={forwardedRef}
+            {...imgMobileConfigs}
+            {...imgAnims}
+            style={{ transition: "0.5s" }}
+          />
+        ) : (
+          <Container ph='md'>
+            <Loader />
+          </Container>
+        )}
       </Container>
-      <Container direction="c" h-40 w-100>
+      <Container direction="c" w-100>
         <Container ph="sm" direction="c">
           <CardText
             {...textOptions}

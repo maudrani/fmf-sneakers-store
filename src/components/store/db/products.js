@@ -1,6 +1,7 @@
 import productsInfo from "../db/products-info.json";
 import clienteAxios from "../../../config/axios";
 
+// eslint-disable-next-line no-unused-vars
 const ImportingLocalProducts = () => {
   const importAll = (r) => {
     let images = {};
@@ -115,11 +116,18 @@ export const CreateProduct = async (product) => {
   }
 };
 
+export const UpdateProduct = async (product) => {
+  try {
+    await clienteAxios.put(`/api/products/update/${product._id}`, product);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const BringProducts = async (params) => {
   try {
     const respuesta = await clienteAxios.post("/api/products/bring", params);
     return respuesta.data;
-
   } catch (err) {
     console.log(err);
     return [];

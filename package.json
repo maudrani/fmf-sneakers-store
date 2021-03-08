@@ -19,7 +19,7 @@
     "react-hook-form": "^6.15.1",
     "react-iframe": "^1.8.0",
     "react-in-viewport": "^1.0.0-alpha.16",
-    "react-multi-carousel": "^2.6.1",
+    "react-intersection-observer": "^8.31.0",
     "react-rating-stars-component": "^2.2.0",
     "react-responsive-carousel": "^3.2.11",
     "react-router-dom": "^5.2.0",

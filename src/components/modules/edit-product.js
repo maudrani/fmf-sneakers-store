@@ -154,7 +154,7 @@ const EditProduct = ({product, cart, setCart}) => {
           confirmButtonColor: colors["dark-red"],
           cancelButtonColor: colors["dark-gray"],
         }).then((result) => {
-          result.value && setSaveChanges(true);
+          result.isConfirmed && setSaveChanges(true);
         });
     };
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Container, Text, Input, Img } from "../../../framework/assets";
+import { Container, Text, Input, Img, Select } from "../../../framework/assets";
 import mercdopagoLogo from "../../../Assets/IMG/Various/mercadopago-logo.png";
 import bankLogo from "../../../Assets/IMG/Various/bank_logo.png";
 import styled from "styled-components";
@@ -193,80 +193,129 @@ const PaymentForm = ({ onSubmit, SetIsValid }) => {
 
             <Container
               w-100
-              direction="c"
               align="fs"
               className="personalDataInput data-input"
               mh="sm"
+              sm-direction="c"
             >
-              <Container w-47 xs-w="w-100" direction="c">
-                <Input
+              <Container w-100 direction="c" align="fs">
+                <Container w-90 xs-w="w-100" direction="c">
+                  <Input
+                    border-color="dark-gray"
+                    className="data-input"
+                    type="text"
+                    placeholder="Calle"
+                    ph="xs"
+                    w-100
+                    name="street_name"
+                    defaultValue={formData.street_name || ""}
+                    onChange={(e) =>
+                      SaveFormData("street_name", e) || SetIsValid(false)
+                    }
+                    ref={register({
+                      required: { value: true, message: "Campo requerido " },
+                    })}
+                  />
+                  <Text w-100 weight="light" red>
+                    {errors.street_name?.message}
+                  </Text>
+                </Container>
+
+                <Container
+                  w-90
+                  justify="sb"
+                  sm-w="w-100"
+                  style={{ padding: "1rem 0" }}
+                >
+                  <Container w-47 direction="c">
+                    <Input
+                      border-color="dark-gray"
+                      className="data-input"
+                      type="tel"
+                      placeholder="Número"
+                      name="street_number"
+                      ph="xs"
+                      w-100
+                      defaultValue={formData.street_number || ""}
+                      onChange={(e) =>
+                        SaveFormData("street_number", e) || SetIsValid(false)
+                      }
+                      ref={register({
+                        required: { value: true, message: "Campo requerido " },
+                      })}
+                    />
+                    <Text w-100 weight="light" red>
+                      {errors.street_number?.message}
+                    </Text>
+                  </Container>
+                  <Container w-47 direction="c">
+                    <Input
+                      border-color="dark-gray"
+                      className="data-input"
+                      type="tel"
+                      placeholder="Código Postal"
+                      ph="xs"
+                      w-100
+                      name="zip_code"
+                      defaultValue={formData.zip_code || ""}
+                      onChange={(e) =>
+                        SaveFormData("zip_code", e) || SetIsValid(false)
+                      }
+                      ref={register({
+                        required: { value: true, message: "Campo requerido " },
+                      })}
+                    />
+                    <Text w-100 weight="light" red>
+                      {errors.zip_code?.message}
+                    </Text>
+                  </Container>
+                </Container>
+              </Container>
+
+              <Container w-90 xs-w="w-100" direction="c">
+                <Select
                   border-color="dark-gray"
                   className="data-input"
                   type="text"
-                  placeholder="Calle"
+                  placeholder="Provincia"
                   ph="xs"
                   w-100
-                  name="street_name"
-                  defaultValue={formData.street_name || ""}
+                  name="province"
+                  defaultValue={formData.province || ""}
                   onChange={(e) =>
-                    SaveFormData("street_name", e) || SetIsValid(false)
+                    SaveFormData("province", e) || SetIsValid(false)
                   }
                   ref={register({
                     required: { value: true, message: "Campo requerido " },
                   })}
-                />
+                >
+                  <option value='Buenos Aires'>Buenos Aires</option>
+                  <option value='Catamarca'>Catamarca</option>
+                  <option value='Chaco'>Chaco</option>
+                  <option value='Chubut'>Chubut</option>
+                  <option value='Córdoba'>Córdoba</option>
+                  <option value='Corrientes'>Corrientes</option>
+                  <option value='Entre Ríos'>Entre Ríos</option>
+                  <option value='Formosa'>Formosa</option>
+                  <option value='Jujuy'>Jujuy</option>
+                  <option value='La Pampa'>La Pampa</option>
+                  <option value='La Rioja'>La Rioja</option>
+                  <option value='Mendoza'>Mendoza</option>
+                  <option value='Misiones'>Misiones</option>
+                  <option value='Neuquén'>Neuquén</option>
+                  <option value='Río Negro'>Río Negro</option>
+                  <option value='Salta'>Salta</option>
+                  <option value='San Juan'>San Juan</option>
+                  <option value='San Luis'>San Luis</option>
+                  <option value='Santa Cruz'>Santa Cruz</option>
+                  <option value='Santa Fe'>Santa Fe</option>
+                  <option value='Santiago del Estero'>Santiago del Estero</option>
+                  <option value='Tierra del Fuego'>Tierra del Fuego</option>
+                  <option value='Tucumán'>Tucumán</option>
+                </Select>
                 <Text w-100 weight="light" red>
                   {errors.street_name?.message}
                 </Text>
-              </Container>
-              <Container
-                w-47
-                justify="sb"
-                sm-w="w-100"
-                style={{ padding: "1rem 0" }}
-              >
-                <Container w-47 direction="c">
-                  <Input
-                    border-color="dark-gray"
-                    className="data-input"
-                    type="tel"
-                    placeholder="Número"
-                    name="street_number"
-                    ph="xs"
-                    w-100
-                    defaultValue={formData.street_number || ""}
-                    onChange={(e) =>
-                      SaveFormData("street_number", e) || SetIsValid(false)
-                    }
-                    ref={register({
-                      required: { value: true, message: "Campo requerido " },
-                    })}
-                  />
-                  <Text w-100 weight="light" red>
-                    {errors.street_number?.message}
-                  </Text>
-                </Container>
-                <Container w-47 direction="c">
-                  <Input
-                    border-color="dark-gray"
-                    className="data-input"
-                    type="tel"
-                    placeholder="Código Postal"
-                    ph="xs"
-                    w-100
-                    name="zip_code"
-                    defaultValue={formData.zip_code || ""}
-                    onChange={(e) =>
-                      SaveFormData("zip_code", e) || SetIsValid(false)
-                    }
-                    ref={register({
-                      required: { value: true, message: "Campo requerido " },
-                    })}
-                  />
-                  <Text w-100 weight="light" red>
-                    {errors.zip_code?.message}
-                  </Text>
-                </Container>
               </Container>
             </Container>
           </Container>

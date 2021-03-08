@@ -8,6 +8,23 @@ import search from "../../Assets/IMG/Various/icons/simple-search.svg";
 import categories from "../store/db/categories";
 import Acordeon from "../store/components/acordeon-menu";
 import Loader from "../basics/loader";
+import styled from "styled-components";
+
+const StoreContainer = styled(Container)`
+  @media (max-width: 480px) {
+    .search-tab {
+      padding: 10rem 0 5rem 0;
+
+      .reset {
+        display: none;
+      }
+
+      .search-resume {
+        padding: 2rem 0 0 0;
+      }
+    }
+  }
+`;
 
 const Store = () => {
   const [products, setDbProducts] = useState([]);
@@ -22,6 +39,7 @@ const Store = () => {
         filter: {
           name: 1,
           category: 1,
+          tags: 1,
           price: 1,
           "images.x25": 1,
           "images.x15": 1,
@@ -55,6 +73,7 @@ const Store = () => {
         const toSearchIn = JSON.stringify(
           product.name + product.tags + product.category
         ).toLowerCase();
+
         return toSearchIn.includes(searchText);
       })
     );
@@ -88,24 +107,42 @@ const Store = () => {
 
   const navbarLinks = [
     { name: "inicio", route: "/" },
+    { name: "categorías", route: "/categories" },
     { name: "contacto", scroll: "contacto" },
   ];
 
   return (
     <div className="page" ref={StoreRef}>
       <Navbar bgColor="black" links={navbarLinks} />
-      <Container h-100 direction="c" style={{ minHeight: "100vh" }}>
-        <Container align="fe" ph="md" vh-30 w-100 style={{ zIndex: "2" }}>
-          <Container direction="c" align="fs" pw="md" w-40>
+      <StoreContainer h-100 direction="c" style={{ minHeight: "100vh" }}>
+        <Container
+          align="fe"
+          ph="md"
+          vh-30
+          w-100
+          xs-direction="cr"
+          className="search-tab"
+          style={{ zIndex: "2" }}
+        >
+          <Container
+            className="search-resume"
+            direction="c"
+            align="fs"
+            xs-align="c"
+            pw="md"
+            w-40
+            xs-w="w-100"
+          >
             <Text>FMF Sneakers / Store</Text>
             <Text
               sm
+              sm-size="xs"
               style={{ left: "0", bottom: "15%", textTransform: "capitalize" }}
             >
               {searchValue} ({searchResult.length})
             </Text>
           </Container>
-          <Container w-60 justify="fs">
+          <Container w-60 justify="fs" xs-justify="c" xs-w="w-100">
             <Container
               whitesmoke
               b-radius="xs"
@@ -139,6 +176,7 @@ const Store = () => {
               </Container>
             </Container>
             <Text
+              className="reset"
               pw="xs"
               dark-gray
               hover-color="light-gray"
@@ -160,7 +198,7 @@ const Store = () => {
             white
             w-20
             sm-w="w-100"
-            style={{ minHeight: "100vh", zIndex: "1" }}
+            /* style={{ minHeight: "100vh", zIndex: "1" }} */
           >
             <Acordeon title="Categorías">
               {categories.map((op, idx) => {
@@ -204,7 +242,13 @@ const Store = () => {
                   (IsMobile() && "8rem") || (MaxWidth(1000) ? "10rem" : "16rem")
                 }
                 maxSize="1fr"
-              />
+              >
+                {searchResult.length === 0 && (
+                  <Container vh-100 align="fs" w-100 ph="xs">
+                    <Text sm>Sin resultados</Text>
+                  </Container>
+                )}
+              </ProductsBoard>
             </Container>
           ) : (
             <Container vh-100 w-100>
@@ -212,7 +256,7 @@ const Store = () => {
             </Container>
           )}
         </Container>
-      </Container>
+      </StoreContainer>
     </div>
   );
 };

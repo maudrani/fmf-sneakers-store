@@ -1,22 +1,49 @@
-import React from "react";
-import { Container, Text } from "../../framework/assets";
-import Panel from "../admin/components/panel";
+import React, { useState } from "react";
+import { Container, Text, Configs } from "../../framework/assets";
 import styled from "styled-components";
 import Navbar from "../modules/navbar";
 import ProductsPanel from "../admin/components/products-panel";
+import OptionDesplegable from "../admin/components/option-desplegable";
+import { UseLocalStorage } from "../../helpers/customHooks";
+import { useHistory } from "react-router-dom";
 
 const AdminPageContainer = styled(Container)`
   min-height: 100vh;
+
+  .desplegable-option {
+    font-weight: 300;
+    padding: ${Configs.Sizes.xs};
+    cursor: pointer;
+
+    :hover {
+      transform: scale(1.2);
+      color: ${Configs.Colors["dark-gray"]};
+    }
+  }
 `;
 
 const AdminPage = () => {
+  const [panelToShow, setPanelToShow] = useState("products_products");
+  const [isAuthorized, setIsAuthorized] = UseLocalStorage("isAuthorized", "");
+
   let navbarLinks = [
     { name: "inicio", route: "/" },
     { name: "store", route: "/store" },
   ];
 
+  const history = useHistory();
+  const LogOut = () => {
+    setIsAuthorized(false);
+    history.push("/login");
+  };
+
   return (
-    <AdminPageContainer whitesmoke direction="c" bg-image="wall2">
+    <AdminPageContainer
+      whitesmoke
+      direction="c"
+      bg-image="wall2"
+      className="page"
+    >
       <Container w-100 d-shadow="8" style={{ zIndex: "100" }}>
         <Navbar
           showCart={false}
@@ -25,35 +52,59 @@ const AdminPage = () => {
           links={navbarLinks}
         />
       </Container>
-      <Container w-100>
-        <Container w-15 vh-100 darkest-yellow d-shadow="8" direction="c">
-          <Container ph="md">
-            <Text>Productos</Text>
+
+      <Container w-100 justify="fe">
+        <Container
+          w-15
+          black
+          d-shadow="8"
+          direction="c"
+          justify="fs"
+          style={{ position: "absolute", top: "0", bottom: "0", left: "0" }}
+        >
+          <Container w-100 ph="md" mh="xs" yellow>
+            <OptionDesplegable title="Productos">
+              <Container direction="c" align="fs" ph="sm">
+                <Text
+                  className="desplegable-option"
+                  onClick={() => setPanelToShow("products_categories")}
+                >
+                  Categorías
+                </Text>
+                <Text
+                  className="desplegable-option"
+                  onClick={() => setPanelToShow("products_top")}
+                >
+                  Top
+                </Text>
+                <Text
+                  className="desplegable-option"
+                  onClick={() => setPanelToShow("products_products")}
+                >
+                  Todos los Productos
+                </Text>
+                <Text
+                  className="desplegable-option"
+                  onClick={() => setPanelToShow("products_all")}
+                >
+                  Todo
+                </Text>
+              </Container>
+            </OptionDesplegable>
+          </Container>
+
+          <Container w-100 ph="md" mh="xs" yellow>
+            <OptionDesplegable title="Salir">
+              <Text className="desplegable-option" onClick={() => LogOut()}>
+                Cerrar Sesión
+              </Text>
+            </OptionDesplegable>
           </Container>
         </Container>
 
-        <Container w-85 vh-100 ph="sm" pw="sm" style={{ marginTop: "-4rem" }}>
-          <Panel>
-            <Container
-              w-100
-              direction="c"
-              justify="sb"
-              style={{ minHeight: "80vh" }}
-            >
-              <Container w-100 direction="c">
-                <Container w-100 justify="fs">
-                  <Text md main>
-                    Productos
-                  </Text>
-                </Container>
-                <Container></Container>
-              </Container>
-
-              <Container w-100>
-                <ProductsPanel />
-              </Container>
-            </Container>
-          </Panel>
+        {/* Panels */}
+        <Container w-85 ph="sm" pw="sm" style={{ minHeight: "100vh" }}>
+          <ProductsPanel panels={panelToShow} />
         </Container>
       </Container>
     </AdminPageContainer>

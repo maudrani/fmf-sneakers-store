@@ -1,7 +1,8 @@
 import React from "react";
 import { Container, Img, Text } from "../../framework/assets";
 import styled from "styled-components";
-import { IsMobile } from "../../helpers/functions";
+import { useHistory } from "react-router-dom";
+import { IsMobile, CartProductRoute } from "../../helpers/functions";
 
 const GalleryContainer = styled(Container)`
   position: relative;
@@ -20,6 +21,7 @@ const GalleryContainer = styled(Container)`
   }
 
   .img {
+    cursor: pointer;
     position: relative;
     height: 100%;
     width: 100%;
@@ -66,7 +68,7 @@ const GalleryContainer = styled(Container)`
     width: 100%;
     object-fit: cover;
     transition: 0.3s ease-in-out;
-    opacity: 0.15;
+    /* opacity: 0.15; */
 
     :hover {
       opacity: 1;
@@ -90,6 +92,8 @@ const TextName = styled(Text)`
 `;
 
 const Gallery = ({ photos = [], limit }) => {
+  const history = useHistory();
+
   return (
     <GalleryContainer w-100 direction="c" align="fs">
       {photos.slice(0, limit).map((sneaker, idx) => {
@@ -100,6 +104,7 @@ const Gallery = ({ photos = [], limit }) => {
             align="fs"
             justify="fs"
             b-shadow="8"
+            onClick={() => history.push("/" + CartProductRoute(sneaker))}
           >
             <TextName
               main

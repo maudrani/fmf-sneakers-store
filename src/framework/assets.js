@@ -48,6 +48,18 @@ const BorderConfig = {
     semi: "5vh",
     default: 0,
   }),
+  border: styledMap("border", {
+    default: "none",
+    "1px": "1px solid",
+    "2px": "2px solid",
+    "3px": "3px solid",
+    "4px": "4px solid",
+    "5px": "5px solid",
+  }),
+  "border-color": styledMap("border-color", {
+    ...colors,
+    default: colors.black,
+  }),
 };
 const FlexConfigs = {
   display: "flex",
@@ -87,6 +99,7 @@ const Shadows = {
     "inset-4": "inset 0px 0px 131px -22px rgba(0,0,0,0.85);",
     "inset-5": "inset 0px 0px 36px -21px rgba(29,29,29,1);",
     "inset-6": "inset 0px 0px 7px 0px rgba(0,0,0,0.22);",
+    "inset-7": "inset 0px 0px 185px 130px rgba(0,0,0,0.75);",
     8: "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);",
     9: "0px 0px 7px 0px rgba(0,0,0,0.22);",
   }),
@@ -463,6 +476,8 @@ const Select = styled.select`
 
 const Configs = {
   HoverConfigs: HoverConfigs,
+  Sizes: sizes,
+  Colors: colors
 };
 
 export { Container, Text, Button, Img, Input, Select, Configs };

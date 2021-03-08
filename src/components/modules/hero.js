@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Button, Img } from "../../framework/assets";
+import { Container, Img, Text } from "../../framework/assets";
 import city from "../../Assets/IMG/Background/city.svg";
 import logo from "../../Assets/IMG/Brand/logo-full.svg";
 import styled from "styled-components";
@@ -32,21 +32,43 @@ const Hero = () => {
               style={{ minWidth: "18rem" }}
             />
           </Container>
-          <RouteLink to="/store">
-            <Button
-              xs
-              white
-              ph="xs"
-              pw="md"
+
+          <Container w-30 md-w='w-70' sm-direction='c' /* h-15 */>
+            <Container
+              w-50
+              sm-w='w-100'
+              black
+              mw="xs"
               hover-scale="sm"
-              hover-color="yellow"
-              bg="black"
-              weight="bold"
-              d-shadow="7"
+              hover-bg="darkest-yellow"
+              b-shadow="8"
+              style={{ padding: ".5rem 0" }}
+              bg-image='wall'
             >
-              Ir al Store
-            </Button>
-          </RouteLink>
+              <RouteLink to="/categories" style={{ textDecoration: "none" }}>
+                <Text main white md>
+                  categorías
+                </Text>
+              </RouteLink>
+            </Container>
+            <Container
+              w-50
+              sm-w='w-100'
+              black
+              mw="xs"
+              hover-scale="sm"
+              hover-bg="darkest-yellow"
+              b-shadow="8"
+              bg-image='wall'
+              style={{ padding: ".5rem 0" }}
+            >
+              <RouteLink to="/store" style={{ textDecoration: "none" }}>
+                <Text main white md>
+                  store
+                </Text>
+              </RouteLink>
+            </Container>
+          </Container>
         </Container>
       </Container>
       <City vh-15 w-100 />

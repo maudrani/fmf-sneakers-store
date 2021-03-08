@@ -162,6 +162,10 @@ const OrderResume = ({ order }) => {
                 <Text light-gray>Código Postal:</Text>
                 <Text>{order.payer.address.zip_code}</Text>
               </Container>
+              <Container direction="c" align="fs">
+                <Text light-gray>Provincia:</Text>
+                <Text>{order.payer.address.province}</Text>
+              </Container>
             </Container>
           </Container>
 

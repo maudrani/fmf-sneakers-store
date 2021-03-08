@@ -10,6 +10,7 @@ const PageNotFound = () => {
   const navLinks = [
     { name: "inicio", route: "/" },
     { name: "store", route: "/store" },
+    { name: "categorías", route: "/categories" },
     { name: "contacto", scroll: "contacto" },
   ];
 
@@ -34,10 +35,10 @@ const PageNotFound = () => {
         hover-bg="dark-yellow"
         hover-scale="sm"
         style={{ padding: ".6rem 2rem", cursor: "pointer" }}
-        onClick={() => history.goBack()}
+        onClick={() => history.pish('/')}
       >
         <Text md main>
-          Volver
+          INICIO
         </Text>
       </Container>
       <Img

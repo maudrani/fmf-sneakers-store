@@ -6,6 +6,17 @@ import { ObtainDate, ObtainTime } from "../../helpers/functions";
 import clienteAxios from "../../config/axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import styled from "styled-components";
+
+const ContactContainer = styled(Container)`
+  .form-container {
+    margin-top: 8rem;
+
+    @media (max-width: 990px) {
+      margin-top: 2rem;
+    }
+  }
+`;
 
 const TextStyle = { textAlign: "center" };
 
@@ -15,9 +26,10 @@ const Contact = () => {
   const MySwal = withReactContent(Swal);
 
   const onSubmit = async (data) => {
-    const parsedMail = {
-      to: "mauridrani95@gmail.com",
-      subject: `Consulta de ${data.name}.`,
+    const notificationMail = {
+      to: "fmfsneakersargentina@gmail.com",
+
+      subject: `⚪ Consulta de ${data.name}.`,
       html: `<div style="max-width: 768px;">
           <div style="padding: 1rem 0;">
             <p style="font-size: 18px">
@@ -64,23 +76,45 @@ const Contact = () => {
     });
 
     try {
-      const respuesta = await clienteAxios.post("/api/sendmail", parsedMail);
+      const respuesta = await clienteAxios.post(
+        "/api/sendmail",
+        notificationMail
+      );
+
+      if (respuesta.status === 200) {
+        MySwal.fire({
+          title: (
+            <Text sm black>
+              Mensaje enviado con éxito.
+            </Text>
+          ),
+          icon: "success",
+          confirmButtonText: <Text white>Ok</Text>,
+          confirmButtonColor: colors.black,
+        });
+      } else {
+        MySwal.fire({
+          title: (
+            <Text sm black>
+              Hubo un error al enviar el mensaje. Por favor comunicate a
+              fmfsneakersargentina@gmail.com
+            </Text>
+          ),
+          icon: "error",
+          confirmButtonText: (
+            <Text white pw="md">
+              Ok
+            </Text>
+          ),
+          confirmButtonColor: colors.black,
+        });
+      }
+    } catch (err) {
       MySwal.fire({
         title: (
           <Text sm black>
-            Mensaje enviado con éxito.
-          </Text>
-        ),
-        icon: "success",
-        confirmButtonText: <Text white>Ok</Text>,
-        confirmButtonColor: colors.black,
-      });
-      console.log(respuesta.data);
-    } catch (err) {
-      MySwal.insertQueueStep({
-        title: (
-          <Text sm black>
-            Hubo un error al enviar el mensaje.
+            Hubo un error al enviar el mensaje. Por favor comunicate a
+            fmfsneakersargentina@gmail.com
           </Text>
         ),
         icon: "error",
@@ -95,7 +129,7 @@ const Contact = () => {
   };
 
   return (
-    <Container
+    <ContactContainer
       h-100
       justify="c"
       md-direction="c"
@@ -141,6 +175,7 @@ const Contact = () => {
         justify="sb"
       >
         <form
+          className="form-container"
           onSubmit={handleSubmit(onSubmit)}
           id="contact-form"
           style={{
@@ -151,8 +186,8 @@ const Contact = () => {
             alignItems: "center",
           }}
         >
-          <Container justify="sb" w-100 style={{ marginTop: "8rem" }}>
-            <Container w-40 direction="c">
+          <Container justify="sb" w-100 md-direction="c">
+            <Container w-40 md-w="w-100" direction="c">
               <Input
                 placeholder="Nombre completo"
                 ph="xs"
@@ -169,7 +204,7 @@ const Contact = () => {
                 {errors.name?.message}
               </Text>
             </Container>
-            <Container w-40 direction="c">
+            <Container w-40 md-w="w-100" direction="c">
               <Input
                 placeholder="E-Mail"
                 type="email"
@@ -230,7 +265,7 @@ const Contact = () => {
           </Button>
         </form>
       </Container>
-    </Container>
+    </ContactContainer>
   );
 };
 

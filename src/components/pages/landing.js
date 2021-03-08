@@ -4,6 +4,7 @@ import About from "../modules/about";
 import Designs from "../modules/designs";
 import Politics from "../modules/politics";
 import Navbar from "../modules/navbar";
+import Promo from '../store/components/promos'
 
 const Landing = () => {
   const navbarLinks = [
@@ -19,6 +20,7 @@ const Landing = () => {
       <Navbar bgColor="black" links={navbarLinks} />
       <div className="page">
         <Hero />
+        <Promo promo={1} />
         <About />
         <Designs />
         <Politics />

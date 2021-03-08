@@ -3,6 +3,13 @@ import values from "./values.json";
 import { GenerateSizes, GenerateValues } from "./generators";
 import Reis from "../Assets/Fonts/Reis/REIS-Regular.otf";
 
+import RobotoThin from "../Assets/Fonts/Roboto/Roboto-Thin.ttf";
+import RobotoLight from "../Assets/Fonts/Roboto/Roboto-Light.ttf";
+import RobotoRegular from "../Assets/Fonts/Roboto/Roboto-Regular.ttf";
+import RobotoMedium from "../Assets/Fonts/Roboto/Roboto-Medium.ttf";
+import RobotoBold from "../Assets/Fonts/Roboto/Roboto-Bold.ttf";
+import RobotoBlack from "../Assets/Fonts/Roboto/Roboto-Medium.ttf";
+
 let { main, ratio } = values.sizes;
 
 const { colors } = values;
@@ -10,8 +17,9 @@ const { colors } = values;
 const fonts = {
   main: "REIS",
   secondary: "Lato",
-  terciary: "Playfair Display",
-  default: "Lato",
+  third: "Playfair Display",
+  fourth: "Roboto",
+  default: "Roboto",
 };
 const sizes = {
   ...GenerateSizes(main, ratio, values.sizes.sizes),
@@ -84,11 +92,61 @@ const device = {
 /* Global Parameters */
 const GlobalStyle = createGlobalStyle`
 
+/* Primary */
 @font-face {
     font-family: 'Reis';
     font-display: swap;
     src: local('Reis'), local('Reis'),
         url(${Reis}) format('opentype');
+}
+
+/* Secondary */
+@font-face {
+    font-family: 'Roboto';
+    font-display: swap;
+    src: local('Roboto'), local('Roboto'),
+        url(${RobotoThin}) format('truetype');
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-display: swap;
+    src: local('Roboto'), local('Roboto'),
+        url(${RobotoLight}) format('truetype');
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-display: swap;
+    src: local('Roboto'), local('Roboto'),
+        url(${RobotoRegular}) format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-display: swap;
+    src: local('Roboto'), local('Roboto'),
+        url(${RobotoMedium}) format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-display: swap;
+    src: local('Roboto'), local('Roboto'),
+        url(${RobotoBold}) format('truetype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-display: swap;
+    src: local('Roboto'), local('Roboto'),
+        url(${RobotoBlack}) format('truetype');
+    font-weight: 900;
 }
 
 /* Box sizing rules */
@@ -147,7 +205,7 @@ body {
 
 .page {
   min-width: ${document.body.clientWidth - 1}px !important;
-  /* min-width: 98.9vw; */
+  overflow-x: hidden;
 }
 
 /* Remove list styles on ul, ol elements with a class attribute */

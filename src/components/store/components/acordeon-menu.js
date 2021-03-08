@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Input, Text } from "../../../framework/assets";
+import { Container, Text } from "../../../framework/assets";
 import styled from "styled-components";
 
 const AcordeonContainer = styled(Container)`
@@ -66,7 +66,7 @@ const AcordeonContainer = styled(Container)`
   }
 `;
 
-const Acordeon = ({ title = "", options = [], result, children }) => {
+const Acordeon = ({ title = "", options = [], result, children, style }) => {
   return (
     <AcordeonContainer
       title={title}
@@ -92,7 +92,7 @@ const Acordeon = ({ title = "", options = [], result, children }) => {
         <div className={`${title}cross`}></div>
       </label>
 
-      <Container className={`${title}content`} w-100 direction="c">
+      <Container style={style} className={`${title}content`} w-100 direction="c">
         {children}
       </Container>
     </AcordeonContainer>

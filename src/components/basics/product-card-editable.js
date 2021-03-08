@@ -67,7 +67,7 @@ const CartCard = ({ product, onClick }) => {
       confirmButtonColor: colors["dark-red"],
       cancelButtonColor: colors["dark-gray"],
     }).then((result) => {
-      result.value && setCart(cart.filter((item) => item.id !== product.id));
+      result.isConfirmed && setCart(cart.filter((item) => item.id !== product.id));
     });
   };
 
