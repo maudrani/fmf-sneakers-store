@@ -14,6 +14,8 @@ import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-scroll";
 import { v4 as uuidv4 } from "uuid";
 import { useHistory } from "react-router-dom";
+import { useLocomotiveScroll } from "react-locomotive-scroll";
+import { BringProducts } from "../store/db/products";
 
 const CartSummary = lazy(() => import("../store/components/cart-summary"));
 const PaymentForm = lazy(() => import("../store/components/payment-form"));
@@ -32,6 +34,7 @@ const Cart = () => {
     payer: {
       name: "",
       surname: "",
+      dni: "",
       email: "",
       phone: {
         number: "",
@@ -41,6 +44,7 @@ const Cart = () => {
         street_number: "",
         zip_code: "",
         province: "",
+        state: "",
       },
     },
     payment_method: "",
@@ -49,12 +53,16 @@ const Cart = () => {
       subtotal_products: 0,
       other_charge: 0,
     },
+    viewed: false,
+    state_changed: false,
   };
   const [order, setOrder] = useState({ ...orderValues });
   const [checkoutStep, setCheckoutStep] = useState(1);
   const [formIsValid, setFormIsValid] = useState(false);
   const MySwal = withReactContent(Swal);
   const history = useHistory();
+
+  const { scroll } = useLocomotiveScroll();
 
   useEffect(() => {
     if (
@@ -66,6 +74,7 @@ const Cart = () => {
       order.payer.address.street_number === "" ||
       order.payer.address.zip_code === "" ||
       order.payer.address.province === "" ||
+      order.payer.address.state === "" ||
       order.payment_method === ""
     ) {
       setFormIsValid(false);
@@ -81,6 +90,7 @@ const Cart = () => {
 
     payer.name = data.name;
     payer.surname = data.surname;
+    payer.dni = data.dni;
     payer.email = data.email;
     payer.phone.number = parseInt(data.phone_number);
 
@@ -88,6 +98,7 @@ const Cart = () => {
     address.street_number = parseInt(data.street_number);
     address.zip_code = data.zip_code;
     address.province = data.province;
+    address.state = data.state;
 
     payment_method = window.localStorage.getItem("payment-form");
     payment_method = JSON.parse(payment_method).payment_method;
@@ -102,6 +113,7 @@ const Cart = () => {
       payment_method: payment_method,
       order_id: uuidv4(),
       totals: { ...order.totals, other_charge: otherCharge },
+      viewed: false,
     });
   };
 
@@ -119,17 +131,58 @@ const Cart = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
 
-  const ConfirmCart = () => {
+  const CompareProduct = async (prod) => {
+    let product = prod;
+    const param = {
+      query: { _id: prod._id },
+    };
+
+    let dbProd = await BringProducts(param);
+    dbProd = await dbProd[0];
+
+    if (product.quality === "Originales") {
+      product.unit_price = await dbProd.price_original_quality;
+      product.price = await dbProd.price_original_quality;
+      product.total =
+        (await parseInt(prod.quantity)) *
+        parseInt(dbProd.price_original_quality);
+    } else if (product.quality === "Calidad Original (AAA)") {
+      product.quality = await "Calidad Original (AAA)";
+      product.unit_price = await dbProd.price;
+      product.price = await dbProd.price;
+      product.total = (await parseInt(prod.quantity)) * parseInt(dbProd.price);
+    }
+
+    return product;
+  };
+
+  const ConfirmCart = async () => {
     const otherCharge =
       order.payment_method === "mercadopago"
         ? parseInt(order.totals.subtotal_products) * 0.1
         : 0;
 
-    setOrder({
-      ...order,
-      items: cart,
-      totals: { ...order.totals, other_charge: otherCharge },
-    });
+    let secureCart = [];
+
+
+    for (let i = 0; i < cart.length; i++) {
+      let prod = { ...cart[i] };
+
+      secureCart[i] = await CompareProduct(prod);
+      
+    }
+
+    setCart(await secureCart);
+
+    setOrder(
+      await {
+        ...order,
+        items: await secureCart,
+        totals: { ...order.totals, other_charge: otherCharge },
+      }
+    );
+
+    NextStep();
   };
 
   const SendToMercadoPago = async () => {
@@ -138,7 +191,8 @@ const Cart = () => {
       items: order.items.map((prod) => {
         return { ...prod, unit_price: prod.unit_price * 1.1 };
       }),
-      notification_url: `https://fmfsneakers.com/api/mercadopago/notificationurl/${order.order_id}`,
+      notification_url: `https://fmfsneakers.com/api/mercadopago/update/${order.order_id}`,
+      external_reference: order.order_id,
     };
 
     MySwal.queue([
@@ -164,7 +218,15 @@ const Cart = () => {
         ),
         footer: (
           <Container direction="c">
-            <Link to="politics" smooth={true} duration="700" offset={-50}>
+            <Link
+              to="politics"
+              smooth={true}
+              duration="700"
+              offset={-50}
+              onClick={() =>
+                scroll.scrollTo(document.querySelector("#politics"))
+              }
+            >
               <Text
                 hover-color="dark-gray"
                 style={{ cursor: "pointer", color: colors.blue }}
@@ -195,9 +257,9 @@ const Cart = () => {
               "/api/mercadopago/createpreference",
               parsedOrder
             );
-            const { sandbox_init_point } = respuesta.data;
+            const { init_point } = respuesta.data;
 
-            const link = sandbox_init_point;
+            const link = init_point;
 
             const selfNotification = {
               to: "fmfsneakersargentina@gmail.com",
@@ -219,6 +281,9 @@ const Cart = () => {
               }
                       </p>
                       <p>
+                          <strong>Dni:</strong> ${order.payer.dni}
+                      </p>
+                      <p>
                           <strong>Mail:</strong> ${order.payer.email}
                       </p>
                       <p>
@@ -237,6 +302,11 @@ const Cart = () => {
                       <p>
                           <strong>Provincia:</strong> ${
                             order.payer.address.province
+                          }
+                      </p>
+                      <p>
+                          <strong>Localidad:</strong> ${
+                            order.payer.address.state
                           }
                       </p>
                   </div>
@@ -292,7 +362,9 @@ const Cart = () => {
                               <strong>Cantidad:</strong> ${product.quantity}
                           </p>
                           <p>
-                              <strong>Calidad:</strong> ${product.quality.name}
+                              <strong>Calidad:</strong> ${
+                                product.quality.name || product.quality
+                              }
                           </p>
                           <p>
                               <strong>Talle:</strong> ${product.size}
@@ -411,6 +483,9 @@ const Cart = () => {
               }
                           </p>
                           <p>
+                              <strong>Dni:</strong> ${order.payer.dni}
+                          </p>
+                          <p>
                               <strong>Mail:</strong> ${order.payer.email}
                           </p>
                           <p>
@@ -430,8 +505,13 @@ const Cart = () => {
                               }
                           </p>
                           <p>
-                              <strong>Código Postal:</strong> ${
+                              <strong>Provincia:</strong> ${
                                 order.payer.address.province
+                              }
+                          </p>
+                          <p>
+                              <strong>Localidad:</strong> ${
+                                order.payer.address.state
                               }
                           </p>
                       </div>
@@ -450,7 +530,7 @@ const Cart = () => {
                               </p>
                               <p>
                                   <strong>Calidad:</strong> ${
-                                    product.quality.name
+                                    product.quality.name || product.quality
                                   }
                               </p>
                               <p>
@@ -472,11 +552,13 @@ const Cart = () => {
           </div>`,
             };
 
-            console.log(respuesta);
-
             if (link) {
               window.open(link, "resizable,scrollbars,status");
-              const orderForDb = OrderForDB();
+              let orderForDb = OrderForDB();
+              orderForDb = {
+                ...orderForDb,
+                mercadopago_received_data: respuesta,
+              };
 
               try {
                 const notiRes = await clienteAxios.post(
@@ -489,7 +571,7 @@ const Cart = () => {
                 );
 
                 const orderRes = await clienteAxios.post(
-                  "/api/orders",
+                  "/api/orders/create",
                   orderForDb
                 );
 
@@ -506,6 +588,7 @@ const Cart = () => {
                     ),
                     confirmButtonColor: colors.black,
                   });
+                  return;
                 } else if (respuesta.status !== 200) {
                   MySwal.fire({
                     icon: "error",
@@ -519,6 +602,7 @@ const Cart = () => {
                     ),
                     confirmButtonColor: colors.black,
                   });
+                  return;
                 } else if (orderRes.status !== 200) {
                   MySwal.fire({
                     icon: "error",
@@ -532,6 +616,7 @@ const Cart = () => {
                     ),
                     confirmButtonColor: colors.black,
                   });
+                  return;
                 } else {
                   MySwal.fire({
                     icon: "success",
@@ -566,6 +651,7 @@ const Cart = () => {
                     err
                   )} <p></p></div>`,
                 });
+                return;
               }
             } else {
               MySwal.insertQueueStep({
@@ -587,6 +673,7 @@ const Cart = () => {
                 ),
                 confirmButtonColor: colors.black,
               });
+              return;
             }
           } catch (err) {
             MySwal.insertQueueStep({
@@ -609,6 +696,7 @@ const Cart = () => {
               confirmButtonColor: colors.black,
             });
             console.log(err);
+            return;
           }
         },
       },
@@ -616,23 +704,28 @@ const Cart = () => {
   };
 
   const OrderForDB = () => {
-    const result = { ...order };
+    const parser_order = { ...order };
 
-    result.items = order.items.map((product) => {
+    parser_order.items = order.items.map((product) => {
       return {
         id: product.id,
         name: product.name,
         category: product.category,
         size: product.size,
-        quality: product.quality.name,
+        quality: product.quality.name || product.quality,
         unit_price: product.price,
         quantity: product.quantity,
+        img: product.images.x15[0],
       };
     });
 
-    result.state = "pending";
+    parser_order.order_state = "payment_pending";
+    parser_order.date = ObtainDate();
+    parser_order.hour = ObtainTime();
+    parser_order.viewed = false;
+    parser_order.state_changed = false;
 
-    return result;
+    return parser_order;
   };
 
   const HandleTransferPayment = async () => {
@@ -656,6 +749,9 @@ const Cart = () => {
       }
               </p>
               <p>
+                  <strong>Dni:</strong> ${order.payer.dni}
+              </p>
+              <p>
                   <strong>Mail:</strong> ${order.payer.email}
               </p>
               <p>
@@ -672,9 +768,10 @@ const Cart = () => {
                   }
               </p>
               <p>
-                  <strong>Código Postal:</strong> ${
-                    order.payer.address.province
-                  }
+                  <strong>Provincia:</strong> ${order.payer.address.province}
+              </p>
+              <p>
+                  <strong>Localidad:</strong> ${order.payer.address.state}
               </p>
           </div>
       </div>
@@ -728,7 +825,9 @@ const Cart = () => {
                       <strong>Cantidad:</strong> ${product.quantity}
                   </p>
                   <p>
-                      <strong>Calidad:</strong> ${product.quality.name}
+                      <strong>Calidad:</strong> ${
+                        product.quality.name || product.quality
+                      }
                   </p>
                   <p>
                       <strong>Talle:</strong> ${product.size}
@@ -852,6 +951,9 @@ const Cart = () => {
       }
                   </p>
                   <p>
+                  <strong>Dni:</strong> ${order.payer.dni}
+              </p>
+                  <p>
                       <strong>Mail:</strong> ${order.payer.email}
                   </p>
                   <p>
@@ -869,9 +971,12 @@ const Cart = () => {
                       }
                   </p>
                   <p>
-                      <strong>Código Postal:</strong> ${
+                      <strong>Provincia:</strong> ${
                         order.payer.address.province
                       }
+                  </p>
+                  <p>
+                      <strong>Localidad:</strong> ${order.payer.address.state}
                   </p>
               </div>
           </div>
@@ -887,7 +992,9 @@ const Cart = () => {
                           <strong>Cantidad:</strong> ${product.quantity}
                       </p>
                       <p>
-                          <strong>Calidad:</strong> ${product.quality.name}
+                          <strong>Calidad:</strong> ${
+                            product.quality.name || product.quality
+                          }
                       </p>
                       <p>
                           <strong>Talle:</strong> ${product.size}
@@ -918,7 +1025,10 @@ const Cart = () => {
         mailToCustomer
       );
 
-      const orderRes = await clienteAxios.post("/api/orders", orderForDb);
+      const orderRes = await clienteAxios.post(
+        "/api/orders/create",
+        orderForDb
+      );
 
       if (
         notiRes.status === 200 &&
@@ -949,12 +1059,13 @@ const Cart = () => {
           ),
           confirmButtonColor: colors.black,
         });
+        return;
       } else {
         MySwal.fire({
           icon: "error",
           title: "Ups!",
           text:
-            "Al parecer hubo un error en tu compra, por favor comunicate con fmfsneakersargentina@gmail.com para poder efectuar tu pedido.",
+            "Al parecer hubo un error en tu compra, por favor comunicate via mail con fmfsneakersargentina@gmail.com para poder efectuar tu pedido.",
           confirmButtonText: (
             <Text white pw="md">
               Cerrar
@@ -962,13 +1073,14 @@ const Cart = () => {
           ),
           confirmButtonColor: colors.black,
         });
+        return;
       }
     } catch (err) {
-      MySwal.fire({
+       MySwal.fire({
         icon: "error",
         title: "Ups!",
         text:
-          "Al parecer hubo un error en tu compra, por favor comunicate con fmfsneakersargentina@gmail.com para poder efectuar tu pedido.",
+          "Al parecer hubo un error en tu compra, por favor comunicate via mail con fmfsneakersargentina@gmail.com para poder efectuar tu pedido.",
         confirmButtonText: (
           <Text white pw="md">
             Cerrar
@@ -983,21 +1095,26 @@ const Cart = () => {
         html: `<div><h3>Detalle: </h3> ${JSON.stringify(err)} <p></p></div>`,
       });
     }
+    return;
   };
 
   const LaunchPayment = () => {
-    if (order.payment_method === "mercadopago" && formIsValid) {
-      SendToMercadoPago();
-    } else {
-      MySwal.fire({
-        background: "transparent",
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-      HandleTransferPayment();
-    }
+    const handlePaymentMethod = () => {
+      if (order.payment_method === "mercadopago" && formIsValid) {
+        SendToMercadoPago();
+      } else {
+        MySwal.fire({
+          background: "transparent",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        HandleTransferPayment();
+      }
+    };
+
+    ConfirmCart().then(handlePaymentMethod());
   };
 
   const NextStep = () => {
@@ -1025,16 +1142,31 @@ const Cart = () => {
     { name: "inicio", route: "/" },
     { name: "store", route: "/store" },
     { name: "categorías", route: "/categories" },
-    { name: "contacto", scroll: "contacto" },
+    { name: "contacto", scroll: "contacto", useLocomotive: true },
+    { name: "info", scroll: "politics", useLocomotive: true },
   ];
 
-  navbarLinks =
+  /* Resumen */
+  /* navbarLinks =
     cart.length !== 0
-      ? [...navbarLinks, { name: "resumen", scroll: "cartresume", offset: -50 }]
+      ? [
+          ...navbarLinks,
+          {
+            name: "resumen",
+            scroll: "cartresume",
+            useLocomotive: true,
+            offset: -50,
+          },
+        ]
       : navbarLinks;
+ */
 
   return (
-    <div className="page" style={{ minHeight: "80vh" }}>
+    <Container
+      className="page"
+      style={{ minHeight: "80vh" }}
+      data-scroll-section
+    >
       <Navbar bgColor="black" links={navbarLinks} />
       <Container direction="c" w-100 white>
         <Container
@@ -1158,9 +1290,7 @@ const Cart = () => {
                     bg="darkest-yellow"
                     style={{ cursor: "pointer" }}
                     hover-shadow="1"
-                    onClick={(e) =>
-                      ConfirmCart() || NextStep() || e.preventDefault()
-                    }
+                    onClick={(e) => ConfirmCart() || e.preventDefault()}
                   >
                     <Text sm pw="sm" sm-size="xs" black>
                       Continuar
@@ -1236,7 +1366,7 @@ const Cart = () => {
           <Politics option="buy" />
         </Container>
       </Container>
-    </div>
+    </Container>
   );
 };
 

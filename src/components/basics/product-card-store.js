@@ -8,10 +8,19 @@ const CardContainer = styled(Container)`
 
   @media (max-width: 450px) {
     cursor: default;
+
+    .price-text {
+      font-size: .8rem;
+    }
   }
 `;
 
 const CardImg = styled(Img)`
+  /* min-width: 30rem; */
+  @media (max-width: 1400px) {
+    min-width: auto;
+  }
+
   ${CardContainer}:hover & {
     ${Configs.HoverConfigs}
   }
@@ -47,11 +56,15 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
       align="fs"
       ref={forwardedRef}
       mh="xs"
-      style={{ maxWidth: "25rem" }}
+      style={{ maxWidth: "25rem", }}
       onClick={onClick}
     >
-      <Container style={{ overflow: "hidden", maxHeight: "30rem" }}>
+      <Container
+      w-100
+        style={{ overflow: "hidden", maxHeight: "30rem", maxWidth: "20rem" }}
+      >
         <CardImg
+        w-100
           src={img}
           ref={forwardedRef}
           {...imgMobileConfigs}
@@ -72,13 +85,22 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
             {...titleConfig}
             sm-size="sm"
             red
-            style={{ fontSize: name.length > 14 && `28px`, textAlign: 'center' }}
+            style={{
+              fontSize: name.length > 14 && `28px`,
+              textAlign: "center",
+            }}
           >
             {name}
           </Text>
         </Container>
         <Text weight="light">{category}</Text>
-        <Text sm ph="xs" weight="light" style={{ borderBottom: "1px solid" }}>
+        <Text
+          className="price-text"
+          sm
+          ph="xs"
+          weight="light"
+          style={{ borderBottom: "1px solid" }}
+        >
           ${price}
         </Text>
       </Container>

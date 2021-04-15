@@ -71,6 +71,7 @@ const Loading1 = styled(Container)`
 const Loader = () => {
   return (
     <Loading1
+    data-scroll-section
       w-100
       /* black */
       style={{

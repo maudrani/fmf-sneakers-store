@@ -3,6 +3,7 @@ import { Container, Img, Text } from "../../framework/assets";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { IsMobile, CartProductRoute } from "../../helpers/functions";
+import { useLocomotiveScroll } from "react-locomotive-scroll";
 
 const GalleryContainer = styled(Container)`
   position: relative;
@@ -94,6 +95,8 @@ const TextName = styled(Text)`
 const Gallery = ({ photos = [], limit }) => {
   const history = useHistory();
 
+  const { scroll } = useLocomotiveScroll();
+
   return (
     <GalleryContainer w-100 direction="c" align="fs">
       {photos.slice(0, limit).map((sneaker, idx) => {
@@ -104,7 +107,10 @@ const Gallery = ({ photos = [], limit }) => {
             align="fs"
             justify="fs"
             b-shadow="8"
-            onClick={() => history.push("/" + CartProductRoute(sneaker))}
+            onClick={() =>
+              history.push("/" + CartProductRoute(sneaker)) ||
+              scroll.scrollTo("top",{duration: 10})
+            }
           >
             <TextName
               main

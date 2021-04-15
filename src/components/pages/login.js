@@ -7,7 +7,8 @@ import { UseLocalStorage } from "../../helpers/customHooks";
 import { useHistory } from "react-router-dom";
 
 const Login = () => {
-  const [isAuthorized, setIsAuthorized] = UseLocalStorage("isAuthorized", "");
+  const [isAuth, setIsAuth] = UseLocalStorage("isAuth", "");
+  const history = useHistory();
 
   const UsernameInput = useRef();
   const PasswordInput = useRef();
@@ -20,28 +21,25 @@ const Login = () => {
 
     try {
       const respuesta = await clienteAxios.post(`/api/admin/validate`, inputs);
-
       if (respuesta.data.value) {
-        setIsAuthorized(true);
+        setIsAuth(true);
+        setIsAuth('iTqXXI0zbAnJCKDaobfhkM1f-6rMSpTfyZMRp_2tKI8')
       } else {
         alert(respuesta.data.msg);
-        setIsAuthorized(false);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const history = useHistory();
-
   useEffect(() => {
-    if (isAuthorized) {
+    if (isAuth === true) {
       history.push("/admin");
-    }
-  }, [isAuthorized, history]);
+    } 
+  }, [isAuth, history]);
 
   return (
-    <Container vh-100 w-100 justify="fs" direction="c">
+    <Container vh-100 w-100 justify="fs" direction="c" data-scroll-section>
       <Navbar fixed={false} showCart={false} />
       <Container w-100 vh-75 direction="c">
         <Text weight="thin" lg>

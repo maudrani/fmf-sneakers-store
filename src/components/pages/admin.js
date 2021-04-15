@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Container, Text, Configs } from "../../framework/assets";
 import styled from "styled-components";
 import Navbar from "../modules/navbar";
-import ProductsPanel from "../admin/components/products-panel";
+import ProductsPanel from "../admin/components/products/products-panel";
+import OrdersPanel from "../admin/components/orders/orders-panel";
+import SuscriptionsPanel from "../admin/components/suscriptions/suscriptions-panel";
 import OptionDesplegable from "../admin/components/option-desplegable";
-import { UseLocalStorage } from "../../helpers/customHooks";
 import { useHistory } from "react-router-dom";
+import { UseLocalStorage } from "../../helpers/customHooks";
 
 const AdminPageContainer = styled(Container)`
   min-height: 100vh;
@@ -23,8 +25,7 @@ const AdminPageContainer = styled(Container)`
 `;
 
 const AdminPage = () => {
-  const [panelToShow, setPanelToShow] = useState("products_products");
-  const [isAuthorized, setIsAuthorized] = UseLocalStorage("isAuthorized", "");
+  const [panelToShow, setPanelToShow] = UseLocalStorage("panel_to_show", "products_products");
 
   let navbarLinks = [
     { name: "inicio", route: "/" },
@@ -32,9 +33,10 @@ const AdminPage = () => {
   ];
 
   const history = useHistory();
+
   const LogOut = () => {
-    setIsAuthorized(false);
     history.push("/login");
+    localStorage.removeItem("isAuth");
   };
 
   return (
@@ -43,14 +45,15 @@ const AdminPage = () => {
       direction="c"
       bg-image="wall2"
       className="page"
+      data-scroll-section
     >
       <Container w-100 d-shadow="8" style={{ zIndex: "100" }}>
-        <Navbar
+        {/* <Navbar
           showCart={false}
           bgColor="black"
           fixed={false}
           links={navbarLinks}
-        />
+        /> */}
       </Container>
 
       <Container w-100 justify="fe">
@@ -94,6 +97,29 @@ const AdminPage = () => {
           </Container>
 
           <Container w-100 ph="md" mh="xs" yellow>
+            <OptionDesplegable title="Pedidos">
+              <Text
+                className="desplegable-option"
+                onClick={() => setPanelToShow("orders_all")}
+              >
+                Ver Pedidos
+              </Text>
+            </OptionDesplegable>
+          </Container>
+
+          <Container w-100 ph="md" mh="xs" yellow>
+            <OptionDesplegable title="Suscripciones">
+              <Text
+                className="desplegable-option"
+                onClick={() => setPanelToShow("suscriptions_all")}
+              >
+                Ver Suscripciones
+              </Text>
+            </OptionDesplegable>
+          </Container>
+
+
+          <Container w-100 ph="md" mh="xs" yellow>
             <OptionDesplegable title="Salir">
               <Text className="desplegable-option" onClick={() => LogOut()}>
                 Cerrar Sesión
@@ -103,8 +129,16 @@ const AdminPage = () => {
         </Container>
 
         {/* Panels */}
-        <Container w-85 ph="sm" pw="sm" style={{ minHeight: "100vh" }}>
+        <Container
+          w-85
+          ph="sm"
+          pw="sm"
+          direction="c"
+          style={{ minHeight: "100vh" }}
+        >
           <ProductsPanel panels={panelToShow} />
+          <OrdersPanel panels={panelToShow} />
+          <SuscriptionsPanel panels={panelToShow} />
         </Container>
       </Container>
     </AdminPageContainer>

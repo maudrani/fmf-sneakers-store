@@ -19,7 +19,7 @@ const City = styled(Container)`
 
 const Hero = () => {
   return (
-    <Container bg-image="wall-graffiti" vh-100 direction="c" b-shadow="inset-4">
+    <Container w-100 bg-image="wall-graffiti" vh-100 direction="c" b-shadow="inset-4">
       <Container h-100 w-100 justify="sb" pw="lg">
         <Container direction="c" h-100 w-100>
           <Container w-25 align="fe" h-80 md-w="w-50" lg-h="h-60">

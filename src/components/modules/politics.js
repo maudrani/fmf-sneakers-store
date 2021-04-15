@@ -16,7 +16,7 @@ const PoliticsContainer = styled(Container)`
   }
 `;
 
-const Politics = ({option}) => {
+const Politics = ({ option }) => {
   const [textToShow, setTextToShow] = useState(option || "description");
 
   const placeText = () => {
@@ -223,11 +223,13 @@ const Politics = ({option}) => {
                 ENVÍO:
               </Text>
               <br />
-              Realizamos envíos a todo el país vía encomienda, las empresas
-              encargadas de llevar nuestros paquetes son Andreani, Vía Cargo,
-              Md-Cargas o Correo Argentino dependiendo la ubicación del cliente.
-              El producto se envía embalado en su caja con todos los datos del
-              cliente en la parte superior.
+              Una vez hecho el pedido, cotizaremos tu envío y nos comunicaremos
+              con vos para darte los detalles. Las entregas se hacen a todo el
+              país vía encomienda, las empresas encargadas de llevar nuestros
+              paquetes son Andreani, Vía Cargo, Md-Cargas o Correo Argentino
+              dependiendo la ubicación del cliente. El producto se envía
+              embalado en su caja con todos los datos del cliente en la parte
+              superior.
             </Text>
           </Container>
         );
@@ -367,8 +369,8 @@ const Politics = ({option}) => {
               >
                 CONTACTO:{" "}
               </Text>{" "}
-              <br /> • E-Mail: fmfsneakers@gmail.com <br /> • Instagram:
-              @fmfsneakers
+              <br /> • E-Mail: fmfsneakersargentina@gmail.com <br /> •
+              Instagram: @fmfsneakers
               <br /> • Facebook: FMF Sneakers <br /> • Twitter: @fmfsneakers
             </Text>
           </Container>

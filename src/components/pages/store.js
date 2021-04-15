@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Container, Input, Img, Text } from "../../framework/assets";
+import { colors } from "../../framework/global";
 import Navbar from "../modules/navbar";
-import ProductsBoard from "../modules/products-board";
 import { BringProducts } from "../store/db/products";
-import { IsMobile, MaxWidth, randomizeArray } from "../../helpers/functions";
+import { randomizeArray } from "../../helpers/functions";
 import search from "../../Assets/IMG/Various/icons/simple-search.svg";
 import categories from "../store/db/categories";
 import Acordeon from "../store/components/acordeon-menu";
 import Loader from "../basics/loader";
 import styled from "styled-components";
+
+import FullStore from "../store/components/full-store/full-store";
 
 const StoreContainer = styled(Container)`
   @media (max-width: 480px) {
@@ -22,6 +24,39 @@ const StoreContainer = styled(Container)`
       .search-resume {
         padding: 2rem 0 0 0;
       }
+    }
+  }
+
+  .page-link-container {
+    min-width: 3.1rem;
+    max-width: 3.1rem;
+    min-height: 3.1rem;
+    max-height: 3.1rem;
+    border: 1px solid ${colors["light-gray"]};
+  }
+  .link-hover {
+    :hover {
+      background-color: ${colors["darkest-yellow"]};
+      cursor: pointer;
+      border-color: ${colors["darkest-yellow"]};
+    }
+  }
+
+  @media (max-width: 700px) {
+    .page-link,
+    .page-link-container {
+      margin: 0.1rem;
+
+      font-size: 10px;
+
+      * {
+        font-size: 10px;
+      }
+    }
+
+    .page-link-container {
+      min-width: auto;
+      min-height: auto;
     }
   }
 `;
@@ -91,30 +126,73 @@ const Store = () => {
     }
   };
 
-  /* useEffect(() => {
-    if (Object.keys(filters).length !== 0) {
-      setSearchResult(
-        searchResult.filter((el) => {
-          for (let value in filters.category) {
-            if (filters.category[value] === true) {
-              return el.category === value;
-            }
-          }
-        })
-      );
+  const resetSearch = () => {
+    setSearchResult(products);
+
+    setSearchValue("Todos los productos");
+
+    SearchInput.current.value = "";
+    SearchInput.current.focus();
+  };
+
+  useEffect(() => {
+    const FilteredByCategory = (selectedCategories) => {
+      let filteredProducts = [];
+
+      const sortArray = (array) => {
+        const result = [];
+        const selectedProducts = {};
+
+        for (let j = 0; j <= selectedCategories.length; j++) {
+          selectedProducts[selectedCategories[j]] = array.filter(
+            (prod) => prod.category === selectedCategories[j]
+          );
+        }
+        delete selectedProducts.undefined;
+
+        for (let cat in selectedProducts) {
+          result.push(...selectedProducts[cat]);
+        }
+
+        return result;
+      };
+
+      if (selectedCategories.length !== 0) {
+        if (selectedCategories.length === 1) {
+          filteredProducts = sortArray(searchResult);
+        } else {
+          filteredProducts = sortArray(products);
+        }
+      } else {
+        filteredProducts = products;
+      }
+
+      return filteredProducts;
+    };
+
+    const selectedCategories = [];
+
+    for (let cat in filters.Category) {
+      if (filters.Category[cat]) {
+        selectedCategories.push(cat);
+      }
     }
-  }, [filters, searchResult]); */
+
+    setSearchResult(FilteredByCategory(selectedCategories));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
 
   const navbarLinks = [
     { name: "inicio", route: "/" },
     { name: "categorías", route: "/categories" },
-    { name: "contacto", scroll: "contacto" },
+    { name: "contacto", scroll: "contacto", useLocomotive: true},
   ];
 
   return (
-    <div className="page" ref={StoreRef}>
+    <Container w-100 className="page" ref={StoreRef} data-scroll-section>
       <Navbar bgColor="black" links={navbarLinks} />
-      <StoreContainer h-100 direction="c" style={{ minHeight: "100vh" }}>
+      <StoreContainer w-100 h-100 direction="c" style={{ minHeight: "100vh" }}>
         <Container
           align="fe"
           ph="md"
@@ -137,7 +215,11 @@ const Store = () => {
             <Text
               sm
               sm-size="xs"
-              style={{ left: "0", bottom: "15%", textTransform: "capitalize" }}
+              style={{
+                left: "0",
+                bottom: "15%",
+                textTransform: "capitalize",
+              }}
             >
               {searchValue} ({searchResult.length})
             </Text>
@@ -181,46 +263,39 @@ const Store = () => {
               dark-gray
               hover-color="light-gray"
               style={{ cursor: "pointer" }}
-              onClick={() =>
-                setSearchResult(products) ||
-                setSearchValue("Todos los productos")
-              }
+              onClick={() => resetSearch()}
             >
               Reset
             </Text>
           </Container>
         </Container>
         <Container w-100 sm-direction="c" align="fs">
-          <Container
-            direction="c"
-            justify="fs"
-            pw="md"
-            white
-            w-20
-            sm-w="w-100"
-            /* style={{ minHeight: "100vh", zIndex: "1" }} */
-          >
+          <Container direction="c" justify="fs" pw="md" white w-20 sm-w="w-100">
             <Acordeon title="Categorías">
-              {categories.map((op, idx) => {
-                return (
-                  <Container
-                    key={idx}
-                    w-100
-                    justify="fs"
-                    style={{ paddingTop: ".4rem" }}
-                  >
-                    <Input
-                      type="checkbox"
-                      onChange={(e) =>
-                        handleFilters(e, "Category", categories[idx].name)
-                      }
-                    />
-                    <Text pw="xs" style={{ fontSize: "18px" }}>
-                      {op.name}
-                    </Text>
-                  </Container>
-                );
-              })}
+              {categories
+                .filter((cat) => !cat.hideOnSearch)
+                .map((op, idx) => {
+                  return (
+                    <Container
+                      key={idx}
+                      w-100
+                      justify="fs"
+                      style={{ paddingTop: ".4rem" }}
+                    >
+                      <Input
+                        type="checkbox"
+                        onChange={(e) => {
+                          setTimeout(() => {
+                            handleFilters(e, "Category", categories[idx].name);
+                          }, 500);
+                        }}
+                      />
+                      <Text pw="xs" style={{ fontSize: "18px" }}>
+                        {op.name}
+                      </Text>
+                    </Container>
+                  );
+                })}
             </Acordeon>
           </Container>
           {products.length !== 0 ? (
@@ -229,26 +304,10 @@ const Store = () => {
               sm-w="w-100"
               whitesmoke
               style={{ minHeight: "100vh" }}
+              direction="c"
+              id="products-board"
             >
-              <ProductsBoard
-                products={searchResult}
-                gap="2.5rem"
-                simple
-                style={{
-                  padding: `2rem ${!MaxWidth(1000) ? "4rem" : "5rem"}`,
-                  minHeight: "60vh",
-                }}
-                minSize={
-                  (IsMobile() && "8rem") || (MaxWidth(1000) ? "10rem" : "16rem")
-                }
-                maxSize="1fr"
-              >
-                {searchResult.length === 0 && (
-                  <Container vh-100 align="fs" w-100 ph="xs">
-                    <Text sm>Sin resultados</Text>
-                  </Container>
-                )}
-              </ProductsBoard>
+              <FullStore products={searchResult} />
             </Container>
           ) : (
             <Container vh-100 w-100>
@@ -257,7 +316,7 @@ const Store = () => {
           )}
         </Container>
       </StoreContainer>
-    </div>
+    </Container>
   );
 };
 

@@ -15,6 +15,7 @@ import withReactContent from "sweetalert2-react-content";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-scroll";
 import { colors } from "../../../framework/global";
+import { useLocomotiveScroll } from "react-locomotive-scroll";
 
 import { v4 as uuidv4 } from "uuid";
 import { scrollTop, IsMobile } from "../../../helpers/functions";
@@ -41,10 +42,12 @@ const ProductInfo = styled(Container)`
 const ProductModal = ({ data }) => {
   const [size, setSize] = useState(values.sizes.default);
   const [quantity, setQuantity] = useState(values.quantity.default);
-  const [quality, setQuality] = useState(values.qualities.default);
+  const [quality, setQuality] = useState({name: "Calidad Original (AAA)", price: data.price});
   const [unitPrice, setUnitPrice] = useState(0);
 
   const [cart, setCart] = useContext(CartContext);
+
+  const { scroll } = useLocomotiveScroll();
 
   const MySwal = withReactContent(Swal);
   const history = useHistory();
@@ -53,10 +56,14 @@ const ProductModal = ({ data }) => {
     setSize(e.target.value);
   };
 
-  const handleQuality = (e) => {
-    setQuality(
-      values.qualities.list.filter((el) => el.name === e.target.value)[0]
-    );
+  const handleQuality = async (e) => {
+    if (e.target.value === 'Originales') {
+      setQuality({name: 'Originales', price: data.price_original_quality || 19000});
+    } else if (e.target.value === 'Calidad Original (AAA)') {
+      setQuality({name: 'Calidad Original (AAA)', price: data.price});
+    } 
+
+  /*   setQuality(values.qualities.list.filter((el) => el.name === e.target.value)[0]);  */
   };
 
   const IncreaseQuantity = () => {
@@ -69,8 +76,9 @@ const ProductModal = ({ data }) => {
 
   //Changes the unitary price
   useEffect(() => {
-    setUnitPrice(quality.price ? quality.price : data.price);
-  }, [data, quality.price]);
+    setUnitPrice(quality.price);
+
+  }, [quality]);
 
   const addItemToBascket = () => {
     const cartItem = {
@@ -109,7 +117,10 @@ const ProductModal = ({ data }) => {
       confirmButtonColor: colors.black,
       cancelButtonColor: colors["dark-gray"],
     }).then((result) => {
-      result.isConfirmed && history.push("/cart");
+      if (result.isConfirmed) {
+        MySwal.close();
+        history.push("/cart");
+      }
       scrollTop();
     });
   };
@@ -125,7 +136,7 @@ const ProductModal = ({ data }) => {
       w-100
       h-100
       sm-direction="c"
-      style={{ position: "relative" }}
+      style={{ position: "relative", maxWidth: "100vw" }}
     >
       <Container
         w-60
@@ -318,7 +329,7 @@ const ProductModal = ({ data }) => {
         <Container ph="sm" w-100 justify="fs" sm-justify="c" weight="light">
           <Text>
             Leer las{" "}
-            <Link to="politics" smooth={true} duration={700} offset={-47}>
+            <Link to="politics" smooth={true} duration={700} offset={-47} onClick={()=> scroll.scrollTo(document.querySelector('#politics'))}>
               <Text dark-red hover-color="red" style={{ cursor: "pointer" }}>
                 Politicas de compra y fabricación.
               </Text>

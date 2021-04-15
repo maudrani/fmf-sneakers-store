@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { Container, Text } from "../../../framework/assets";
 import { colors } from "../../../framework/global";
 import { Link } from "react-scroll";
-import {IsMobile} from '../../../helpers/functions'
+import { IsMobile } from "../../../helpers/functions";
+import { useLocomotiveScroll } from "react-locomotive-scroll";
 
 const AcordeonContainer = styled(Container)`
   display: flex;
@@ -118,6 +119,8 @@ const AcordeonOptions = ({ options = [], setOption, colorSelected }) => {
     }
   }
 
+  const { scroll } = useLocomotiveScroll();
+
   return (
     <AcordeonContainer w-100>
       {options.map((op, idx) => {
@@ -198,6 +201,9 @@ const AcordeonOptions = ({ options = [], setOption, colorSelected }) => {
                 bottom: "15%",
                 cursor: "pointer",
               }}
+              onClick={() =>
+                scroll.scrollTo(document.querySelector("#category-summary"))
+              }
             >
               <Button
                 black

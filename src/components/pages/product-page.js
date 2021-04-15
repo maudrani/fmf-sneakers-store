@@ -54,15 +54,15 @@ const ProductPage = () => {
   const navbarLinks = [
     { name: "inicio", route: "/" },
     { name: "store", route: "/store" },
-    { name: "info", scroll: "politics", offset: -47 },
-    { name: "galería", scroll: "categoria" },
-    { name: "contacto", scroll: "contacto" },
+    { name: "info", scroll: "politics", offset: -47 , useLocomotive: true},
+    { name: "galería", scroll: "categoria" , useLocomotive: true},
+    { name: "contacto", scroll: "contacto" , useLocomotive: true},
   ];
 
   scrollTop();
 
   return (
-    <div className="page">
+    <Container className="page" data-scroll-section>
       <Navbar bgColor="black" links={navbarLinks} />
       <Suspense fallback={<Loader />}>
         {product && category ? (
@@ -180,7 +180,7 @@ const ProductPage = () => {
           </Container>
         )}
       </Suspense>
-    </div>
+    </Container>
   );
 };
 

@@ -7,6 +7,7 @@ import { colors } from "../../framework/global";
 import { Link } from "react-scroll";
 import { Link as RouteLink } from "react-router-dom";
 import { scrollTop, IsMobile } from "../../helpers/functions";
+import { useLocomotiveScroll } from "react-locomotive-scroll";
 
 const Nav = styled(Container)`
   top: 0%;
@@ -42,8 +43,11 @@ const Navbar = ({
   logoColor,
   links = [],
   showCart = true,
+  className,
 }) => {
   const [scrolled, setIsScrolling] = useState(false);
+
+  const { scroll } = useLocomotiveScroll();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,7 +55,7 @@ const Navbar = ({
         setIsScrolling(true);
         setTimeout(() => {
           setIsScrolling(false);
-        }, 1200);
+        }, 600);
       }
     };
 
@@ -71,6 +75,8 @@ const Navbar = ({
     style: { ...{ cursor: "pointer" } },
   };
 
+  const bgColors = { ...colors, default: "rgba(0,0,0,0.0)" };
+
   navLinkConfig[textColor || "white"] = true;
 
   const scrollLinkConfig = {
@@ -88,12 +94,13 @@ const Navbar = ({
       ph="xs"
       style={{
         position: fixed && "fixed",
-        backgroundColor: colors[bgColor],
+        backgroundColor: bgColors[bgColor],
         transition: scrolled && "0s",
         transform: scrolled && "translateY(-100%)",
         ...style,
       }}
       {...options}
+      className={className}
     >
       <Container w-50 justify="fs" sm-w="w-1">
         <Container w-8 style={{ minWidth: "3rem" }} className="navLogo">
@@ -108,7 +115,7 @@ const Navbar = ({
               key={idx}
               to={`${link.route}`}
               style={{ textDecoration: "none" }}
-              onClick={scrollTop}
+              onClick={ ()=>  scroll.scrollTo('top') || scrollTop }
             >
               <Text {...navLinkConfig}>{link.name.toUpperCase()}</Text>
             </RouteLink>
@@ -118,6 +125,10 @@ const Navbar = ({
               to={link.scroll.toLowerCase()}
               {...scrollLinkConfig}
               offset={link.offset}
+              onClick={() =>
+                link.useLocomotive &&
+                scroll.scrollTo(document.querySelector(`#${link.scroll}`), {duration: 500})
+              }
             >
               <Text {...navLinkConfig}>{link.name.toUpperCase()}</Text>
             </Link>

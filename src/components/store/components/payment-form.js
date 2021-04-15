@@ -191,6 +191,36 @@ const PaymentForm = ({ onSubmit, SetIsValid }) => {
               </Container>
             </Container>
 
+            <Container w-100 justify="fs">
+              <Container w-47 xs-w="w-100">
+                <Input
+                  border-color="dark-gray"
+                  w-100
+                  type="text"
+                  placeholder="DNI"
+                  ph="xs"
+                  className="personalDataInput data-input"
+                  name="dni"
+                  defaultValue={formData.dni || ""}
+                  onChange={(e) =>
+                    SaveFormData("dni", e) || SetIsValid(false)
+                  }
+                  ref={register({
+                    required: { value: true, message: "Campo requerido " },
+                  })}
+                  style={{ marginBottom: "1rem" }}
+                />
+                <Text
+                  w-100
+                  weight="light"
+                  red
+                  style={{ position: "absolute", bottom: "0" }}
+                >
+                  {errors.dni?.message}
+                </Text>
+              </Container>
+            </Container>
+
             <Container
               w-100
               align="fs"
@@ -272,50 +302,77 @@ const PaymentForm = ({ onSubmit, SetIsValid }) => {
                 </Container>
               </Container>
 
-              <Container w-90 xs-w="w-100" direction="c">
-                <Select
-                  border-color="dark-gray"
-                  className="data-input"
-                  type="text"
-                  placeholder="Provincia"
-                  ph="xs"
-                  w-100
-                  name="province"
-                  defaultValue={formData.province || ""}
-                  onChange={(e) =>
-                    SaveFormData("province", e) || SetIsValid(false)
-                  }
-                  ref={register({
-                    required: { value: true, message: "Campo requerido " },
-                  })}
-                >
-                  <option value='Buenos Aires'>Buenos Aires</option>
-                  <option value='Catamarca'>Catamarca</option>
-                  <option value='Chaco'>Chaco</option>
-                  <option value='Chubut'>Chubut</option>
-                  <option value='Córdoba'>Córdoba</option>
-                  <option value='Corrientes'>Corrientes</option>
-                  <option value='Entre Ríos'>Entre Ríos</option>
-                  <option value='Formosa'>Formosa</option>
-                  <option value='Jujuy'>Jujuy</option>
-                  <option value='La Pampa'>La Pampa</option>
-                  <option value='La Rioja'>La Rioja</option>
-                  <option value='Mendoza'>Mendoza</option>
-                  <option value='Misiones'>Misiones</option>
-                  <option value='Neuquén'>Neuquén</option>
-                  <option value='Río Negro'>Río Negro</option>
-                  <option value='Salta'>Salta</option>
-                  <option value='San Juan'>San Juan</option>
-                  <option value='San Luis'>San Luis</option>
-                  <option value='Santa Cruz'>Santa Cruz</option>
-                  <option value='Santa Fe'>Santa Fe</option>
-                  <option value='Santiago del Estero'>Santiago del Estero</option>
-                  <option value='Tierra del Fuego'>Tierra del Fuego</option>
-                  <option value='Tucumán'>Tucumán</option>
-                </Select>
-                <Text w-100 weight="light" red>
-                  {errors.street_name?.message}
-                </Text>
+              <Container w-100 direction="c" align="fe">
+                <Container w-95 xs-w="w-100" direction="c">
+                  <Select
+                    border-color="dark-gray"
+                    className="data-input"
+                    type="text"
+                    placeholder="Provincia"
+                    ph="xs"
+                    w-100
+                    name="province"
+                    defaultValue={formData.province || ""}
+                    onChange={(e) =>
+                      SaveFormData("province", e) || SetIsValid(false)
+                    }
+                    ref={register({
+                      required: { value: true, message: "Campo requerido " },
+                    })}
+                  >
+                    <option value="Buenos Aires">Buenos Aires</option>
+                    <option value="Catamarca">Catamarca</option>
+                    <option value="Chaco">Chaco</option>
+                    <option value="Chubut">Chubut</option>
+                    <option value="Córdoba">Córdoba</option>
+                    <option value="Corrientes">Corrientes</option>
+                    <option value="Entre Ríos">Entre Ríos</option>
+                    <option value="Formosa">Formosa</option>
+                    <option value="Jujuy">Jujuy</option>
+                    <option value="La Pampa">La Pampa</option>
+                    <option value="La Rioja">La Rioja</option>
+                    <option value="Mendoza">Mendoza</option>
+                    <option value="Misiones">Misiones</option>
+                    <option value="Neuquén">Neuquén</option>
+                    <option value="Río Negro">Río Negro</option>
+                    <option value="Salta">Salta</option>
+                    <option value="San Juan">San Juan</option>
+                    <option value="San Luis">San Luis</option>
+                    <option value="Santa Cruz">Santa Cruz</option>
+                    <option value="Santa Fe">Santa Fe</option>
+                    <option value="Santiago del Estero">
+                      Santiago del Estero
+                    </option>
+                    <option value="Tierra del Fuego">Tierra del Fuego</option>
+                    <option value="Tucumán">Tucumán</option>
+                  </Select>
+                  <Text w-100 weight="light" red>
+                    {errors.street_name?.message}
+                  </Text>
+                </Container>
+                <Container w-95 xs-w="w-100" direction="c">
+                  <Input
+                    style={{ textAlign: "center" }}
+                    border-color="dark-gray"
+                    className="data-input"
+                    type="text"
+                    placeholder="Localidad"
+                    ph="xs"
+                    mh="xs"
+                    w-100
+                    name="state"
+                    defaultValue={formData.state || ""}
+                    onChange={(e) =>
+                      SaveFormData("state", e) || SetIsValid(false)
+                    }
+                    ref={register({
+                      required: { value: true, message: "Campo requerido " },
+                    })}
+                  />
+                  <Text w-100 weight="light" red>
+                    {errors.state?.message}
+                  </Text>
+                </Container>
               </Container>
             </Container>
           </Container>

@@ -3,6 +3,7 @@ import { Container, Img, Text, Configs } from "../../framework/assets";
 import styled from "styled-components";
 import categories from "../store/db/categories";
 import { IsMobile } from "../../helpers/functions";
+
 import Loader from "./loader";
 
 const CardContainer = styled(Container)`
@@ -16,6 +17,11 @@ const CardContainer = styled(Container)`
 const CardImg = styled(Img)`
   ${CardContainer}:hover & {
     ${Configs.HoverConfigs}
+  }
+
+  min-width: 20rem;
+  @media (max-width: 700px) {
+    min-width: auto;
   }
 `;
 
@@ -81,7 +87,7 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
       <Container
         w-100
         b-shadow="6"
-        style={{ maxHeight: "100%", overflow: "hidden" }}
+        style={{ maxHeight: "20rem", overflow: "hidden" }}
       >
         {img ? (
           <CardImg

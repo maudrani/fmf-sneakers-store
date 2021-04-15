@@ -65,17 +65,37 @@ const OrderTotals = ({ cart, order }) => {
               ${subtotalCartValue}
             </Text>
           </Container>
+          {order.payment_method  ? (
+            <Container w-100 justify="sb" ph="xs">
+              <Text weight="light" style={{ fontSize: "18px" }}>
+                {order.payment_method === "mercadopago"
+                  ? "Mercado Pago - recargo"
+                  : "..."}
+              </Text>
+              <Text weight="light" style={{ fontSize: "22px" }}>
+                $
+                {order.payment_method === "mercadopago"
+                  ? subtotalCartValue * 0.1
+                  : "-"}
+              </Text>
+            </Container>
+          ) : (
+            <Container w-100 justify="sb" ph="xs">
+              <Text weight="light" style={{ fontSize: "18px" }}>
+                {"..."}
+              </Text>
+              <Text weight="light" style={{ fontSize: "22px" }}>
+                ${"-"}
+              </Text>
+            </Container>
+          )}
+
           <Container w-100 justify="sb" ph="xs">
             <Text weight="light" style={{ fontSize: "18px" }}>
-              {order.payment_method === "mercadopago"
-                ? "Mercado Pago - recargo"
-                : "..."}
+              {order.payment_method && "Envío"}
             </Text>
             <Text weight="light" style={{ fontSize: "22px" }}>
-              $
-              {order.payment_method === "mercadopago"
-                ? subtotalCartValue * 0.1
-                : "-"}
+              {order.payment_method && "$800"}
             </Text>
           </Container>
         </Container>

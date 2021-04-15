@@ -32,13 +32,19 @@ const StyledStore = () => {
     links: [
       { name: "inicio", route: "/" },
       { name: "store", route: "/store" },
-      { name: "contacto", scroll: "contacto" },
+      { name: "contacto", scroll: "contacto", useLocomotive: true },
     ],
   };
 
   return (
-    <div className="page">
+    <Container
+      w-100
+      className="page"
+      style={{ display: "block" }}
+      data-scroll-section
+    >
       <Navbar {...navbarConfig} />
+
       <StoreMain
         direction="c"
         justify="fs"
@@ -49,7 +55,7 @@ const StyledStore = () => {
         <StyledCategories products={products} />
         <Promo promo={3} />
       </StoreMain>
-    </div>
+    </Container>
   );
 };
 

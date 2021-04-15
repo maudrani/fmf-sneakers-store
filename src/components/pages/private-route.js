@@ -2,11 +2,11 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
 const PrivateRoute = ({ component, ...options }) => {
-  const isAuthorized = localStorage.getItem("isAuthorized");
-  const locked = !isAuthorized;
+  const isAuth = localStorage.getItem("isAuth");
+  let locked = !isAuth;
 
   return !locked ? (
-    <Route {...options} component={component} />
+    <Route {...options} component={component} data-scroll-section/>
   ) : (
     <Redirect to="/login" />
   );

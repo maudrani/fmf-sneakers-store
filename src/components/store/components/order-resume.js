@@ -128,6 +128,11 @@ const OrderResume = ({ order }) => {
               </Container>
 
               <Container direction="c" align="fs">
+                <Text light-gray>DNI:</Text>
+                <Text>{order.payer.dni}</Text>
+              </Container>
+
+              <Container direction="c" align="fs">
                 <Text light-gray>Teléfono:</Text>
                 <Text>{order.payer.phone.number}</Text>
               </Container>

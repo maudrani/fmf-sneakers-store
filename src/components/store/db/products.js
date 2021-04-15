@@ -124,6 +124,14 @@ export const UpdateProduct = async (product) => {
   }
 };
 
+export const DeleteProduct = async (product) => {
+  try {
+    await clienteAxios.delete(`/api/products/delete/${product._id}`);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export const BringProducts = async (params) => {
   try {
     const respuesta = await clienteAxios.post("/api/products/bring", params);
@@ -134,4 +142,3 @@ export const BringProducts = async (params) => {
   }
 };
 
-BringProducts();
