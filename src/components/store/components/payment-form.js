@@ -202,9 +202,7 @@ const PaymentForm = ({ onSubmit, SetIsValid }) => {
                   className="personalDataInput data-input"
                   name="dni"
                   defaultValue={formData.dni || ""}
-                  onChange={(e) =>
-                    SaveFormData("dni", e) || SetIsValid(false)
-                  }
+                  onChange={(e) => SaveFormData("dni", e) || SetIsValid(false)}
                   ref={register({
                     required: { value: true, message: "Campo requerido " },
                   })}
@@ -347,7 +345,7 @@ const PaymentForm = ({ onSubmit, SetIsValid }) => {
                     <option value="Tucumán">Tucumán</option>
                   </Select>
                   <Text w-100 weight="light" red>
-                    {errors.street_name?.message}
+                    {errors.province?.message}
                   </Text>
                 </Container>
                 <Container w-95 xs-w="w-100" direction="c">
@@ -374,6 +372,31 @@ const PaymentForm = ({ onSubmit, SetIsValid }) => {
                   </Text>
                 </Container>
               </Container>
+            </Container>
+
+            <Container w-50 xs-w="w-100" direction="c">
+              <Select
+                border-color="dark-gray"
+                className="data-input"
+                type="text"
+                placeholder="Forma de Envío"
+                ph="xs"
+                w-100
+                name="shipment_type"
+                defaultValue={formData.shipment_type || ""}
+                onChange={(e) =>
+                  SaveFormData("shipment_type", e) || SetIsValid(false)
+                }
+                ref={register({
+                  required: { value: true, message: "Campo requerido " },
+                })}
+              >
+                <option value="Entrega a domicilio">Entrega a domicilio</option>
+                <option value="Retiro de sucursal">Retiro de sucursal</option>
+              </Select>
+              <Text w-100 weight="light" red>
+                {errors.shipment_type?.message}
+              </Text>
             </Container>
           </Container>
 

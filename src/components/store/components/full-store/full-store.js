@@ -4,8 +4,11 @@ import { colors } from "../../../../framework/global";
 import ProductsBoard from "../../../modules/products-board";
 import { IsMobile, MaxWidth } from "../../../../helpers/functions";
 import styled from "styled-components";
-import PageSelector from "../../../store/components/full-store/page-selector";
 import { useLocomotiveScroll } from "react-locomotive-scroll";
+import Loader from "../../../basics/loader";
+import handleViewport from "react-in-viewport";
+
+import { useParams, useHistory } from "react-router-dom";
 
 import { Link } from "react-scroll";
 
@@ -58,22 +61,34 @@ const StoreContainer = styled(Container)`
   }
 `;
 
-const FullStore = ({ products = [], amountOfItems = 6 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const FullStore = ({
+  products = [],
+  amountOfItems = 6,
+  infiniteScroll = false,
+  initialPage,
+}) => {
   const [amountOfPages, setAmountOfPages] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(amountOfItems);
+  const itemsPerPage = amountOfItems;
 
-  const { scroll } = useLocomotiveScroll();
+  const parsed_initialPage =
+    (initialPage <= amountOfPages ? initialPage : amountOfPages) || 1;
+
+  const [currentPage, setCurrentPage] = useState(parsed_initialPage);
+
+  const { scroll } = useLocomotiveScroll({ repeat: false });
+
+  const history = useHistory();
+  const { search } = useParams();
 
   useEffect(() => {
     if (products.length <= itemsPerPage) {
       setCurrentPage(1);
       setAmountOfPages(1);
     } else {
-      setCurrentPage(1);
+      setCurrentPage(parsed_initialPage);
       createPages(products, itemsPerPage);
     }
-  }, [products, itemsPerPage]);
+  }, [products, itemsPerPage, parsed_initialPage]);
 
   const createPages = (array, pageLength) => {
     let page = [];
@@ -96,10 +111,15 @@ const FullStore = ({ products = [], amountOfItems = 6 }) => {
       lastItems.push(array[totalItemsInEqualPages + i]);
     }
 
-    /* pages.push(array.splice(totalItemsInEqualPages, array.length)); */
     pages.push(lastItems);
 
     setAmountOfPages(pages.length);
+  };
+
+  const ScrollToBoard = () => {
+    scroll.scrollTo(document.querySelector("#products-board"), {
+      duration: 100,
+    });
   };
 
   const GenerateLinks = () => {
@@ -111,7 +131,7 @@ const FullStore = ({ products = [], amountOfItems = 6 }) => {
           duration={200}
           offset={-90}
           style={{ textDecoration: "none" }}
-          onClick={() => scroll.scrollTo(document.querySelector('#products-board'), {duration: 100})}
+          onClick={() => ScrollToBoard()}
         >
           <Container
             mw="xs"
@@ -133,7 +153,7 @@ const FullStore = ({ products = [], amountOfItems = 6 }) => {
           duration={200}
           offset={-90}
           style={{ textDecoration: "none" }}
-          onClick={() => scroll.scrollTo(document.querySelector('#products-board'), {duration: 100})}
+          onClick={() => ScrollToBoard()}
         >
           <Container
             bg="darkest-yellow"
@@ -153,7 +173,7 @@ const FullStore = ({ products = [], amountOfItems = 6 }) => {
           duration={200}
           offset={-90}
           style={{ textDecoration: "none" }}
-          onClick={() => scroll.scrollTo(document.querySelector('#products-board'), {duration: 100})}
+          onClick={() => ScrollToBoard()}
         >
           <Container
             mw="xs"
@@ -173,97 +193,179 @@ const FullStore = ({ products = [], amountOfItems = 6 }) => {
   };
 
   const ChangePage = (where) => {
+    setShowLoader(true);
     setTimeout(() => {
+      setShowLoader(false);
+      let current = 0;
       if (where === "next") {
-        setCurrentPage(currentPage !== amountOfPages ? currentPage + 1 : 1);
-      } else if (where === "back") {
-        setCurrentPage(currentPage !== 1 ? currentPage - 1 : amountOfPages);
+        current = currentPage !== amountOfPages ? currentPage + 1 : 1;
+        setCurrentPage(current);
       }
+      if (where === "back") {
+        current = currentPage !== 1 ? currentPage - 1 : amountOfPages;
+        setCurrentPage(current);
+      }
+
+      history.push(`/store/${current}/${search || ""}`);
     }, 600);
   };
 
+  /* Infinite Scroll */
+  const [showLoader, setShowLoader] = useState(false);
+  const LoadMoreItems = () => {
+    setShowLoader(true);
+    setTimeout(() => {
+      setShowLoader(false);
+      setCurrentPage(currentPage !== amountOfPages ? currentPage + 1 : 1);
+    }, 600);
+  };
+  const Trigger = ({ inViewport = false, forwardedRef }) => {
+    return <Container data-scroll ref={forwardedRef} ph="xs" />;
+  };
+  const ViewportBlock = handleViewport(Trigger);
+
   return (
-    <StoreContainer w-100>
+    <StoreContainer w-100 style={{ transition: "0" }}>
       <Container w-100 direction="c" id="products-board">
-        <ProductsBoard
-          products={products}
-          gap="2.5rem"
-          simple
-          showPagination
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          setAmountOfPages={setAmountOfPages}
-          style={{
-            padding: `2rem ${!MaxWidth(1000) ? "4rem" : "5rem"}`,
-            /* padding: `2rem ${!MaxWidth(1000) ? "3rem" : "3rem"}`, */
-            minHeight: "60vh",
-          }}
-          minSize={
-            (IsMobile() && "8rem") || (MaxWidth(1000) ? "10rem" : "16rem")
-          }
-          maxSize="1fr"
-        >
-          {products.length === 0 && (
-            <Container vh-100 align="fs" w-100 ph="xs">
-              <Text sm>Sin resultados</Text>
+        {/* If its mobile it will show a Loader when updated */}
+        {IsMobile() ? (
+          !showLoader ? (
+            <ProductsBoard
+              products={products}
+              gap="2.5rem"
+              simple
+              infiniteScroll={infiniteScroll}
+              showPagination={!infiniteScroll}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              setAmountOfPages={setAmountOfPages}
+              style={{
+                padding: `2rem ${!MaxWidth(1000) ? "4rem" : "5rem"}`,
+                /* padding: `2rem ${!MaxWidth(1000) ? "3rem" : "3rem"}`, */
+                minHeight: "60vh",
+              }}
+              minSize={
+                (IsMobile() && "8rem") || (MaxWidth(1000) ? "10rem" : "16rem")
+              }
+              maxSize="1fr"
+            >
+              {products.length === 0 && (
+                <Container vh-100 align="fs" w-100 ph="xs">
+                  <Text sm>Sin resultados</Text>
+                </Container>
+              )}
+            </ProductsBoard>
+          ) : (
+            <Container w-100 vh-130>
+              <Loader />
             </Container>
-          )}
-        </ProductsBoard>
+          )
+        ) : (
+          <ProductsBoard
+            products={products}
+            gap="2.5rem"
+            simple
+            infiniteScroll={infiniteScroll}
+            showPagination={!infiniteScroll}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setAmountOfPages={setAmountOfPages}
+            style={{
+              padding: `2rem ${!MaxWidth(1000) ? "4rem" : "5rem"}`,
+              /* padding: `2rem ${!MaxWidth(1000) ? "3rem" : "3rem"}`, */
+              minHeight: "60vh",
+            }}
+            minSize={
+              (IsMobile() && "8rem") || (MaxWidth(1000) ? "10rem" : "16rem")
+            }
+            maxSize="1fr"
+          >
+            {products.length === 0 && (
+              <Container vh-100 align="fs" w-100 ph="xs">
+                <Text sm>Sin resultados</Text>
+              </Container>
+            )}
+          </ProductsBoard>
+        )}
 
-        {/* <PageSelector list={products} setActualPage={setActualPage} /> */}
-
-        <Container ph="lg" w-100>
-          <Container style={{ marginTop: IsMobile() && "-.5rem" }}>
-            <Link
-              to="products-board"
-              smooth
-              duration={200}
-              offset={-90}
-              style={{ textDecoration: "none" }}
-              onClick={() => scroll.scrollTo(document.querySelector('#products-board'), {duration: 100})}
-            >
-              <Text
-                mw="xs"
-                pw="xs"
-                ph="xs"
-                whitesmoke
-                bg="darkest-yellow"
-                hover-bg="dark-yellow"
-                style={{ cursor: "pointer" }}
-                onClick={() => ChangePage("back")}
-                className="page-link"
+        {/* Page Selector */}
+        {!infiniteScroll && (
+          <Container
+            ph="lg"
+            w-100
+            style={{ display: showLoader ? "none" : "flex" }}
+          >
+            <Container style={{ marginTop: IsMobile() && "-.5rem" }}>
+              <Link
+                to="products-board"
+                smooth
+                duration={200}
+                offset={-90}
+                style={{ textDecoration: "none" }}
+                onClick={() =>
+                  scroll.scrollTo(document.querySelector("#products-board"), {
+                    duration: 100,
+                  })
+                }
               >
-                ← Anterior
-              </Text>
-            </Link>
-          </Container>
-          <Container>{GenerateLinks()}</Container>
+                <Text
+                  mw="xs"
+                  pw="xs"
+                  ph="xs"
+                  whitesmoke
+                  bg="darkest-yellow"
+                  hover-bg="dark-yellow"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => ChangePage("back")}
+                  className="page-link"
+                >
+                  ← Anterior
+                </Text>
+              </Link>
+            </Container>
+            <Container>{GenerateLinks()}</Container>
 
-          <Container style={{ marginTop: IsMobile() && "-.5rem" }}>
-            <Link
-              to="products-board"
-              smooth
-              duration={200}
-              offset={-90}
-              style={{ textDecoration: "none" }}
-              onClick={() => scroll.scrollTo(document.querySelector('#products-board'), {duration: 100})}
-            >
-              <Text
-                mw="xs"
-                pw="xs"
-                ph="xs"
-                whitesmoke
-                bg="darkest-yellow"
-                hover-bg="dark-yellow"
-                style={{ cursor: "pointer" }}
-                onClick={() => ChangePage("next")}
-                className="page-link"
+            <Container style={{ marginTop: IsMobile() && "-.5rem" }}>
+              <Link
+                to="products-board"
+                smooth
+                duration={200}
+                offset={-90}
+                style={{ textDecoration: "none" }}
+                onClick={() =>
+                  scroll.scrollTo(document.querySelector("#products-board"), {
+                    duration: 100,
+                  })
+                }
               >
-                Siguiente →
-              </Text>
-            </Link>
+                <Text
+                  mw="xs"
+                  pw="xs"
+                  ph="xs"
+                  whitesmoke
+                  bg="darkest-yellow"
+                  hover-bg="dark-yellow"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => ChangePage("next")}
+                  className="page-link"
+                >
+                  Siguiente →
+                </Text>
+              </Link>
+            </Container>
           </Container>
-        </Container>
+        )}
+
+        {/* Infinite Scroll Trigger */}
+        {showLoader && infiniteScroll && (
+          <Container w-100 style={{ maxHeight: "20vh", overflow: "hidden" }}>
+            <Loader />
+          </Container>
+        )}
+
+        {infiniteScroll && (
+          <ViewportBlock onEnterViewport={() => LoadMoreItems()} />
+        )}
       </Container>
     </StoreContainer>
   );

@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Container, Img, Text } from "../../framework/assets";
 import logo from "../../Assets/IMG/Brand/logo-full.svg";
 import Navbar from "../modules/navbar";
 import { useHistory } from "react-router-dom";
 import { scrollTop } from "../../helpers/functions";
 
-const PageNotFound = () => {
+const PageNotFound = ({setShowContact}) => {
   const history = useHistory();
   const navLinks = [
     { name: "inicio", route: "/" },
@@ -13,6 +13,10 @@ const PageNotFound = () => {
     { name: "categorías", route: "/categories" },
     { name: "contacto", scroll: "contacto" },
   ];
+
+  useEffect(() => {
+    setShowContact(true);
+  }, [setShowContact]);
 
   return (
     <Container

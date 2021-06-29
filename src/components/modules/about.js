@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Text, Img } from "../../framework/assets";
-import sneakHand from "../../Assets/IMG/Various/yellow-art-1.webp";
 import sneaker from "../../Assets/IMG/Products/demo/sneaker2.webp";
 import { IsMobile, MaxWidth } from "../../helpers/functions";
 import SocialMedia from "../basics/socialMedia";

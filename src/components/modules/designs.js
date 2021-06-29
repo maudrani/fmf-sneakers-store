@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Container, Img, Text } from "../../framework/assets";
-import { sizes } from "../../framework/global";
 import sneaker from "../../Assets/IMG/Products/demo/sneaker2.webp";
 import { BringProducts } from "../store/db/products";
 import ProductsBoard from "./products-board";
-import { IsMobile, scrollTop } from "../../helpers/functions";
+import { IsMobile } from "../../helpers/functions";
 import { Link as RouteLink } from "react-router-dom";
 import dukiSneaker1 from "../../Assets/IMG/Products/Promo/Caricaturescas/Renders/duki1.png";
 import dukiSneaker2 from "../../Assets/IMG/Products/Promo/Caricaturescas/Renders/duki2.png";

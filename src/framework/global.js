@@ -230,7 +230,8 @@ html.has-scroll-dragging {
   outline: none;
   margin: 0;
   padding: 0;
-  transition: all 0.2s;
+  transition: transform 0.2s;
+  /* transition: all 0.2s; */
 }
 
 html {
@@ -276,6 +277,7 @@ body {
 .page {
   min-width: ${document.body.clientWidth - 1}px !important;
   overflow-x: hidden;
+  transition: 0s !important;
 }
 
 /* Remove list styles on ul, ol elements with a class attribute */

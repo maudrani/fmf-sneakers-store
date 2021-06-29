@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, {  useEffect } from "react";
 import { Container, Text, Configs } from "../../framework/assets";
 import styled from "styled-components";
-import Navbar from "../modules/navbar";
 import ProductsPanel from "../admin/components/products/products-panel";
 import OrdersPanel from "../admin/components/orders/orders-panel";
 import SuscriptionsPanel from "../admin/components/suscriptions/suscriptions-panel";
@@ -24,13 +23,8 @@ const AdminPageContainer = styled(Container)`
   }
 `;
 
-const AdminPage = () => {
+const AdminPage = ({setShowContact}) => {
   const [panelToShow, setPanelToShow] = UseLocalStorage("panel_to_show", "products_products");
-
-  let navbarLinks = [
-    { name: "inicio", route: "/" },
-    { name: "store", route: "/store" },
-  ];
 
   const history = useHistory();
 
@@ -38,6 +32,10 @@ const AdminPage = () => {
     history.push("/login");
     localStorage.removeItem("isAuth");
   };
+
+  useEffect(() => {
+    setShowContact(false);
+  }, [setShowContact]);
 
   return (
     <AdminPageContainer

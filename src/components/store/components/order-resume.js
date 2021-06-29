@@ -171,6 +171,10 @@ const OrderResume = ({ order }) => {
                 <Text light-gray>Provincia:</Text>
                 <Text>{order.payer.address.province}</Text>
               </Container>
+              <Container direction="c" align="fs">
+                <Text light-gray>Localidad:</Text>
+                <Text>{order.payer.address.state}</Text>
+              </Container>
             </Container>
           </Container>
 
@@ -181,16 +185,20 @@ const OrderResume = ({ order }) => {
               justify="fs"
               style={{ padding: "7px 0" }}
             >
-              <Text style={{ fontSize: "18px" }}>Forma de Pago: </Text>
+              <Text style={{ fontSize: "18px" }}>Forma de Pago y Envío: </Text>
             </Container>
             <Container className="info-container" w-100 justify="fs" ph="sm">
               <Container direction="c" align="fs">
-                <Text light-gray>Método:</Text>
+                <Text light-gray>Pago:</Text>
                 <Text>
                   {order.payment_method === "mercadopago" && "Mercado Pago"}
                   {order.payment_method === "transferencia_bancaria" &&
                     "Transferencia Bancaria"}
                 </Text>
+              </Container>
+              <Container direction="c" align="fs">
+                <Text light-gray>Envío:</Text>
+                <Text>{order.shipment_type}</Text>
               </Container>
             </Container>
           </Container>

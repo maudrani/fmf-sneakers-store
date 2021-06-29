@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import { Container, Text, Img } from "../../framework/assets";
 import Navbar from "../modules/navbar";
 import gelatoVideo from "../../Assets/Video/gelato-X3.mp4";
 import dukiArt from "../../Assets/IMG/styled-store/Artists/SVG/duki-transparent.svg";
 import duki from "../../Assets/IMG/styled-store/Artists/Duki.jpeg";
 import styled from "styled-components";
-import {BringProducts} from '../store/db/products'
 
 const ArtistsContainer = styled(Container)`
   /* min-height: 100vh; */

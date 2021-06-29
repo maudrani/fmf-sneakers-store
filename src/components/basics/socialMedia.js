@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Text, Img } from "../../framework/assets";
+import { Container, Img } from "../../framework/assets";
 import facebook from "../../Assets/IMG/Social/facebook-white.svg";
 import instagram from "../../Assets/IMG/Social/instagram-white.svg";
 

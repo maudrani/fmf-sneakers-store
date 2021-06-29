@@ -5,11 +5,10 @@ import styled from "styled-components";
 import StyledCategories from "../store/components/styled-store-categories";
 import { BringProducts } from "../store/db/products";
 import { IsMobile, randomizeArray } from "../../helpers/functions";
-import Promo from "../store/components/promos";
 
 const StoreMain = styled(Container)``;
 
-const StyledStore = () => {
+const StyledStore = ({setShowContact}) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -36,6 +35,10 @@ const StyledStore = () => {
     ],
   };
 
+  useEffect(() => {
+    setShowContact(true);
+  }, [setShowContact]);
+
   return (
     <Container
       w-100
@@ -53,7 +56,6 @@ const StyledStore = () => {
         bg-image="wall"
       >
         <StyledCategories products={products} />
-        <Promo promo={3} />
       </StoreMain>
     </Container>
   );

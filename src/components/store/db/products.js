@@ -103,6 +103,8 @@ console.log(products); */
   const CreateProducts = () => {
     products.forEach((product) => CreateProduct(product));
   };
+
+  console.log(CreateProducts)
 };
 
 //Db Functions

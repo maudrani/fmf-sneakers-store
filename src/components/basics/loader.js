@@ -14,7 +14,7 @@ const Loading1 = styled(Container)`
   }
 
   .spinner > div {
-    background-color: ${colors["darkest-yellow"]};
+    background-color: ${props=> props.transparent? colors["darkest-yellow"] : colors["darkest-yellow"]};
     height: 100%;
     width: 6px;
     display: inline-block;
@@ -68,16 +68,16 @@ const Loading1 = styled(Container)`
   }
 `;
 
-const Loader = () => {
+const Loader = ({ transparent = true }) => {
   return (
     <Loading1
-    data-scroll-section
       w-100
-      /* black */
+      black={transparent? false : true}
+      direction="c"
       style={{
         minHeight: "100vh",
         minWidth: "98.9vw",
-        position: "fixed",
+        /* position: "fixed", */
         top: "0",
         bottom: "0",
         margin: "0",

@@ -5,14 +5,12 @@ import Designs from "../modules/designs";
 import Suscription from "../modules/suscription";
 import Politics from "../modules/politics";
 import Navbar from "../modules/navbar";
-import Promo from "../store/components/promos";
 import { Container } from "../../framework/assets";
 import { IsMobile } from "../../helpers/functions";
-import StyledCategories from "../store/components/styled-store-categories";
 
 import gsap, { Back } from "gsap";
 
-const Landing = ({ className }) => {
+const Landing = ({ className, setShowContact }) => {
   const navbarLinks = [
     { name: "store", route: "/store" },
     {
@@ -56,6 +54,10 @@ const Landing = ({ className }) => {
     LogoFullAnimation();
   }, []);
 
+  useEffect(() => {
+    setShowContact(true);
+  }, [setShowContact]);
+
   return (
     <Container
       w-100
@@ -64,6 +66,7 @@ const Landing = ({ className }) => {
       /* b-shadow="inset-4" */
       whitesmoke
       data-scroll-section
+      className="page"
     >
       <Navbar
         bgColor="black"

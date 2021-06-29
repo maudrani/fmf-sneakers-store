@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import CartProvider from "./components/context/cart-context";
 import { lazy } from "@loadable/component";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -16,19 +16,17 @@ const NotFound = lazy(() => import("./components/pages/404"));
 const Contact = lazy(() => import("./components/modules/contact"));
 const Footer = lazy(() => import("./components/modules/footer"));
 const Login = lazy(() => import("./components/pages/login"));
-const Artists = lazy(() => import("./components/pages/artists"));
 
 function App() {
-
   const containerRef = useRef(null);
+  const [showContact, setShowContact] = useState(false);
 
   return (
     <CartProvider>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader transparent={false} />}>
         <LocomotiveScrollProvider
           options={{
             smooth: true,
-            // ... all available Locomotive Scroll instance options
           }}
           watch={
             [
@@ -37,24 +35,43 @@ function App() {
           }
           containerRef={containerRef}
         >
-          <div data-scroll-container id="App" ref={containerRef}>
+          <div
+            data-scroll-container
+            id="App"
+            ref={containerRef}
+            style={{ transition: "0s" }}
+          >
             <Router>
               <Switch>
-                <Route path="/" exact component={Landing} />
-                <Route path="/categories" component={Categories} />
-                <Route path="/store" component={Store} />
-                <Route path="/cart" component={Cart} />
-                <Route path="/artists" component={Artists} />
-                <Route path="/sneaker:(.*)" component={ProductPage} />
-                <PrivateRoute path="/admin" component={Admin} />
+                <Route path="/" exact>
+                  <Landing setShowContact={setShowContact} />
+                </Route>
+                <Route path="/categories">
+                  <Categories setShowContact={setShowContact} />
+                </Route>
+                <Route path="/store/:page?/:search?">
+                  <Store setShowContact={setShowContact} />
+                </Route>
+                <Route path="/cart">
+                  <Cart setShowContact={setShowContact} />
+                </Route>
+                {/*  <Route path="/artists" component={Artists} /> */}
+                <Route path="/sneaker:(.*)">
+                  <ProductPage setShowContact={setShowContact} />
+                </Route>
+                <PrivateRoute path="/admin" >
+                    <Admin setShowContact={setShowContact} />
+                </PrivateRoute>
                 <Route path="/login" component={Login} />
-                <Route component={NotFound} />
+                <Route component={NotFound} >
+                  <NotFound setShowContact={setShowContact} />
+                </Route>
               </Switch>
+              <div className="page" data-scroll-section>
+                {showContact && <Contact />}
+                <Footer />
+              </div>
             </Router>
-            <div className="page" data-scroll-section>
-              <Contact />
-              <Footer />
-            </div>
           </div>
         </LocomotiveScrollProvider>
       </Suspense>

@@ -16,7 +16,7 @@ import Loader from "../basics/loader";
 
 import Gallery from "../modules/photoGallery";
 
-const ProductPage = () => {
+const ProductPage = ({setShowContact}) => {
   const [products, setProducts] = useState([]);
   const [galleryPhotos, setGalleryPhotos] = useState([]);
   const { pathname } = useLocation();
@@ -60,6 +60,11 @@ const ProductPage = () => {
   ];
 
   scrollTop();
+
+  /* Show Contact */
+  useEffect(() => {
+    setShowContact(true);
+  }, [setShowContact]);
 
   return (
     <Container className="page" data-scroll-section>

@@ -21,7 +21,6 @@ const ContactContainer = styled(Container)`
 const TextStyle = { textAlign: "center" };
 
 const Contact = () => {
-  const pathname = window.location.pathname;
   const { register, errors, handleSubmit } = useForm({ mode: "onBlur" });
   const MySwal = withReactContent(Swal);
 
@@ -139,7 +138,7 @@ const Contact = () => {
       black
       style={{
         minHeight: "90vh",
-        display: pathname === "/admin" ? "none" : "flex",
+        transition: "0s",
       }}
       id="contacto"
     >

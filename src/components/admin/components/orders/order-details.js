@@ -137,7 +137,7 @@ const PanelButton = ({ text, style, symbol, onClick, color }) => {
 
 const OrderDetails = ({ order, onCancel, onSave, onDelete }) => {
   const [modifiedOrder, setModifiedOrder] = useState({});
-  const [StatesList, setStatesList] = useState(GetOrderStates());
+  const StatesList = GetOrderStates();
   const [selectedState, setSelectedState] = useState(
     StatesList.find((state) => state.key === order.order_state)
   );
@@ -147,7 +147,7 @@ const OrderDetails = ({ order, onCancel, onSave, onDelete }) => {
   const contacto = {
     Nombre: { value: `${order.payer.name}` },
     Apellido: { value: order.payer.surname },
-    Dni: { value: order.payer.dni || 'Sin definir' },
+    Dni: { value: order.payer.dni || "Sin definir" },
     Mail: { value: `${order.payer.email}` },
     Telefono: { value: order.payer.phone.number },
     Calle: {
@@ -159,6 +159,7 @@ const OrderDetails = ({ order, onCancel, onSave, onDelete }) => {
     "Código Postal": { value: order.payer.address.zip_code },
     Provincia: { value: order.payer.address.province },
     Localidad: { value: order.payer.address.state },
+    'Tipo de envío': { value: order.shipment_type},
   };
 
   const resumen = {
@@ -176,8 +177,13 @@ const OrderDetails = ({ order, onCancel, onSave, onDelete }) => {
       prefix: "$",
       editable: false,
     },
+    "Costo de envío": {
+      value: order.totals.shipment_cost|| 0,
+      prefix: "$",
+      editable: false,
+    },
     Total: {
-      value: order.totals.subtotal_products + (order.totals.other_charge || 0),
+      value: order.totals.subtotal_products + (order.totals.other_charge || 0) + (order.totals.shipment_cost || 0),
       prefix: "$",
       editable: false,
     },
@@ -215,6 +221,8 @@ const OrderDetails = ({ order, onCancel, onSave, onDelete }) => {
       other_charge:
         modifiedOrder["resumen_MercadoPago - recargo"] ||
         order.totals.other_charge,
+        shipment_cost:
+        modifiedOrder["resumen_Costo de envío"] || order.totals.shipment_cost,
 
       order_state: selectedState.key || order.order_state,
     };

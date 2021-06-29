@@ -4,7 +4,6 @@ import {
   Text,
   Img,
   Input,
-  Select,
 } from "../../../../framework/assets";
 import styled from "styled-components";
 import editIcon from "../../../../Assets/IMG/Various/icons/edit.svg";

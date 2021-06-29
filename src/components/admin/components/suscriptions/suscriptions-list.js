@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Text, Configs } from "../../../../framework/assets";
 import SuscriptionDetail from "./suscription-details";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import styled from "styled-components";
 import { BringSuscriptions, UpdateSuscription } from "../../db/suscriptions";
-import { ObtainDate } from "../../../../helpers/functions";
 import PageSelector from "../../../store/components/full-store/page-selector";
 import InputSearch from "../search-input";
 
@@ -16,24 +15,6 @@ const PanelContainer = styled(Container)`
     text-overflow: ellipsis;
   }
 `;
-
-const Notification = ({ text, bgColor }) => {
-  return (
-    <Container
-      red
-      {...{ [bgColor]: true }}
-      style={{
-        zIndex: "1",
-        padding: ".2rem",
-        borderRadius: "3px",
-      }}
-    >
-      <Text weight="bold" white style={{ fontSize: "9px" }}>
-        {text}
-      </Text>
-    </Container>
-  );
-};
 
 const SuscriptionsList = () => {
   const [dbSuscriptions, setDBSuscriptions] = useState([]);

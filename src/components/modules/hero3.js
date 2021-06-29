@@ -128,7 +128,7 @@ const Hero = () => {
       tl4.from(
         ".button-category",
         { delay: 1, opacity: 0, marginRight: "5rem", transformOrigin: "left" },
-        IsMobile() ? "=0" : "=2"
+        IsMobile() ? "=0" : "=1.2"
       );
 
       tl5
@@ -140,7 +140,7 @@ const Hero = () => {
             marginLeft: "5rem",
             transformOrigin: "right",
           },
-          IsMobile() ? "=0" : "=2"
+          IsMobile() ? "=0" : "=1.2"
         )
         .from(
           ".bottom-text",
@@ -161,7 +161,7 @@ const Hero = () => {
             opacity: 0,
             transformOrigin: "center",
           },
-          IsMobile() ? "=0.2" : "=0.2"
+          IsMobile() ? "=0.2" : "=0.0"
         )
         .from(
           ".shoe",

@@ -3,12 +3,14 @@ import { Container, Input, Img, Text } from "../../framework/assets";
 import { colors } from "../../framework/global";
 import Navbar from "../modules/navbar";
 import { BringProducts } from "../store/db/products";
-import { randomizeArray } from "../../helpers/functions";
-import search from "../../Assets/IMG/Various/icons/simple-search.svg";
+// import { randomizeArray } from "../../helpers/functions";
+import lupa from "../../Assets/IMG/Various/icons/simple-search.svg";
 import categories from "../store/db/categories";
 import Acordeon from "../store/components/acordeon-menu";
 import Loader from "../basics/loader";
 import styled from "styled-components";
+
+import { useParams, useHistory } from "react-router-dom";
 
 import FullStore from "../store/components/full-store/full-store";
 
@@ -61,12 +63,16 @@ const StoreContainer = styled(Container)`
   }
 `;
 
-const Store = () => {
+const Store = ({ setShowContact }) => {
   const [products, setDbProducts] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
-  const [searchValue, setSearchValue] = useState("Todos los productos");
+  const [searchValue, setSearchValue] = useState(null);
   const [filters, setFilters] = useState({});
   const SearchInput = useRef();
+
+  //Url params
+  const { page, search } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,33 +89,64 @@ const Store = () => {
 
       const fetchedProducts = await BringProducts(params);
 
-      setDbProducts(
+      /*
+      randomized
+       setDbProducts(
         randomizeArray(await fetchedProducts, fetchedProducts.length)
       );
+       */
+
+      setDbProducts(fetchedProducts.reverse());
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    setSearchResult(products);
-  }, [products]);
+    if (search) {
+      setSearchValue(search || SearchInput.current.value);
+      const searchText = search || SearchInput.current.value;
+
+      setSearchResult(
+        products.filter((product) => {
+          const toSearchIn = JSON.stringify(
+            product.name + product.tags + product.category
+          ).toLowerCase();
+
+          return toSearchIn.includes(searchText.toLowerCase());
+        })
+      );
+    } else {
+      setSearchResult(products);
+    }
+  }, [search, products]);
+
+  useEffect(() => {
+    setShowContact(false);
+  }, [setShowContact]);
 
   const StoreRef = useRef();
 
-  const LaunchSearch = () => {
-    if (!SearchInput.current.value) {
-      setSearchValue("Todos los productos");
+  const LaunchSearch = (value) => {
+    if (!value && !SearchInput.current.value) {
+      history.push(`/store/${page || 1}/`);
+      //  history.replace({ pathname: "/store", search: '' });
+      setSearchValue();
       return setSearchResult(products);
     }
-    setSearchValue(SearchInput.current.value);
-    const searchText = SearchInput.current.value.toLowerCase();
+
+    setSearchValue(value || SearchInput.current.value);
+    const searchText = value || SearchInput.current.value;
+
+    history.push(`/store/${page || 1}/${searchText || ""}`);
+    // history.replace({ pathname: "/store", search: searchText });
+
     setSearchResult(
       products.filter((product) => {
         const toSearchIn = JSON.stringify(
           product.name + product.tags + product.category
         ).toLowerCase();
 
-        return toSearchIn.includes(searchText);
+        return toSearchIn.includes(searchText.toLowerCase());
       })
     );
   };
@@ -129,10 +166,12 @@ const Store = () => {
   const resetSearch = () => {
     setSearchResult(products);
 
-    setSearchValue("Todos los productos");
+    setSearchValue(null);
 
     SearchInput.current.value = "";
     SearchInput.current.focus();
+
+    history.push(`/store/${page || 1}/${""}`);
   };
 
   useEffect(() => {
@@ -186,7 +225,7 @@ const Store = () => {
   const navbarLinks = [
     { name: "inicio", route: "/" },
     { name: "categorías", route: "/categories" },
-    { name: "contacto", scroll: "contacto", useLocomotive: true},
+    /* { name: "contacto", scroll: "contacto", useLocomotive: true}, */
   ];
 
   return (
@@ -221,7 +260,7 @@ const Store = () => {
                 textTransform: "capitalize",
               }}
             >
-              {searchValue} ({searchResult.length})
+              {searchValue || "Todos los items"} ({searchResult.length})
             </Text>
           </Container>
           <Container w-60 justify="fs" xs-justify="c" xs-w="w-100">
@@ -237,7 +276,8 @@ const Store = () => {
             >
               <Input
                 ref={SearchInput}
-                placeholder="Buscar..."
+                placeholder={"Buscar..."}
+                defaultValue={search}
                 w-100
                 style={{
                   fontSize: "18px",
@@ -254,7 +294,7 @@ const Store = () => {
                 style={{ cursor: "pointer" }}
                 onClick={() => LaunchSearch()}
               >
-                <Img w-100 src={search} />
+                <Img w-100 src={lupa} />
               </Container>
             </Container>
             <Text
@@ -307,7 +347,11 @@ const Store = () => {
               direction="c"
               id="products-board"
             >
-              <FullStore products={searchResult} />
+              <FullStore
+                products={searchResult}
+                amountOfItems={18}
+                initialPage={parseInt(page) || 1}
+              />
             </Container>
           ) : (
             <Container vh-100 w-100>

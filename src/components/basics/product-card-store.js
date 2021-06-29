@@ -47,7 +47,7 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
       : {};
 
   const titleConfig = {
-    md: name.length > 14 ? false : true,
+    md: name.length > 16 ? false : true,
   };
 
   return (
@@ -86,7 +86,7 @@ const Card = ({ product, inViewport, forwardedRef, animated, onClick }) => {
             sm-size="sm"
             red
             style={{
-              fontSize: name.length > 14 && `28px`,
+              fontSize: name.length > 12 && `28px`,
               textAlign: "center",
             }}
           >

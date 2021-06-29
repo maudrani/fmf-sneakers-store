@@ -35,9 +35,9 @@ const OrderTotals = ({ cart, order }) => {
 
   useEffect(() => {
     if (order.payment_method === "mercadopago") {
-      setTotal(subtotalCartValue + subtotalCartValue * 0.1);
+      setTotal(subtotalCartValue + (subtotalCartValue * 0.1) + order.totals.shipment_cost);
     } else {
-      setTotal(subtotalCartValue);
+      setTotal(subtotalCartValue + order.totals.shipment_cost);
     }
   }, [order, subtotalCartValue]);
 
@@ -65,7 +65,7 @@ const OrderTotals = ({ cart, order }) => {
               ${subtotalCartValue}
             </Text>
           </Container>
-          {order.payment_method  ? (
+          {order.payment_method ? (
             <Container w-100 justify="sb" ph="xs">
               <Text weight="light" style={{ fontSize: "18px" }}>
                 {order.payment_method === "mercadopago"
@@ -92,10 +92,10 @@ const OrderTotals = ({ cart, order }) => {
 
           <Container w-100 justify="sb" ph="xs">
             <Text weight="light" style={{ fontSize: "18px" }}>
-              {order.payment_method && "Envío"}
+              {order.shipment_type && "Envío"}
             </Text>
             <Text weight="light" style={{ fontSize: "22px" }}>
-              {order.payment_method && "$800"}
+              {order.shipment_type && "$" + (order.totals.shipment_cost || '')}
             </Text>
           </Container>
         </Container>

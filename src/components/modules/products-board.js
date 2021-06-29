@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container } from "../../framework/assets";
 import styled from "styled-components";
 import handleViewport from "react-in-viewport";
@@ -36,6 +36,7 @@ const Board = ({
   itemsPerPage = 6,
   currentPage = 1,
   setAmountOfPages,
+  infiniteScroll = false,
 }) => {
   const DetectCardStyle = () => {
     if (styled) {
@@ -74,7 +75,6 @@ const Board = ({
       lastItems.push(array[totalItemsInEqualPages + i]);
     }
 
-    /* pages.push(array.splice(totalItemsInEqualPages, array.length)); */
     pages.push(lastItems);
 
     setAmountOfPages(pages.length);
@@ -107,6 +107,73 @@ const Board = ({
     });
   };
 
+  /* Infinite Scroll */
+  const [currentItems, setCurrentItems] = useState([]);
+  const [pages, setPages] = useState([]);
+
+  const createInfiniteScrollPages = (array, pageLength) => {
+    let page = [];
+    let pages = [];
+
+    let totalItemsInEqualPages = 0;
+
+    array.forEach((el, idx) => {
+      page.push(el);
+      if ((idx + 1) % pageLength === 0) {
+        pages.push(page);
+        page = [];
+        totalItemsInEqualPages += pageLength;
+      }
+    });
+
+    const lastItems = [];
+
+    for (let i = 0; i < array.length - totalItemsInEqualPages; i++) {
+      lastItems.push(array[totalItemsInEqualPages + i]);
+    }
+
+    pages.push(lastItems);
+
+    setPages(pages);
+    setCurrentItems(pages[0]);
+
+    return pages;
+  };
+
+  useEffect(() => {
+    infiniteScroll && createInfiniteScrollPages(products, itemsPerPage);
+  }, [infiniteScroll, itemsPerPage, products]);
+
+  useEffect(() => {
+    const ActualItems = () => {
+      let actualPage = [];
+
+      if (pages[currentPage - 1] !== undefined) {
+        actualPage = pages[currentPage - 1];
+      } else {
+        actualPage = pages[0];
+      }
+
+      let items = [];
+
+      currentItems.forEach((currentItem) => {
+        items.push(currentItem);
+      });
+
+      actualPage !== undefined &&
+        actualPage.forEach((currentItem) => {
+          items.push(currentItem);
+        });
+
+      setCurrentItems(items);
+    };
+
+    ActualItems();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
+  /* //////// */
+
   const { scroll } = useLocomotiveScroll();
 
   return (
@@ -126,9 +193,10 @@ const Board = ({
     >
       {children}
 
-      {showPagination && createPages(products, itemsPerPage)}
+      {showPagination && !infiniteScroll && createPages(products, itemsPerPage)}
 
       {!showPagination &&
+        !infiniteScroll &&
         products.slice(0, limit).map((product, idx) => {
           let route = CartProductRoute(product);
 
@@ -144,6 +212,26 @@ const Board = ({
                 inViewport
                 animated={animCards}
                 onClick={() => scroll.scrollTo("top") || scrollTop}
+              />
+            </RouteLink>
+          );
+        })}
+
+      {infiniteScroll &&
+        currentItems.map((product, idx) => {
+          let route = CartProductRoute(product);
+
+          return (
+            <RouteLink
+              key={idx}
+              to={`/${route}`}
+              style={{ textDecoration: "none" }}
+            >
+              <ViewCard
+                product={product}
+                inViewport
+                animated={animCards}
+                onClick={scrollTop}
               />
             </RouteLink>
           );

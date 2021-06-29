@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Container } from "../../framework/assets";
 import { colors } from "../../framework/global";
 import styled from "styled-components";
 import { IsMobile } from "../../helpers/functions";
-import gsap, { Back, TweenMax, Power4, TimelineMax, Elastic } from "gsap";
+import gsap, { Back, Power4 } from "gsap";
 
 const SvgLogoFull = styled(Container)`
   .logo-full {
@@ -377,7 +377,6 @@ export const LogoFull = ({ type = "bold" }) => {
             />
           </svg>
         );
-        break;
 
       case "bold":
         return (

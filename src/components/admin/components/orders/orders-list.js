@@ -1,9 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Container,
-  Text,
-  Configs,
-} from "../../../../framework/assets";
+import React, { useState, useEffect } from "react";
+import { Container, Text, Configs } from "../../../../framework/assets";
 import OrderDetails from "./order-details";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -63,7 +59,6 @@ const OrdersList = () => {
   const [dbOrders, setDbOrders] = useState([]);
   const [searchResult, setSearchResult] = useState(dbOrders);
   const [actualPage, setActualPage] = useState([]);
-
 
   const fetchData = async (params) => {
     const orders = await BringOrders(params);
@@ -247,7 +242,9 @@ const OrdersList = () => {
             <Container w-20>
               <Text>
                 ${" "}
-                {order.totals.subtotal_products + order.totals.other_charge ||
+                {order.totals.subtotal_products +
+                  order.totals.other_charge +
+                  (order.totals.shipment_cost || 0) ||
                   0 ||
                   0}
               </Text>
